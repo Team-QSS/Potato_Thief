@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/00.Scenes/Demo_Lee.unity
+    guid: 87562f23b3d364149b9bd8954ad0d475
   m_configObjects: {}
