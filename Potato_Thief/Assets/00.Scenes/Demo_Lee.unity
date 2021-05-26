@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 26056368}
   - component: {fileID: 26056367}
   m_Layer: 5
-  m_Name: AuthButton
+  m_Name: LogoutButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1038,7 +1038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Auth
+  m_Text: Logout
 --- !u!222 &1988398129
 CanvasRenderer:
   m_ObjectHideFlags: 0
