@@ -16,13 +16,7 @@ public class ClientTest : MonoBehaviour
 
     private void Start()
     {
-
-        // user
-        // password
-
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-    .RequestServerAuthCode(false /* Don't force refresh */)
-    .Build();
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().RequestServerAuthCode(false /* Don't force refresh */).Build();
 
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.Activate();
@@ -79,4 +73,8 @@ public class ClientTest : MonoBehaviour
         auth.SignOut();
     }
 
+    public void IsExitButtonDown()
+    {
+        Application.Quit();
+    }
 }
