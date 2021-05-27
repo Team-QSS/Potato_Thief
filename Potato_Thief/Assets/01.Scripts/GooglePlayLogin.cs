@@ -8,11 +8,12 @@ using UnityEngine.SocialPlatforms;
 using System.Threading.Tasks;
 using System.IO;
 
-public class ClientTest : MonoBehaviour
+public class GooglePlayLogin : MonoBehaviour
 {
-    Firebase.Auth.FirebaseAuth auth = null;
-    Firebase.Auth.FirebaseUser user = null;
-    string authCode;
+    public static GooglePlayLogin UserAccount = null;
+    public Firebase.Auth.FirebaseAuth auth = null;
+    public Firebase.Auth.FirebaseUser user = null;
+    public string authCode;
 
     private void Start()
     {
@@ -20,10 +21,6 @@ public class ClientTest : MonoBehaviour
 
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.Activate();
-    }
-
-    public void IsLoginButtonDown()
-    {
 
         Social.localUser.Authenticate((bool success) => {
             if (success)
@@ -56,7 +53,7 @@ public class ClientTest : MonoBehaviour
         });
 
         user = auth.CurrentUser;
-        
+
         if (user != null)
         {
             string playerName = user.DisplayName;
@@ -66,15 +63,5 @@ public class ClientTest : MonoBehaviour
             // have one; use User.TokenAsync() instead.
             string uid = user.UserId;
         }
-    }
-
-    public void IsLogoutButtonDown()
-    {
-        auth.SignOut();
-    }
-
-    public void IsExitButtonDown()
-    {
-        Application.Quit();
     }
 }
