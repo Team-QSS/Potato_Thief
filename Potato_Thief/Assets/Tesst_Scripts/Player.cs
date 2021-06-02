@@ -15,10 +15,7 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.layer == 8)
-        {
-            print("hit");
             collision.gameObject.GetComponent<Lever>().SendSignal();
-        }
     }
     
 
@@ -26,9 +23,6 @@ public class Player : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.layer == 8)
-        {
-            print("hit");
             collision.gameObject.GetComponent<Lever>().SendSignal();
-        }
     }
 }

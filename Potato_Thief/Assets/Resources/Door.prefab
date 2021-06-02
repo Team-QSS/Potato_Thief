@@ -122,5 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObjects: []
+  spriteRenderer: {fileID: 3947167749981254392}
   status: 0
   key: 0

@@ -121,6 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335788bec949fd240bed3c5f9cf784b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leverBody: {fileID: 2400170598206572177}
+  spriteRenderer: {fileID: 6613769558842823922}
   key: 0
   status: 0

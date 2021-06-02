@@ -10,13 +10,8 @@ public class MapMaker : MonoBehaviour
 
     private void Start()
     {
-        if(mapMaker == null)
-        {
+        if (mapMaker == null)
             mapMaker = this;
-        }
-
-        levers = new List<GameObject>();
-        doors = new List<GameObject>();
     }
 
     public void MakeMap()
@@ -42,52 +37,45 @@ public class MapMaker : MonoBehaviour
         levers.Add(lever);
     }
 
+    void MakeInteraction(GameObject door, params int[] interactions)
+    {
+        Door doorScript;
+        doorScript = door.GetComponent<Door>();
+
+        for (int i = 0; i < interactions.Length; i++)
+        {
+            doorScript.targetObjects.Add(levers[interactions[i]]);
+        }
+    }
+
     public void SetDoor()
     {
         GameObject door;
-        Door doorScript;
 
-        door = Manager.manager.InstantiateDoor();
-        door.transform.localPosition = new Vector2(5, -2);
-        doorScript = door.GetComponent<Door>();
-        doorScript.targetObjects.Add(levers[0]);
-        doorScript.targetObjects.Add(levers[1]);
+        door = Manager.manager.InstantiateDoor(new Vector2(5, -2));
+        MakeInteraction(door, 1, 0);
         doors.Add(door);
 
-        door = Manager.manager.InstantiateDoor();
-        door.transform.localPosition = new Vector2(0, -2);
-        doorScript = door.GetComponent<Door>();
-        doorScript.targetObjects.Add(levers[0]);
-        doorScript.targetObjects.Add(levers[2]);
+        door = Manager.manager.InstantiateDoor(new Vector2(0, -2));
+        MakeInteraction(door, 0, 2);
         doors.Add(door);
 
-        door = Manager.manager.InstantiateDoor();
-        door.transform.localPosition = new Vector2(-5, -2);
-        doorScript = door.GetComponent<Door>();
-        doorScript.targetObjects.Add(levers[1]);
+        door = Manager.manager.InstantiateDoor(new Vector2(-5, -2));
+        MakeInteraction(door, 1);
         doors.Add(door);
     }
 
-    public void SendMessage(object[] contents)
-    {
-        ReceiveMessage(contents);
-    }
+    public void SendMessage(object[] contents) => ReceiveMessage(contents);
 
     public void ReceiveMessage(object[] contents)
     {
-        Door doorScript;
-
         int key = (int)contents[0];
         bool status = (bool)contents[1];
-
-        print("Receive Data : " + key + "," + status);
 
         levers[key].GetComponent<Lever>().SetStatus(status);
 
         for (int i = 0; i < doors.Count; i++)
-        {
-            doorScript = doors[i].GetComponent<Door>();
-            doorScript.TargetStatusChange();
-        }
+            doors[i].GetComponent<Door>().TargetStatusChange();
+
     }
 }

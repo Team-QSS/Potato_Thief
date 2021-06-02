@@ -10,21 +10,18 @@ public class Manager : MonoBehaviour
     public GameObject leverPrefebs;
     public GameObject doorPrefebs;
 
-    Queue<GameObject> leverPool = new Queue<GameObject>();
-    Queue<GameObject> doorPool = new Queue<GameObject>();
+    readonly private Queue<GameObject> leverPool = new Queue<GameObject>();
+    readonly private Queue<GameObject> doorPool = new Queue<GameObject>();
 
-    int key;
+    private int key;
 
     private void Start()
     {
         if(manager == null)
-        {
             manager = this;
-        }
-
-
 
         key = 0;
+
         for (int i = 0; i < 10; i++)
         {
             GameObject lever = Instantiate(leverPrefebs);
@@ -40,6 +37,18 @@ public class Manager : MonoBehaviour
         mapMaker.GetComponent<MapMaker>().MakeMap();
     }
 
+    public void DestroyLever(GameObject lever)
+    {
+        leverPool.Enqueue(lever);
+        lever.SetActive(false);
+    }
+    public void DestroyDoor(GameObject door)
+    {
+        doorPool.Enqueue(door);
+        door.SetActive(false);
+    }
+
+    #region InstantiateObjects
     public GameObject InstantiateLever()
     {
         GameObject lever = null;
@@ -57,13 +66,24 @@ public class Manager : MonoBehaviour
         key++;
         return lever;
     }
-
-    public void DestroyLever(GameObject lever)
+    public GameObject InstantiateLever(Vector2 position)
     {
-        leverPool.Enqueue(lever);
-        lever.SetActive(false);
-    }
+        GameObject lever = null;
 
+        if (leverPool.Count > 0)
+            lever = leverPool.Dequeue();
+
+        if (lever == null)
+        {
+            lever = Instantiate(leverPrefebs);
+        }
+        lever.SetActive(true);
+
+        lever.GetComponent<Lever>().key = key;
+        key++;
+        lever.transform.localPosition = position;
+        return lever;
+    }
     public GameObject InstantiateDoor()
     {
         GameObject door = null;
@@ -81,10 +101,23 @@ public class Manager : MonoBehaviour
         key++;
         return door;
     }
-
-    public void DestroyDoor(GameObject door)
+    public GameObject InstantiateDoor(Vector2 position)
     {
-        doorPool.Enqueue(door);
-        door.SetActive(false);
+        GameObject door = null;
+
+        if (doorPool.Count > 0)
+            door = doorPool.Dequeue();
+
+        if (door == null)
+        {
+            door = Instantiate(doorPrefebs);
+        }
+
+        door.SetActive(true);
+        door.GetComponent<Door>().key = key;
+        key++;
+        door.transform.localPosition = position;
+        return door;
     }
+    #endregion 
 }

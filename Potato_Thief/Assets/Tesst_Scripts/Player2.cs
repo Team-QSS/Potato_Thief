@@ -15,16 +15,12 @@ public class Player2 : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 8)
-        {
             collision.gameObject.GetComponent<Lever>().SendSignal();
-        }
     }
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.layer == 8)
-        {
-            print("hit");
             collision.gameObject.GetComponent<Lever>().SendSignal();
-        }
     }
 }

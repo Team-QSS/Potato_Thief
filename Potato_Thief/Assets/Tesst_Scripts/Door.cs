@@ -6,21 +6,19 @@ using UnityEngine.UI;
 public class Door : MonoBehaviour
 {
     public List<GameObject> targetObjects = new List<GameObject>();
+    public SpriteRenderer spriteRenderer;
+
+    Color defaultColor = new Color(0.3098039f, 0.09411766f, 0.09411766f, 1f);
+    Color activeColor = Color.black;
+
     public bool status;
     public int key;
+
+
     private void Start()
     {
         status = false;
-
-        SpriteRenderer i = GetComponent<SpriteRenderer>();
-        Color c = i.color;
-
-        c.r = 0.3098039f;
-        c.g = 0.09411766f;
-        c.b = 0.09411766f;
-        c.a = 1f;
-
-        i.color = c;
+        spriteRenderer.color = defaultColor;
     }
 
     public void TargetStatusChange()
@@ -34,31 +32,9 @@ public class Door : MonoBehaviour
 
         status = countStatus;
         ChangeState();
-
-        
     }
 
-    public void ChangeState()
-    {
-        // Effect
-        SpriteRenderer i = GetComponent<SpriteRenderer>();
-        Color c = i.color;
+    public void ChangeState() => 
+        spriteRenderer.color = status ? activeColor : defaultColor;
 
-        if (status)
-        {
-            c.r = 0;
-            c.g = 0;
-            c.b = 0;
-            c.a = 1f;
-
-        }
-        else
-        {
-            c.r = 0.3098039f;
-            c.g = 0.09411766f;
-            c.b = 0.09411766f;
-            c.a = 1f;
-        }
-        i.color = c;
-    }
 }
