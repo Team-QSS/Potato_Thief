@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ControlStartUI : MonoBehaviour
 {
+    public GameObject StartUI;
+    
     [SerializeField] private Image backGround;
     [SerializeField] private GameObject cover;
     [SerializeField] private Text clickMessage;
@@ -85,6 +87,6 @@ public class ControlStartUI : MonoBehaviour
     private void LoadNextScene()
     {
         // Scene Load
-        Application.Quit();
+        // Application.Quit();
     }
 }
