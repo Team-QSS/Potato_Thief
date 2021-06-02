@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Door : MonoBehaviour
+public class Door : Obstacle
 {
     public List<GameObject> targetObjects = new List<GameObject>();
     public SpriteRenderer spriteRenderer;
@@ -11,30 +11,20 @@ public class Door : MonoBehaviour
     Color defaultColor = new Color(0.3098039f, 0.09411766f, 0.09411766f, 1f);
     Color activeColor = Color.black;
 
-    public bool status;
-    public int key;
-
-
-    private void Start()
-    {
-        status = false;
-        spriteRenderer.color = defaultColor;
-    }
+    private void Start() => spriteRenderer.color = defaultColor;
 
     public void TargetStatusChange()
     {
-        bool countStatus = targetObjects[0].GetComponent<Lever>().status;
+        bool countStatus = targetObjects[0].GetComponent<Obstacle>().GetStatus();
 
         for (int i = 1; i < targetObjects.Count; i++)
-        {
-            countStatus = countStatus && targetObjects[i].GetComponent<Lever>().status;
-        }
+            countStatus = countStatus && targetObjects[i].GetComponent<Obstacle>().GetStatus();
 
-        status = countStatus;
+        SetStatus(countStatus);
         ChangeState();
     }
 
-    public void ChangeState() => 
-        spriteRenderer.color = status ? activeColor : defaultColor;
+    public void ChangeState() =>
+        spriteRenderer.color = GetStatus() ? activeColor : defaultColor;
 
 }

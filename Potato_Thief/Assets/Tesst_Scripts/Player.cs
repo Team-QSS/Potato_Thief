@@ -17,12 +17,4 @@ public class Player : MonoBehaviour
         if(collision.gameObject.layer == 8)
             collision.gameObject.GetComponent<Lever>().SendSignal();
     }
-    
-
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == 8)
-            collision.gameObject.GetComponent<Lever>().SendSignal();
-    }
 }

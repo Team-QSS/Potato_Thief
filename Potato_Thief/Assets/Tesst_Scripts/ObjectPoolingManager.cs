@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Manager : MonoBehaviour
+public class ObjectPoolingManager : MonoBehaviour
 {
-    public static Manager manager = null;
+    public static ObjectPoolingManager manager = null;
     public GameObject mapMaker;
 
     public GameObject leverPrefebs;
@@ -34,7 +34,7 @@ public class Manager : MonoBehaviour
             door.SetActive(false);
         }
 
-        mapMaker.GetComponent<MapMaker>().MakeMap();
+        mapMaker.GetComponent<MapManager>().MakeMap();
     }
 
     public void DestroyLever(GameObject lever)
@@ -62,7 +62,7 @@ public class Manager : MonoBehaviour
         }
         lever.SetActive(true);
 
-        lever.GetComponent<Lever>().key = key;
+        lever.GetComponent<Obstacle>().SetKey(key);
         key++;
         return lever;
     }
@@ -79,7 +79,7 @@ public class Manager : MonoBehaviour
         }
         lever.SetActive(true);
 
-        lever.GetComponent<Lever>().key = key;
+        lever.GetComponent<Obstacle>().SetKey(key);
         key++;
         lever.transform.localPosition = position;
         return lever;
@@ -97,7 +97,7 @@ public class Manager : MonoBehaviour
         }
 
         door.SetActive(true);
-        door.GetComponent<Door>().key = key;
+        door.GetComponent<Obstacle>().SetKey(key);
         key++;
         return door;
     }
@@ -114,7 +114,7 @@ public class Manager : MonoBehaviour
         }
 
         door.SetActive(true);
-        door.GetComponent<Door>().key = key;
+        door.GetComponent<Obstacle>().SetKey(key);
         key++;
         door.transform.localPosition = position;
         return door;

@@ -2,30 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lever : MonoBehaviour
+public class Lever : Obstacle
 {
     public SpriteRenderer spriteRenderer;
-    public int key = 0;
-    public bool status;
 
     Color defaultColor = new Color(0.5f, 1f, 0.5f, 1f);
     Color activeColor = Color.black;
 
-    private void Start()
-    {
-        status = false;
+    private void Start() =>
         spriteRenderer.color = defaultColor;
-    }
 
     public void SendSignal()
     {
-        object[] sendData = new object[] { key, !status};
-        MapMaker.mapMaker.SendMessage(sendData);
+        object[] sendData = new object[] { GetKey(), !GetStatus() };
+        MapManager.mapMaker.SendMessage(sendData);
     }
 
-    public void SetStatus(bool status)
+    override public void SetStatus(bool status)
     {
-        this.status = status;
+        base.SetStatus(status);
         spriteRenderer.color = status ? activeColor : defaultColor;
     }
 }

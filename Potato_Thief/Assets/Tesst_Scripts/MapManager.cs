@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapMaker : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
-    public static MapMaker mapMaker = null;
+    public static MapManager mapMaker = null;
     List<GameObject> levers = new List<GameObject>();
     List<GameObject> doors = new List<GameObject>();
 
@@ -20,24 +20,24 @@ public class MapMaker : MonoBehaviour
         SetDoor();
     }
 
-    public void SetLever()
+    private void SetLever()
     {
         GameObject lever;
 
-        lever = Manager.manager.InstantiateLever();
+        lever = ObjectPoolingManager.manager.InstantiateLever();
         lever.transform.localPosition = new Vector2(0, 0);
         levers.Add(lever);
 
-        lever = Manager.manager.InstantiateLever();
+        lever = ObjectPoolingManager.manager.InstantiateLever();
         lever.transform.localPosition = new Vector2(5, 0);
         levers.Add(lever);
 
-        lever = Manager.manager.InstantiateLever();
+        lever = ObjectPoolingManager.manager.InstantiateLever();
         lever.transform.localPosition = new Vector2(-5, 0);
         levers.Add(lever);
     }
 
-    void MakeInteraction(GameObject door, params int[] interactions)
+    private void MakeInteractionDoorToLever(GameObject door, params int[] interactions)
     {
         Door doorScript;
         doorScript = door.GetComponent<Door>();
@@ -48,31 +48,31 @@ public class MapMaker : MonoBehaviour
         }
     }
 
-    public void SetDoor()
+    private void SetDoor()
     {
         GameObject door;
 
-        door = Manager.manager.InstantiateDoor(new Vector2(5, -2));
-        MakeInteraction(door, 1, 0);
+        door = ObjectPoolingManager.manager.InstantiateDoor(new Vector2(5, -2));
+        MakeInteractionDoorToLever(door, 1, 0);
         doors.Add(door);
 
-        door = Manager.manager.InstantiateDoor(new Vector2(0, -2));
-        MakeInteraction(door, 0, 2);
+        door = ObjectPoolingManager.manager.InstantiateDoor(new Vector2(0, -2));
+        MakeInteractionDoorToLever(door, 0, 2);
         doors.Add(door);
 
-        door = Manager.manager.InstantiateDoor(new Vector2(-5, -2));
-        MakeInteraction(door, 1);
+        door = ObjectPoolingManager.manager.InstantiateDoor(new Vector2(-5, -2));
+        MakeInteractionDoorToLever(door, 1);
         doors.Add(door);
     }
 
     public void SendMessage(object[] contents) => ReceiveMessage(contents);
 
-    public void ReceiveMessage(object[] contents)
+    private void ReceiveMessage(object[] contents)
     {
         int key = (int)contents[0];
         bool status = (bool)contents[1];
 
-        levers[key].GetComponent<Lever>().SetStatus(status);
+        levers[key].GetComponent<Obstacle>().SetStatus(status);
 
         for (int i = 0; i < doors.Count; i++)
             doors[i].GetComponent<Door>().TargetStatusChange();
