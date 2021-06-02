@@ -15,7 +15,7 @@ public class Obstacle : MonoBehaviour
 
     public void SetKey(int key) => this.key = key;
     
-     virtual public void SetStatus(bool status) => this.status = status;
+    virtual public void SetStatus(bool status) => this.status = status;
     
     public int GetKey() { return key; }
 

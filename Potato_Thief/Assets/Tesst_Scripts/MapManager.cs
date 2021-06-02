@@ -24,16 +24,13 @@ public class MapManager : MonoBehaviour
     {
         GameObject lever;
 
-        lever = ObjectPoolingManager.manager.InstantiateLever();
-        lever.transform.localPosition = new Vector2(0, 0);
+        lever = ObjectPoolingManager.manager.InstantiateLever(new Vector2(0, 0));
         levers.Add(lever);
 
-        lever = ObjectPoolingManager.manager.InstantiateLever();
-        lever.transform.localPosition = new Vector2(5, 0);
+        lever = ObjectPoolingManager.manager.InstantiateLever(new Vector2(5, 0));
         levers.Add(lever);
 
-        lever = ObjectPoolingManager.manager.InstantiateLever();
-        lever.transform.localPosition = new Vector2(-5, 0);
+        lever = ObjectPoolingManager.manager.InstantiateLever(new Vector2(-5, 0));
         levers.Add(lever);
     }
 

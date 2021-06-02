@@ -15,11 +15,17 @@ public class Door : Obstacle
 
     public void TargetStatusChange()
     {
-        bool countStatus = targetObjects[0].GetComponent<Obstacle>().GetStatus();
+        bool countStatus = true;
 
-        for (int i = 1; i < targetObjects.Count; i++)
-            countStatus = countStatus && targetObjects[i].GetComponent<Obstacle>().GetStatus();
-
+        foreach (GameObject objects in targetObjects)
+        {
+            if (objects.GetComponent<Obstacle>().GetStatus() == false)
+            {
+                countStatus = false;
+                break;
+            }
+        }
+        
         SetStatus(countStatus);
         ChangeState();
     }
