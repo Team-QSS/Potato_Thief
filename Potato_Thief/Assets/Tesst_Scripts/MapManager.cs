@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    readonly private ObjectPoolingManager poolingManager = ObjectPoolingManager.manager;
-    readonly private List<GameObject> levers = new List<GameObject>();
-    readonly private List<GameObject> doors = new List<GameObject>();
-
     public static MapManager mapMaker = null;
+    List<GameObject> levers = new List<GameObject>();
+    List<GameObject> doors = new List<GameObject>();
 
     private void Start()
     {
@@ -25,13 +23,13 @@ public class MapManager : MonoBehaviour
     private void SetLever()
     {
         GameObject lever;
-        lever = poolingManager.InstantiateObject(ObstacleObject.lever, new Vector2(0, 0));
+        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(0, 0));
         levers.Add(lever);
 
-        lever = poolingManager.InstantiateObject(ObstacleObject.lever, new Vector2(5, 0));
+        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(5, 0));
         levers.Add(lever);
 
-        lever = poolingManager.InstantiateObject(ObstacleObject.lever, new Vector2(-5, 0));
+        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(-5, 0));
         levers.Add(lever);
     }
 
@@ -50,21 +48,20 @@ public class MapManager : MonoBehaviour
     {
         GameObject door;
 
-        door = poolingManager.InstantiateObject(ObstacleObject.door, new Vector2(5, -2));
+        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(5, -2));
         MakeInteractionDoorToLever(door, 1, 0);
         doors.Add(door);
 
-        door = poolingManager.InstantiateObject(ObstacleObject.door, new Vector2(0, -2));
+        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(0, -2));
         MakeInteractionDoorToLever(door, 0, 2);
         doors.Add(door);
 
-        door = poolingManager.InstantiateObject(ObstacleObject.door, new Vector2(-5, -2));
+        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(-5, -2));
         MakeInteractionDoorToLever(door, 1);
         doors.Add(door);
     }
 
-    public void SendMessage(object[] contents) => 
-        ReceiveMessage(contents);
+    public void SendMessage(object[] contents) => ReceiveMessage(contents);
 
     private void ReceiveMessage(object[] contents)
     {

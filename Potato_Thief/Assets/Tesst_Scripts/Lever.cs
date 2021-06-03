@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Lever : Obstacle
 {
-    private MapManager mapMaker = MapManager.mapMaker;
     public SpriteRenderer spriteRenderer;
 
     Color defaultColor = new Color(0.5f, 1f, 0.5f, 1f);
@@ -15,7 +14,7 @@ public class Lever : Obstacle
     public void SendSignal()
     {
         object[] sendData = new object[] { GetKey(), !GetStatus() };
-        mapMaker.SendMessage(sendData);
+        MapManager.mapMaker.SendMessage(sendData);
     }
 
     override public void SetStatus(bool status)

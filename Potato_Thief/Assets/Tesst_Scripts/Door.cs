@@ -10,8 +10,7 @@ public class Door : Obstacle
     Color defaultColor = new Color(0.3098039f, 0.09411766f, 0.09411766f, 1f);
     Color activeColor = Color.black;
 
-    private void Start() => 
-        spriteRenderer.color = defaultColor;
+    private void Start() => spriteRenderer.color = defaultColor;
 
     public void TargetStatusChange()
     {
