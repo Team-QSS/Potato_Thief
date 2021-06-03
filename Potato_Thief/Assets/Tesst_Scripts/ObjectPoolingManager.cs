@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PoolEnum
+{
+    leverPool = 0,
+    doorPool = 1
+}
+
 public class ObjectPoolingManager : MonoBehaviour
 {
     public static ObjectPoolingManager manager = null;
@@ -10,8 +16,11 @@ public class ObjectPoolingManager : MonoBehaviour
     public GameObject leverPrefebs;
     public GameObject doorPrefebs;
 
-    readonly private Queue<GameObject> leverPool = new Queue<GameObject>();
-    readonly private Queue<GameObject> doorPool = new Queue<GameObject>();
+    private Queue<GameObject> leverPool = new Queue<GameObject>();
+    private Queue<GameObject> doorPool = new Queue<GameObject>();
+
+    private List<GameObject> prefebList = new List<GameObject>();
+    private List<Queue<GameObject>> poolList = new List<Queue<GameObject>>();
 
     private int key;
 
@@ -21,6 +30,9 @@ public class ObjectPoolingManager : MonoBehaviour
             manager = this;
 
         key = 0;
+
+        InitializePoolList();
+        InitializePrefebList();
 
         for (int i = 0; i < 10; i++)
         {
@@ -37,87 +49,100 @@ public class ObjectPoolingManager : MonoBehaviour
         mapMaker.GetComponent<MapManager>().MakeMap();
     }
 
-    public void DestroyLever(GameObject lever)
+    public void InitializePoolList()
     {
-        leverPool.Enqueue(lever);
-        lever.SetActive(false);
+        poolList.Add(leverPool);
+        poolList.Add(doorPool);
     }
-    public void DestroyDoor(GameObject door)
+    public void InitializePrefebList()
     {
-        doorPool.Enqueue(door);
-        door.SetActive(false);
+        prefebList.Add(leverPrefebs);
+        prefebList.Add(doorPrefebs);
     }
 
-    #region InstantiateObjects
-    public GameObject InstantiateLever()
+    public void DestroyObject(PoolEnum poolEnum,GameObject obj)
     {
-        GameObject lever = null;
+        poolList[(int)poolEnum].Enqueue(obj);
+        obj.SetActive(false);
+    }
 
-        if (leverPool.Count > 0)
-            lever = leverPool.Dequeue();
+    #region InstantiateObject
+    public GameObject InstantiateObject(PoolEnum poolEnum)
+    {
+        GameObject obj = null;
+        Queue<GameObject> pool = poolList[(int)poolEnum];
 
-        if (lever == null)
+        if (pool.Count > 0)
+            obj = pool.Dequeue();
+
+        if (obj == null)
         {
-            lever = Instantiate(leverPrefebs);
+            obj = Instantiate(prefebList[(int)poolEnum]);
         }
-        lever.SetActive(true);
+        obj.SetActive(true);
 
-        lever.GetComponent<Obstacle>().SetKey(key);
+        obj.GetComponent<Obstacle>().SetKey(key);
         key++;
-        return lever;
+        return obj;
     }
-    public GameObject InstantiateLever(Vector2 position)
+    public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position)
     {
-        GameObject lever = null;
+        GameObject obj = null;
+        Queue<GameObject> pool = poolList[(int)poolEnum];
 
-        if (leverPool.Count > 0)
-            lever = leverPool.Dequeue();
+        if (pool.Count > 0)
+            obj = pool.Dequeue();
 
-        if (lever == null)
+        if (obj == null)
         {
-            lever = Instantiate(leverPrefebs);
+            obj = Instantiate(prefebList[(int)poolEnum]);
         }
-        lever.SetActive(true);
+        obj.SetActive(true);
 
-        lever.GetComponent<Obstacle>().SetKey(key);
+        obj.GetComponent<Obstacle>().SetKey(key);
+        obj.transform.localPosition = position;
         key++;
-        lever.transform.localPosition = position;
-        return lever;
+        return obj;
     }
-    public GameObject InstantiateDoor()
+    public GameObject InstantiateObject(PoolEnum poolEnum, Quaternion rotation)
     {
-        GameObject door = null;
+        GameObject obj = null;
+        Queue<GameObject> pool = poolList[(int)poolEnum];
 
-        if (doorPool.Count > 0)
-            door = doorPool.Dequeue();
+        if (pool.Count > 0)
+            obj = pool.Dequeue();
 
-        if (door == null)
+        if (obj == null)
         {
-            door = Instantiate(doorPrefebs);
+            obj = Instantiate(prefebList[(int)poolEnum]);
         }
+        obj.SetActive(true);
 
-        door.SetActive(true);
-        door.GetComponent<Obstacle>().SetKey(key);
+        obj.GetComponent<Obstacle>().SetKey(key);
+        obj.transform.rotation = rotation;
         key++;
-        return door;
+        return obj;
     }
-    public GameObject InstantiateDoor(Vector2 position)
+    public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position, Quaternion rotation)
     {
-        GameObject door = null;
+        GameObject obj = null;
+        Queue<GameObject> pool = poolList[(int)poolEnum];
 
-        if (doorPool.Count > 0)
-            door = doorPool.Dequeue();
+        if (pool.Count > 0)
+            obj = pool.Dequeue();
 
-        if (door == null)
+        if (obj == null)
         {
-            door = Instantiate(doorPrefebs);
+            obj = Instantiate(prefebList[(int)poolEnum]);
         }
+        obj.SetActive(true);
 
-        door.SetActive(true);
-        door.GetComponent<Obstacle>().SetKey(key);
+        obj.GetComponent<Obstacle>().SetKey(key);
+        obj.transform.localPosition = position;
+        obj.transform.rotation = rotation;
+
         key++;
-        door.transform.localPosition = position;
-        return door;
+        return obj;
     }
     #endregion 
 }
