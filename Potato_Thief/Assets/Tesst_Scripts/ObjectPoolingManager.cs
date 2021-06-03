@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PoolEnum
+public enum ObstacleObject
 {
-    leverPool = 0,
-    doorPool = 1,
+    lever = 0,
+    door = 1,
     Max
 }
 
@@ -37,12 +37,12 @@ public class ObjectPoolingManager : MonoBehaviour
 
         GameObject obj;
 
-        for (int objkind = 0; objkind < (int)PoolEnum.Max; objkind++)
+        for (int obstacleNum = 0; obstacleNum < (int)ObstacleObject.Max; obstacleNum++)
         {
             for (int i = 0; i < 10; i++)
             {
-                obj = Instantiate(prefebList[objkind]);
-                DestroyObject((PoolEnum)objkind, obj);
+                obj = Instantiate(prefebList[obstacleNum]);
+                DestroyObject((ObstacleObject)obstacleNum, obj);
             }
         }
 
@@ -60,24 +60,24 @@ public class ObjectPoolingManager : MonoBehaviour
         prefebList.Add(doorPrefebs);
     }
 
-    public void DestroyObject(PoolEnum poolEnum, GameObject obj)
+    public void DestroyObject(ObstacleObject obstacleIndex, GameObject obj)
     {
-        poolList[(int)poolEnum].Enqueue(obj);
+        poolList[(int)obstacleIndex].Enqueue(obj);
         obj.SetActive(false);
     }
 
     #region InstantiateObject
-    private GameObject GetObject(PoolEnum poolEnum)
+    private GameObject GetObject(ObstacleObject obstacleIndex)
     {
         GameObject obj = null;
-        Queue<GameObject> pool = poolList[(int)poolEnum];
+        Queue<GameObject> pool = poolList[(int)obstacleIndex];
 
         if (pool.Count > 0)
             obj = pool.Dequeue();
 
         if (obj == null)
         {
-            obj = Instantiate(prefebList[(int)poolEnum]);
+            obj = Instantiate(prefebList[(int)obstacleIndex]);
         }
         obj.SetActive(true);
 
@@ -86,28 +86,28 @@ public class ObjectPoolingManager : MonoBehaviour
         return obj;
     }
 
-    public GameObject InstantiateObject(PoolEnum poolEnum)
+    public GameObject InstantiateObject(ObstacleObject obstacleObject)
     {
-        return GetObject(poolEnum);
+        return GetObject(obstacleObject);
     }
 
-    public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position)
+    public GameObject InstantiateObject(ObstacleObject obstacleObject, Vector2 position)
     {
-        GameObject obj = GetObject(poolEnum);
+        GameObject obj = GetObject(obstacleObject);
         obj.transform.localPosition = position;
         return obj;
     }
 
-    public GameObject InstantiateObject(PoolEnum poolEnum, Quaternion rotation)
+    public GameObject InstantiateObject(ObstacleObject obstacleObject, Quaternion rotation)
     {
-        GameObject obj = GetObject(poolEnum);
+        GameObject obj = GetObject(obstacleObject);
         obj.transform.rotation = rotation;
         return obj;
     }
 
-    public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position, Quaternion rotation)
+    public GameObject InstantiateObject(ObstacleObject obstacleObject, Vector2 position, Quaternion rotation)
     {
-        GameObject obj = GetObject(poolEnum);
+        GameObject obj = GetObject(obstacleObject);
         obj.transform.localPosition = position;
         obj.transform.rotation = rotation;
 
