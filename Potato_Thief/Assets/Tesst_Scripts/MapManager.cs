@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+
     public static MapManager mapMaker = null;
     List<GameObject> levers = new List<GameObject>();
     List<GameObject> doors = new List<GameObject>();
     List<List<GameObject>> objectsList = new List<List<GameObject>>();
 
     ObjectPoolingManager poolingManager;
-    InteractingObjectGroup[] groups;
 
     private void Start()
     {
@@ -46,47 +46,28 @@ public class MapManager : MonoBehaviour
         MakeObject(ObstacleObject.lever, new Vector2(-5, 0));
     }
 
-    public void SetDoor()
+    private void SetDoor()
     {
         GameObject door;
 
         door = MakeObject(ObstacleObject.door, new Vector2(5, -2));
-
-        groups = new InteractingObjectGroup[] {
-            new InteractingObjectGroup(ObstacleObject.lever, 0),
-            new InteractingObjectGroup(ObstacleObject.lever, 1)
-        };
-
-        MakeInteraction(door, groups);
+        MakeInteractionDoorToLever(door, 1, 0);
 
         door = MakeObject(ObstacleObject.door, new Vector2(0, -2));
-
-        groups = new InteractingObjectGroup[] {
-            new InteractingObjectGroup(ObstacleObject.lever, 0),
-            new InteractingObjectGroup(ObstacleObject.lever, 2)
-        };
-
-        MakeInteraction(door, groups);
+        MakeInteractionDoorToLever(door, 0, 2);
 
         door = MakeObject(ObstacleObject.door, new Vector2(-5, -2));
-
-        groups = new InteractingObjectGroup[] {
-            new InteractingObjectGroup(ObstacleObject.lever, 1),
-        };
-
-        MakeInteraction(door, groups);
+        MakeInteractionDoorToLever(door, 1);
     }
 
-    private void MakeInteraction(GameObject obj, InteractingObjectGroup[] interactions)
+    private void MakeInteractionDoorToLever(GameObject door, params int[] interactions)
     {
-        InteractedObstacle InteractedObstacle;
-        InteractedObstacle = obj.GetComponent<InteractedObstacle>();
+        Door doorScript;
+        doorScript = door.GetComponent<Door>();
 
         for (int i = 0; i < interactions.Length; i++)
         {
-            List<GameObject> targetList = objectsList[(int)interactions[i].obstacleType];
-            GameObject targetObject = targetList[interactions[i].obstacleKey];
-            InteractedObstacle.targetObjects.Add(targetObject);
+            doorScript.targetObjects.Add(levers[interactions[i]]);
         }
     }
 
@@ -112,14 +93,12 @@ public class MapManager : MonoBehaviour
         objectsList[(int)obstacleObject].Add(obj);
         return obj;
     }
-
     private GameObject MakeObject(ObstacleObject obstacleObject, Vector2 position)
     {
         GameObject obj = poolingManager.InstantiateObject(obstacleObject, position);
         objectsList[(int)obstacleObject].Add(obj);
         return obj;
     }
-
     private GameObject MakeObject(ObstacleObject obstacleObject, Quaternion rotation)
     {
         GameObject obj = poolingManager.InstantiateObject(obstacleObject, rotation);
