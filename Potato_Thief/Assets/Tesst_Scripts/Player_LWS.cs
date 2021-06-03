@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player_LWS : MonoBehaviour
 {
     public float speed = 2f;
     void Update()
@@ -16,6 +16,6 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 8)
-            collision.gameObject.GetComponent<Lever>().SendSignal();
+            collision.gameObject.GetComponent<Lever_LWS>().SendSignal();
     }
 }

@@ -9,9 +9,9 @@ public enum ObstacleObject
     Max
 }
 
-public class ObjectPoolingManager : MonoBehaviour
+public class ObjectPoolingManager_LWS : MonoBehaviour
 {
-    public static ObjectPoolingManager manager = null;
+    public static ObjectPoolingManager_LWS manager = null;
     public GameObject mapMaker;
 
     public GameObject leverPrefebs;
@@ -46,7 +46,7 @@ public class ObjectPoolingManager : MonoBehaviour
             }
         }
 
-        mapMaker.GetComponent<MapManager>().MakeMap();
+        mapMaker.GetComponent<MapManager_LWS>().MakeMap();
     }
 
     public void InitializePoolList()
@@ -82,8 +82,10 @@ public class ObjectPoolingManager : MonoBehaviour
         }
         obj.SetActive(true);
 
-        obj.GetComponent<Obstacle>().SetKey(key);
+        obj.GetComponent<Obstacle_LWS>().SetKey(key);
         key++;
+        print("obj Key : " + obj.GetComponent<Obstacle_LWS>().GetKey());
+        print("new Key : " + key);
         return obj;
     }
 

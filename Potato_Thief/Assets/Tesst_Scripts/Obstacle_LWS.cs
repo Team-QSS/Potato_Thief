@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Obstacle_LWS : MonoBehaviour
 {
-    private int key = 0;
+    [SerializeField] private int key = 0;
     private bool status;
 
     private void Start()

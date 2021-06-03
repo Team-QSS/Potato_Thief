@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lever : Obstacle
+public class Lever_LWS : Obstacle_LWS
 {
     public SpriteRenderer spriteRenderer;
 
@@ -14,8 +14,12 @@ public class Lever : Obstacle
 
     public void SendSignal()
     {
-        object[] sendData = new object[] { GetKey(), !GetStatus() };
-        MapManager.mapMaker.SendMessage(sendData);
+        object[] sendData = new object[] { 
+            new ObstacleObject[] { ObstacleObject.door }, // Broadcasting Targets
+            GetKey(), // Key
+            !GetStatus()    // Status
+        };
+        MapManager_LWS.mapMaker.SendMessage(sendData);
     }
 
     override public void SetStatus(bool status)
