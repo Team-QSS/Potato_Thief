@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : Obstacle
+public class Door : InteractedObstacle
 {
-    public List<GameObject> targetObjects = new List<GameObject>();
     public SpriteRenderer spriteRenderer;
 
     Color defaultColor = new Color(0.3098039f, 0.09411766f, 0.09411766f, 1f);
