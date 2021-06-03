@@ -12,10 +12,12 @@ public class Obstacle : MonoBehaviour
         status = false;
     }
 
-    public void SetKey(int key) => this.key = key;
-    
-    virtual public void SetStatus(bool status) => this.status = status;
-    
+    public void SetKey(int key) =>
+        this.key = key;
+
+    virtual public void SetStatus(bool status) =>
+        this.status = status;
+
     public int GetKey() { return key; }
 
     public bool GetStatus() { return status; }

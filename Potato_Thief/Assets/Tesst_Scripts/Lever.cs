@@ -9,7 +9,8 @@ public class Lever : Obstacle
     Color defaultColor = new Color(0.5f, 1f, 0.5f, 1f);
     Color activeColor = Color.black;
 
-    private void Start() => spriteRenderer.color = defaultColor;
+    private void Start() => 
+        spriteRenderer.color = defaultColor;
 
     public void SendSignal()
     {

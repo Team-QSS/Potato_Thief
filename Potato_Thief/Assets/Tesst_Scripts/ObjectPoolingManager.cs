@@ -67,6 +67,7 @@ public class ObjectPoolingManager : MonoBehaviour
     }
 
     #region InstantiateObject
+
     private GameObject GetObject(PoolEnum poolEnum)
     {
         GameObject obj = null;

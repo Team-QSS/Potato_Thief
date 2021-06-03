@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+
     public static MapManager mapMaker = null;
     List<GameObject> levers = new List<GameObject>();
     List<GameObject> doors = new List<GameObject>();
+    ObjectPoolingManager poolingManager = ObjectPoolingManager.manager;
 
     private void Start()
     {
@@ -23,13 +25,13 @@ public class MapManager : MonoBehaviour
     private void SetLever()
     {
         GameObject lever;
-        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(0, 0));
+        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(5, 0));
         levers.Add(lever);
 
-        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(5, 0));
+        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(0, 0));
         levers.Add(lever);
 
-        lever = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.leverPool, new Vector2(-5, 0));
+        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(-5, 0));
         levers.Add(lever);
     }
 
@@ -48,15 +50,15 @@ public class MapManager : MonoBehaviour
     {
         GameObject door;
 
-        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(5, -2));
+        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(5, -2));
         MakeInteractionDoorToLever(door, 1, 0);
         doors.Add(door);
 
-        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(0, -2));
+        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(0, -2));
         MakeInteractionDoorToLever(door, 0, 2);
         doors.Add(door);
 
-        door = ObjectPoolingManager.manager.InstantiateObject(PoolEnum.doorPool, new Vector2(-5, -2));
+        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(-5, -2));
         MakeInteractionDoorToLever(door, 1);
         doors.Add(door);
     }
