@@ -67,7 +67,7 @@ public class ObjectPoolingManager : MonoBehaviour
     }
 
     #region InstantiateObject
-    public GameObject InstantiateObject(PoolEnum poolEnum)
+    private GameObject GetObject(PoolEnum poolEnum)
     {
         GameObject obj = null;
         Queue<GameObject> pool = poolList[(int)poolEnum];
@@ -80,25 +80,18 @@ public class ObjectPoolingManager : MonoBehaviour
             obj = Instantiate(prefebList[(int)poolEnum]);
         }
         obj.SetActive(true);
-
+        return obj;
+    }
+    public GameObject InstantiateObject(PoolEnum poolEnum)
+    {
+        GameObject obj = GetObject(poolEnum);
         obj.GetComponent<Obstacle>().SetKey(key);
         key++;
         return obj;
     }
     public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position)
     {
-        GameObject obj = null;
-        Queue<GameObject> pool = poolList[(int)poolEnum];
-
-        if (pool.Count > 0)
-            obj = pool.Dequeue();
-
-        if (obj == null)
-        {
-            obj = Instantiate(prefebList[(int)poolEnum]);
-        }
-        obj.SetActive(true);
-
+        GameObject obj = GetObject(poolEnum);
         obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.localPosition = position;
         key++;
@@ -106,18 +99,7 @@ public class ObjectPoolingManager : MonoBehaviour
     }
     public GameObject InstantiateObject(PoolEnum poolEnum, Quaternion rotation)
     {
-        GameObject obj = null;
-        Queue<GameObject> pool = poolList[(int)poolEnum];
-
-        if (pool.Count > 0)
-            obj = pool.Dequeue();
-
-        if (obj == null)
-        {
-            obj = Instantiate(prefebList[(int)poolEnum]);
-        }
-        obj.SetActive(true);
-
+        GameObject obj = GetObject(poolEnum);
         obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.rotation = rotation;
         key++;
@@ -125,18 +107,7 @@ public class ObjectPoolingManager : MonoBehaviour
     }
     public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position, Quaternion rotation)
     {
-        GameObject obj = null;
-        Queue<GameObject> pool = poolList[(int)poolEnum];
-
-        if (pool.Count > 0)
-            obj = pool.Dequeue();
-
-        if (obj == null)
-        {
-            obj = Instantiate(prefebList[(int)poolEnum]);
-        }
-        obj.SetActive(true);
-
+        GameObject obj = GetObject(poolEnum);
         obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.localPosition = position;
         obj.transform.rotation = rotation;
