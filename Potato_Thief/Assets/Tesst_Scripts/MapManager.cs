@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviour
     public static MapManager mapMaker = null;
     List<GameObject> levers = new List<GameObject>();
     List<GameObject> doors = new List<GameObject>();
-    ObjectPoolingManager poolingManager = ObjectPoolingManager.manager;
+    ObjectPoolingManager poolingManager;
 
     private void Start()
     {
@@ -18,8 +18,14 @@ public class MapManager : MonoBehaviour
 
     public void MakeMap()
     {
+        InitializeBeforeMakeMap();
         SetLever();
         SetDoor();
+    }
+
+    private void InitializeBeforeMakeMap()
+    {
+        poolingManager = ObjectPoolingManager.manager;
     }
 
     private void SetLever()
