@@ -8,6 +8,8 @@ public class MapManager : MonoBehaviour
     public static MapManager mapMaker = null;
     List<GameObject> levers = new List<GameObject>();
     List<GameObject> doors = new List<GameObject>();
+    List<List<GameObject>> objectsList = new List<List<GameObject>>();
+
     ObjectPoolingManager poolingManager;
 
     private void Start()
@@ -26,19 +28,36 @@ public class MapManager : MonoBehaviour
     private void InitializeBeforeMakeMap()
     {
         poolingManager = ObjectPoolingManager.manager;
+        InitializeObjectsList();
+    }
+
+    private void InitializeObjectsList()
+    {
+        objectsList.Add(levers);
+        objectsList.Add(doors);
     }
 
     private void SetLever()
     {
-        GameObject lever;
-        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(5, 0));
-        levers.Add(lever);
+        MakeObject(ObstacleObject.lever, new Vector2(5, 0));
 
-        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(0, 0));
-        levers.Add(lever);
+        MakeObject(ObstacleObject.lever, new Vector2(0, 0));
 
-        lever = poolingManager.InstantiateObject(PoolEnum.leverPool, new Vector2(-5, 0));
-        levers.Add(lever);
+        MakeObject(ObstacleObject.lever, new Vector2(-5, 0));
+    }
+
+    private void SetDoor()
+    {
+        GameObject door;
+
+        door = MakeObject(ObstacleObject.door, new Vector2(5, -2));
+        MakeInteractionDoorToLever(door, 1, 0);
+
+        door = MakeObject(ObstacleObject.door, new Vector2(0, -2));
+        MakeInteractionDoorToLever(door, 0, 2);
+
+        door = MakeObject(ObstacleObject.door, new Vector2(-5, -2));
+        MakeInteractionDoorToLever(door, 1);
     }
 
     private void MakeInteractionDoorToLever(GameObject door, params int[] interactions)
@@ -50,23 +69,6 @@ public class MapManager : MonoBehaviour
         {
             doorScript.targetObjects.Add(levers[interactions[i]]);
         }
-    }
-
-    private void SetDoor()
-    {
-        GameObject door;
-
-        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(5, -2));
-        MakeInteractionDoorToLever(door, 1, 0);
-        doors.Add(door);
-
-        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(0, -2));
-        MakeInteractionDoorToLever(door, 0, 2);
-        doors.Add(door);
-
-        door = poolingManager.InstantiateObject(PoolEnum.doorPool, new Vector2(-5, -2));
-        MakeInteractionDoorToLever(door, 1);
-        doors.Add(door);
     }
 
     public void SendMessage(object[] contents) => ReceiveMessage(contents);
@@ -82,4 +84,34 @@ public class MapManager : MonoBehaviour
             doors[i].GetComponent<Door>().TargetStatusChange();
 
     }
+
+    #region MakeObject
+
+    private GameObject MakeObject(ObstacleObject obstacleObject)
+    {
+        GameObject obj = poolingManager.InstantiateObject(obstacleObject);
+        objectsList[(int)obstacleObject].Add(obj);
+        return obj;
+    }
+    private GameObject MakeObject(ObstacleObject obstacleObject, Vector2 position)
+    {
+        GameObject obj = poolingManager.InstantiateObject(obstacleObject, position);
+        objectsList[(int)obstacleObject].Add(obj);
+        return obj;
+    }
+    private GameObject MakeObject(ObstacleObject obstacleObject, Quaternion rotation)
+    {
+        GameObject obj = poolingManager.InstantiateObject(obstacleObject, rotation);
+        objectsList[(int)obstacleObject].Add(obj);
+        return obj;
+    }
+
+    private GameObject MakeObject(ObstacleObject obstacleObject, Vector2 position, Quaternion rotation)
+    {
+        GameObject obj = poolingManager.InstantiateObject(obstacleObject, position, rotation);
+        objectsList[(int)obstacleObject].Add(obj);
+        return obj;
+    }
+
+    #endregion
 }
