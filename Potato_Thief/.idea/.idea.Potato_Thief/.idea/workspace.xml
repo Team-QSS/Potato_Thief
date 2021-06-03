@@ -20,7 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49f4e022-5db5-4967-86d5-edf320555f4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/00.Scenes/Demo_Kim.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/00.Scenes/Demo_Kim.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GvhProjectSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GvhProjectSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,11 +36,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/01.Scripts/JoystickControl.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/01.Scripts/Player_Control.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/JoystickControl.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/UIHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Lever.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Door.cs" />
       </list>
     </option>
   </component>
@@ -78,7 +95,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1621579507799</updated>
-      <workItem from="1621579516132" duration="1407000" />
+      <workItem from="1621579516132" duration="2267000" />
+      <workItem from="1621929283181" duration="1638000" />
+      <workItem from="1622025197768" duration="2142000" />
+      <workItem from="1622621218390" duration="8783000" />
     </task>
     <servers />
   </component>
@@ -97,8 +117,23 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog" timestamp="1621941329167">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1621941329167" />
+    <state x="616" y="250" key="run.anything.popup" timestamp="1622628639673">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="616" y="250" key="run.anything.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1622628639673" />
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1622627022973">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="623" y="235" width="672" height="678" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1622627022973" />
   </component>
 </project>
