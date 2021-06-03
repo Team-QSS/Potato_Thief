@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    private int key;
+    private int key = 0;
     private bool status;
 
     private void Start()
     {
-        key = 0;
         status = false;
     }
 

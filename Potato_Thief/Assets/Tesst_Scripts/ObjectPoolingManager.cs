@@ -5,7 +5,8 @@ using UnityEngine;
 public enum PoolEnum
 {
     leverPool = 0,
-    doorPool = 1
+    doorPool = 1,
+    Max
 }
 
 public class ObjectPoolingManager : MonoBehaviour
@@ -26,7 +27,7 @@ public class ObjectPoolingManager : MonoBehaviour
 
     private void Start()
     {
-        if(manager == null)
+        if (manager == null)
             manager = this;
 
         key = 0;
@@ -34,16 +35,15 @@ public class ObjectPoolingManager : MonoBehaviour
         InitializePoolList();
         InitializePrefebList();
 
-        for (int i = 0; i < 10; i++)
+        GameObject obj;
+
+        for (int objkind = 0; objkind < (int)PoolEnum.Max; objkind++)
         {
-            GameObject lever = Instantiate(leverPrefebs);
-            GameObject door = Instantiate(doorPrefebs);
-
-            leverPool.Enqueue(lever);
-            doorPool.Enqueue(door);
-
-            lever.SetActive(false);
-            door.SetActive(false);
+            for (int i = 0; i < 10; i++)
+            {
+                obj = Instantiate(prefebList[objkind]);
+                DestroyObject((PoolEnum)objkind, obj);
+            }
         }
 
         mapMaker.GetComponent<MapManager>().MakeMap();
@@ -60,7 +60,7 @@ public class ObjectPoolingManager : MonoBehaviour
         prefebList.Add(doorPrefebs);
     }
 
-    public void DestroyObject(PoolEnum poolEnum,GameObject obj)
+    public void DestroyObject(PoolEnum poolEnum, GameObject obj)
     {
         poolList[(int)poolEnum].Enqueue(obj);
         obj.SetActive(false);
@@ -80,39 +80,37 @@ public class ObjectPoolingManager : MonoBehaviour
             obj = Instantiate(prefebList[(int)poolEnum]);
         }
         obj.SetActive(true);
-        return obj;
-    }
-    public GameObject InstantiateObject(PoolEnum poolEnum)
-    {
-        GameObject obj = GetObject(poolEnum);
+
         obj.GetComponent<Obstacle>().SetKey(key);
         key++;
         return obj;
     }
+
+    public GameObject InstantiateObject(PoolEnum poolEnum)
+    {
+        return GetObject(poolEnum);
+    }
+
     public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position)
     {
         GameObject obj = GetObject(poolEnum);
-        obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.localPosition = position;
-        key++;
         return obj;
     }
+
     public GameObject InstantiateObject(PoolEnum poolEnum, Quaternion rotation)
     {
         GameObject obj = GetObject(poolEnum);
-        obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.rotation = rotation;
-        key++;
         return obj;
     }
+
     public GameObject InstantiateObject(PoolEnum poolEnum, Vector2 position, Quaternion rotation)
     {
         GameObject obj = GetObject(poolEnum);
-        obj.GetComponent<Obstacle>().SetKey(key);
         obj.transform.localPosition = position;
         obj.transform.rotation = rotation;
 
-        key++;
         return obj;
     }
     #endregion 
