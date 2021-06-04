@@ -15,7 +15,7 @@ namespace YJM
             set => repeater = value;
         }
 
-        public void OnTriggerActive()
+        public void OnTriggerActivate()
         {
             Status = !Status;
             if (Status)
