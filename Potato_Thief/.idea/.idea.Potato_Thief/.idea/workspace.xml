@@ -20,13 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49f4e022-5db5-4967-86d5-edf320555f4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Potato_Thief/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Door.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Door.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Lever.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Lever.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Obstacle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Obstacle.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/01.Scripts/Trigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01.Scripts/Trigger.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,13 +49,13 @@
         <option value="$PROJECT_DIR$/Assets/01.Scripts/Player_Control.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/JoystickControl.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/UIHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/01.Scripts/Obstacle.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Trigger.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/Lever.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/Door.cs" />
-        <option value="$PROJECT_DIR$/Assets/01.Scripts/Repeater.cs" />
-        <option value="$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" />
-        <option value="$PROJECT_DIR$/Assets/01.Scripts/Trigger.cs" />
         <option value="$PROJECT_DIR$/Assets/01.Scripts/PlayerControl.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Obstacle.cs" />
+        <option value="$PROJECT_DIR$/Assets/01.Scripts/Interaction.cs" />
       </list>
     </option>
   </component>
@@ -102,7 +103,7 @@
       <workItem from="1621929283181" duration="1638000" />
       <workItem from="1622025197768" duration="2142000" />
       <workItem from="1622621218390" duration="8783000" />
-      <workItem from="1622789660807" duration="1651000" />
+      <workItem from="1622789660807" duration="3316000" />
     </task>
     <servers />
   </component>
@@ -127,10 +128,10 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog" timestamp="1621941329167">
+    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog" timestamp="1622793237797">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1621941329167" />
+    <state x="92" y="92" width="1736" height="896" key="VCS.FileHistoryDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1622793237797" />
     <state x="616" y="250" key="run.anything.popup" timestamp="1622628639673">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

@@ -3,41 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interaction : MonoBehaviour
+namespace KJG
 {
-    // Start is called before the first frame update
-    public bool state;
-    
-    //private
-    public Repeater repeater;
-    
-    void Start()
+    public class Interaction : MonoBehaviour
     {
-        state = false;
-    }
+        // Start is called before the first frame update
+        public bool state;
 
-    public void SetReapeater(Repeater repeater)
-    {
-        this.repeater = repeater;
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        //private
+        public Repeater repeater;
 
-    public virtual void InteractionBehavior()
-    {
-        
-    }
+        void Start()
+        {
+            state = false;
+        }
 
-    public virtual void Deactivate()
-    {
+        public void SetReapeater(Repeater repeater)
+        {
+            this.repeater = repeater;
+        }
+
+        public virtual void InteractionBehavior()
+        {
+        }
+
+        public virtual void Deactivate()
+        {
+        }
+
+        public virtual void Activate()
+        {
+        }
+
+
     }
-    public virtual void Activate()
-    {
-    }
-    
-    
 }

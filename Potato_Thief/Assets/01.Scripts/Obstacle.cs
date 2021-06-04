@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : Interaction
+namespace KJG
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Obstacle : Interaction
     {
-        
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
+        }
         
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }
