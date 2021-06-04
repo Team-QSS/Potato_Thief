@@ -27,16 +27,9 @@ public class Interaction : MonoBehaviour
         
     }
 
-    public void InteractionBehavior()
+    public virtual void InteractionBehavior()
     {
-        if (state)
-        {
-            Deactivate();
-        }
-        else
-        {
-            Activate();
-        }
+        
     }
 
     public virtual void Deactivate()

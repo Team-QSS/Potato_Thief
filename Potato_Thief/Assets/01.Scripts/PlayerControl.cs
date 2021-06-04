@@ -66,7 +66,7 @@ public class PlayerControl : MonoBehaviour
         {
             if (Input.GetKeyDown(interactionKey))
             {
-                other.gameObject.GetComponent<Interaction>().InteractionBehavior();
+                other.gameObject.GetComponent<Trigger>().InteractionBehavior();
             }
         }
     }

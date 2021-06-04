@@ -13,8 +13,10 @@
           <e p="Interaction.cs" t="Include" />
           <e p="JoystickControl.cs" t="Include" />
           <e p="Lever.cs" t="Include" />
+          <e p="Obstacle.cs" t="Include" />
           <e p="PlayerControl.cs" t="Include" />
           <e p="Repeater.cs" t="Include" />
+          <e p="Trigger.cs" t="Include" />
           <e p="UIHandler.cs" t="Include" />
         </e>
         <e p="ExternalDependencyManager" t="Include">

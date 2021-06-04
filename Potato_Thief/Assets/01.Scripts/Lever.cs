@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lever : Interaction
+public class Lever : Trigger
 {
     // Start is called before the first frame update
     

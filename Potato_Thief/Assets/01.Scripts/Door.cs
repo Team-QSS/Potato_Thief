@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : Interaction
+public class Door : Obstacle
 {
     // Start is called before the first frame update
     private Vector2 _pos = new Vector2();
