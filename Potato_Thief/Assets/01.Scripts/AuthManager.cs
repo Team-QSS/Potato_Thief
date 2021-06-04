@@ -6,6 +6,7 @@ using GooglePlayGames.BasicApi;
 using Firebase.Auth;
 using UnityEngine.UI;
 
+
 public class AuthManager : MonoBehaviour
 {
     public Text LogText;
