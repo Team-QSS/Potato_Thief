@@ -1,21 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KJG
+namespace YJM
 {
+    // 장애물 ex)벽, 잠긴 문
     public class Obstacle : Interaction
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        // -> 활성화
+        public virtual void ActivateObstacle() { }
 
-        }
-        
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        // -> 비활성화
+        public virtual void DeactivateObstacle() { }
     }
 }

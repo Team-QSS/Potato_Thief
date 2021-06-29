@@ -2,36 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KJG
+namespace YJM
 {
     public class Door : Obstacle
     {
-        // Start is called before the first frame update
-        private Vector2 _pos = new Vector2();
+        private SpriteRenderer spriteRenderer;
+
+        private readonly Color activeColor = Color.green;
+        private readonly Color inactiveColor = Color.white;
 
         void Start()
         {
-            _pos = transform.position;
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void ActivateObstacle()
         {
-
+            spriteRenderer.color = activeColor;
         }
 
-        public override void Deactivate()
+        public override void DeactivateObstacle()
         {
-            Debug.Log("Door 꺼짐");
-            state = false;
-            transform.position = _pos;
-        }
-
-        public override void Activate()
-        {
-            Debug.Log("Door 켜짐");
-            state = true;
-            transform.position = new Vector2(_pos.x, _pos.y - 1);
+            spriteRenderer.color = inactiveColor;
         }
     }
 }

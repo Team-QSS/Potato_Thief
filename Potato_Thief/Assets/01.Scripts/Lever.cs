@@ -2,42 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KJG
+namespace YJM
 {
-
-
     public class Lever : Trigger
     {
-        // Start is called before the first frame update
+        private SpriteRenderer spriteRenderer;
 
-        private Vector2 _pos = new Vector2();
+        private readonly Color activeColor = Color.green;
+        private readonly Color inactiveColor = Color.white;
 
         void Start()
         {
-
-            _pos = transform.position;
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void ActivateTrigger()
         {
-
+            spriteRenderer.color = activeColor;
         }
 
-        public override void Deactivate()
+        protected override void DeactivateTrigger()
         {
-            state = false;
-            repeater.Check();
-            Debug.Log("Lever 꺼짐");
-            transform.position = _pos;
-        }
-
-        public override void Activate()
-        {
-            state = true;
-            repeater.Check();
-            Debug.Log("Lever 켜짐");
-            transform.position = new Vector2(_pos.x, _pos.y - 1);
+            spriteRenderer.color = inactiveColor;
         }
     }
 }

@@ -1,47 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-namespace KJG
+namespace YJM
 {
     public class Repeater : MonoBehaviour
     {
-        // Start is called before the first frame update
-        public List<Trigger> triggers = new List<Trigger>();
-        public List<Obstacle> obstacles = new List<Obstacle>();
+        [SerializeField] private List<Trigger> triggers;
+        [SerializeField] private List<Obstacle> obstacles;
+        // private bool status;
 
-        void Start()
+        private void Start()
         {
             foreach (var trigger in triggers)
             {
-                trigger.SetReapeater(this);
-            }
-
-            foreach (var obstacle in obstacles)
-            {
-                obstacle.SetReapeater(this);
+                trigger.Repeater = this;
             }
         }
 
-        public void Check()
+        public void TriggerStatusCheck()
         {
-            foreach (var trigger in triggers) //상호작용한 것들을 for문으로 확인한다
+            foreach (var trigger in triggers)
             {
-                if (trigger.state == false) //상호작용한 것중에 꺼진게 있으면
+                if (!trigger.Status)
                 {
-                    foreach (var obstacle in obstacles) //모든 목표를 다 끈다
-                    {
-                        obstacle.Deactivate();
-                    }
-
+                    DeactivateObstacles();
                     return;
                 }
             }
 
-            foreach (var obstacle in obstacles) //그게 아니라면 다 작동시킨다.
+            ActivateObstacles();
+        }
+
+        private void ActivateObstacles()
+        {
+            foreach (var obstacle in obstacles)
             {
-                obstacle.Activate();
+                obstacle.ActivateObstacle();
+                obstacle.Status = true;
+            }
+        }
+
+        private void DeactivateObstacles()
+        {
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.DeactivateObstacle();
+                obstacle.Status = false;
             }
         }
     }
