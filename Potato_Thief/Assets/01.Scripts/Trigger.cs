@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KJG;
 
 namespace YJM
 {
@@ -30,7 +31,9 @@ namespace YJM
         }
 
         // -> 활성화
-        protected virtual void ActivateTrigger() { }
+        protected virtual void ActivateTrigger()
+        {
+        }
 
         // -> 비활성화
         protected virtual void DeactivateTrigger() { }

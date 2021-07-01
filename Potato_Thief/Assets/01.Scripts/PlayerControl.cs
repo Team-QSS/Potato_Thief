@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using YJM;
 
 namespace KJG
 {
@@ -68,7 +69,7 @@ namespace KJG
             {
                 if (Input.GetKeyDown(interactionKey))
                 {
-                    other.gameObject.GetComponent<Trigger>().InteractionBehavior();
+                    other.gameObject.GetComponent<Trigger>().OnTriggerActivate();
                 }
             }
         }

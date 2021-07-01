@@ -4,6 +4,7 @@ using UnityEditor.Experimental.TerrainAPI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using KJG;
 
 public class JoystickControl : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {

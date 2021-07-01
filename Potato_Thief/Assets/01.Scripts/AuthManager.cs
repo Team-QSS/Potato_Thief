@@ -53,12 +53,12 @@ public class AuthManager : MonoBehaviour
     void PlayGamesPlatformInit()
     {
         //* 게임에서 RequestServerAuthCode 설정을 사용 설정하여 Play 게임 클라이언트를 구성합니다.
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-            .RequestServerAuthCode(false /* Don't force refresh */)
-            .Build();
-        PlayGamesPlatform.InitializeInstance(config);
-        // Play Games 플랫폼을 활성화 -> Social.localUser.Authenticate같이 Social.Active에서 메서드 호출 가능
-        PlayGamesPlatform.Activate();
+        // PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        //     .RequestServerAuthCode(false /* Don't force refresh */)
+        //     .Build();
+        // PlayGamesPlatform.InitializeInstance(config);
+        // // Play Games 플랫폼을 활성화 -> Social.localUser.Authenticate같이 Social.Active에서 메서드 호출 가능
+        // PlayGamesPlatform.Activate();
         //*
     }
     
@@ -70,7 +70,7 @@ public class AuthManager : MonoBehaviour
             LogText.text = success ? "Logged in successfully" : "Failed to login";
             
             if (!success) return;
-            authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+            // authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
             LogText.text += $"\nAuthCode : {authCode}";
         });
 
