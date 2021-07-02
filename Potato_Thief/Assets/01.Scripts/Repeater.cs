@@ -38,7 +38,6 @@ namespace YJM
             {
                 obstacle.ActivateObstacle();
                 obstacle.Status = true;
-                Debug.Log(obstacle);
             }
         }
 

@@ -18,8 +18,7 @@ namespace YJM
 
         public void OnTriggerActivate()
         {
-            Status = !Status;
-            if (Status)
+            if (!Status)
             {
                 ActivateTrigger();
             }
@@ -33,9 +32,13 @@ namespace YJM
         // -> 활성화
         protected virtual void ActivateTrigger()
         {
+            Status = true;
         }
 
         // -> 비활성화
-        protected virtual void DeactivateTrigger() { }
+        protected virtual void DeactivateTrigger()
+        {
+            Status = false;
+        }
     }
 }

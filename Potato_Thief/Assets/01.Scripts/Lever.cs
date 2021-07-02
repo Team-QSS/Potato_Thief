@@ -19,11 +19,13 @@ namespace YJM
 
         protected override void ActivateTrigger()
         {
+            base.ActivateTrigger();
             spriteRenderer.color = activeColor;
         }
 
         protected override void DeactivateTrigger()
         {
+            base.DeactivateTrigger();
             spriteRenderer.color = inactiveColor;
         }
     }
