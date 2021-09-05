@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KJG;
 
 namespace YJM
 {
@@ -10,7 +11,7 @@ namespace YJM
     {
         // -> 활성화
         public virtual void ActivateObstacle() { }
-        
+
         // -> 비활성화
         public virtual void DeactivateObstacle() { }
     }
