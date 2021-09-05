@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KJG;
 
 namespace YJM
 {
@@ -19,13 +18,11 @@ namespace YJM
 
         protected override void ActivateTrigger()
         {
-            base.ActivateTrigger();
             spriteRenderer.color = activeColor;
         }
 
         protected override void DeactivateTrigger()
         {
-            base.DeactivateTrigger();
             spriteRenderer.color = inactiveColor;
         }
     }

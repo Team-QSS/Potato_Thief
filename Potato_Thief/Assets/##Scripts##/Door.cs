@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KJG;
 
 namespace YJM
 {
@@ -11,7 +10,7 @@ namespace YJM
 
         private readonly Color activeColor = Color.green;
         private readonly Color inactiveColor = Color.white;
-
+        
         void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -26,5 +25,5 @@ namespace YJM
         {
             spriteRenderer.color = inactiveColor;
         }
-    }
+    }   
 }

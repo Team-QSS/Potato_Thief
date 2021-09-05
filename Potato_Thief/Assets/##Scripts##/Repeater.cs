@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KJG;
 
 namespace YJM
 {
@@ -10,6 +9,7 @@ namespace YJM
         [SerializeField] private List<Trigger> triggers;
         [SerializeField] private List<Obstacle> obstacles;
         // private bool status;
+        
         private void Start()
         {
             foreach (var trigger in triggers)
@@ -28,10 +28,10 @@ namespace YJM
                     return;
                 }
             }
-
+            
             ActivateObstacles();
         }
-
+        
         private void ActivateObstacles()
         {
             foreach (var obstacle in obstacles)
@@ -40,7 +40,7 @@ namespace YJM
                 obstacle.Status = true;
             }
         }
-
+        
         private void DeactivateObstacles()
         {
             foreach (var obstacle in obstacles)
