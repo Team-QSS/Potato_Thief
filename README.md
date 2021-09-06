@@ -18,7 +18,7 @@ Unity
 - [x] Unity 용 Google Play 게임 플러그인을 설치
 - [x] Firebase Unity SDK 추가
 - [x] Package Name 설정
-- [ ] Unity KeyStore 생성
+- [x] Unity KeyStore 생성
 - [ ] Google Play 게임 플러그인 설정
 
 Firebase
@@ -34,14 +34,5 @@ Google Play
 
 
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<!--Google Play game services IDs. Save this file as res/values/games-ids.xml in your project.-->
-<resources>
-  <!--app_id-->
-  <string name="app_id" translatable="false">330807279597</string>
-  <!--package_name-->
-  <string name="package_name" translatable="false">com.QSS2021Sophomore.PotatoThief</string>
-</resources>
-```
+
 
