@@ -10,6 +10,7 @@
 /[Aa]ssets/Parse
 /[Aa]ssets/Plugins
 /[Aa]ssets/Photon
+/[Aa]ssets/google-services.json
 
 ### Firebase ###
 .idea
