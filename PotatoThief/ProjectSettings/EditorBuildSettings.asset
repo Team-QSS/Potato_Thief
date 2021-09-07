@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/##Scenes##/OldScenes/Demo_Lee.unity
+    guid: 87562f23b3d364149b9bd8954ad0d475
   m_configObjects: {}
