@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <projectSettings>
   <projectSetting name="com.google.firebaseAnalyticsCookie" value="0aa3e8e7e9fd4c01abc0892e2ceb5f42" />
   <projectSetting name="com.google.firebaseAnalyticsEnabled" value="True" />
@@ -6,4 +7,5 @@
   <projectSetting name="Google.VersionHandler.VerboseLoggingEnabled" value="True" />
   <projectSetting name="Google.VersionHandler.VersionHandlingEnabled" value="True" />
   <projectSetting name="GooglePlayServices.PromptBeforeAutoResolution" value="False" />
+  <projectSetting name="GooglePlayServices.UseJetifier" value="True" />
 </projectSettings>
