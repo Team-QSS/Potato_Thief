@@ -10,7 +10,10 @@
 /[Aa]ssets/Parse
 /[Aa]ssets/Plugins
 /[Aa]ssets/Photon
+/[Aa]ssets/StreamingAssets
 /[Aa]ssets/google-services.json
+/[Aa]ssets/GPGSIds.cs
+/[Aa]ssets/.vsconfig
 
 ### Firebase ###
 .idea
