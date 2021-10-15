@@ -11,7 +11,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     private static volatile T _instance;
     private static object _syncRoot = new System.Object();
 
-    public static T instance
+    public static T Instance
     {
         get
         {
@@ -20,7 +20,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
     }
 
-    public static bool isInitialized
+    public static bool IsInitialized
     {
         get
         {
