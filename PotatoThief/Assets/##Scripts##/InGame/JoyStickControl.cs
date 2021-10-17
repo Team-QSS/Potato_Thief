@@ -1,5 +1,4 @@
 ﻿using System;
-using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,15 +18,14 @@ namespace InGame
 
         public Vector2 InputDirection => _inputPosition * _vectorRate;  // 입력 방향
 
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-        }
+        public void OnBeginDrag(PointerEventData eventData) { }
 
         public void OnDrag(PointerEventData eventData)
         {
             // 터치한 위치 좌표 > UI상 위치 좌표로 변환
             _inputPosition = eventData.position - _pointPosition;
             // 조이스틱 범위를 넘어가지 않게 조정함
+            _inputPosition.y = 0;  // + x값만 적용
             _inputPosition = _inputPosition.magnitude > _pointRange
                 ? _inputPosition.normalized * _pointRange : _inputPosition;
 
@@ -37,7 +35,8 @@ namespace InGame
         public void OnEndDrag(PointerEventData eventData)
         {
             // 손 떼면 원래 자리로 돌려놓기
-            _pointTransform.anchoredPosition = Vector2.zero;
+            _inputPosition = Vector2.zero;
+            _pointTransform.anchoredPosition = _inputPosition;
         }
 
         private void Start()
