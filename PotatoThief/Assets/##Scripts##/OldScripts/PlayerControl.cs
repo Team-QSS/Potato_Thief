@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
-using YJM;
+using InGame;
 
 namespace KJG
 {
@@ -76,7 +76,7 @@ namespace KJG
             {
                 if (Input.GetKeyDown(interactionKey))
                 {
-                    other.gameObject.GetComponent<Trigger>().OnTriggerActivate();
+                    other.gameObject.GetComponent<Trigger>().OnTriggerSwitch();
                 }
             }
         }
