@@ -9,12 +9,13 @@ namespace InGame
 {
     public class GameManager : Singleton<GameManager>
     {
-        private const int maxHP = 5;
-        private int HP;
         [SerializeField] private float maxLimitTime;
         private float limitTime;
+        private bool isGameEnd;
+
+        private const int maxHP = 5;
+        private int HP;
         
-        [SerializeField] private Text text;
         private bool[] canPlayerMove;
 
         private void Start()
@@ -25,21 +26,25 @@ namespace InGame
 
             this.UpdateAsObservable().Subscribe(_ =>
             {
-                limitTime -= Time.deltaTime;
-                text.text = $"남은시간 : {Mathf.Round(limitTime)} 초";
-                if (limitTime <= 0) { GameTimeOver(); }
+                if (!isGameEnd)
+                {
+                    limitTime -= Time.deltaTime;
+                    UIManager.Instance.UpdateLimitTimeText(limitTime);
+                    if (limitTime <= 0) { GameTimeOver(); }
+                }
             });
         }
 
         // 아이템 획득
         public void GetItem(ItemType item)
         {
+            UIManager.Instance.UpdateStatusText($"아이템 획득 : {item}\n");
             switch (item)
             {
                 case ItemType.None:
                     break;
                 case ItemType.Potato:
-                    Healed();
+                    Heal();
                     break;
                 case ItemType.GoldenPotato:
                     Recover();
@@ -50,6 +55,7 @@ namespace InGame
         // 장애물과 부딪힘
         public void HitByObstacle(ObstacleType obstacle)
         {
+            UIManager.Instance.UpdateStatusText($"장애물과 충돌 : {obstacle}\n");
             switch (obstacle)
             {
                 case ObstacleType.None:
@@ -68,6 +74,7 @@ namespace InGame
 
         public void TouchAtClearPoint()
         {
+            UIManager.Instance.UpdateStatusText("클리어 지점에 도달\n");
             if (canPlayerMove.Any(who => who == false) || limitTime <= 0)
                 return;
             
@@ -75,21 +82,25 @@ namespace InGame
         }
 
         // 회복
-        private void Healed(int value = 1)
+        private void Heal(int value = 1)
         {
             HP = Mathf.Min(HP + value, maxHP);
+            UIManager.Instance.UpdateStatusText($"회복 : {HP}\n");
         }
         
         // 피격
         private void Damaged(int value = 1)
         {
             HP -= value;
+            UIManager.Instance.UpdateLeftHeart(HP);
+            UIManager.Instance.UpdateStatusText($"피격 : {HP}\n");
             if (HP <= 0) { Retire(); }
         }
         
-        // 전투불능
+        // 이동불능
         private void Retire(int who = 0)
         {
+            UIManager.Instance.UpdateStatusText($"이동 불능 : {who}\n");
             canPlayerMove[who] = false;
             if (canPlayerMove.Any(who => who == false)) { GameDeadOver(); }
         }
@@ -97,16 +108,29 @@ namespace InGame
         // 재기
         private void Recover()
         {
+            UIManager.Instance.UpdateStatusText($"재기\n");
             for (int i = 0; i < canPlayerMove.Length; i++) { canPlayerMove[i] = true; }
         }
 
         // 시간 초과
-        private void GameTimeOver() { }
+        private void GameTimeOver()
+        {
+            UIManager.Instance.UpdateStatusText("시간 초과\n");
+            isGameEnd = true;
+        }
         
         // 전멸
-        private void GameDeadOver() { }
+        private void GameDeadOver()
+        {
+            UIManager.Instance.UpdateStatusText("전멸\n");
+            isGameEnd = true;
+        }
 
         // 클리어
-        private void GameClear() { }
+        private void GameClear()
+        {
+            UIManager.Instance.UpdateStatusText("클리어\n");
+            isGameEnd = true;
+        }
     }
 }

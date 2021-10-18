@@ -12,7 +12,7 @@ namespace InGame
             TouchSubscribe();
         }
 
-        protected void TouchSubscribe()
+        protected virtual void TouchSubscribe()
         {
             this.OnCollisionEnter2DAsObservable()
                 .Where(other => other.gameObject.CompareTag("Player"))
