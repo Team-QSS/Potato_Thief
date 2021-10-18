@@ -1,8 +1,8 @@
 using System;
 using Photon.Pun;
 using UniRx;
-using UnityEngine;
 using UniRx.Triggers;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace InGame
@@ -38,8 +38,13 @@ namespace InGame
             if (_photonView.IsMine)
             {
                 // JoyStick -> 이동
-                this.UpdateAsObservable().Subscribe(_ => { Move(); });
+                this.UpdateAsObservable().Subscribe(_ => { Move(joyStickControl.InputDirection.x); });
 
+                // 점프 막기
+                this.OnCollisionEnter2DAsObservable()
+                    .Where(other => other.gameObject.layer == GroundLayer)
+                    .Subscribe(_ => { _canPlayerJump = true; });
+                
                 // Button Space 입력 -> 점프
                 buttonSpace.OnClickAsObservable()
                     .Where(_ => _canPlayerJump)
@@ -55,16 +60,13 @@ namespace InGame
                     .Where(collision => collision.gameObject.CompareTag("Lever"))
                     .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); });
 
-                // 점프 막기
-                this.OnCollisionEnter2DAsObservable()
-                    .Where(other => other.gameObject.layer == GroundLayer)
-                    .Subscribe(_ => { _canPlayerJump = true; });
+                
             }
         }
 
-        public void Move()
+        public void Move(float x)
         {
-            var velocity = new Vector2(joyStickControl.InputDirection.x * moveSpeed, _rigidbody2D.velocity.y);
+            var velocity = new Vector2(x * moveSpeed, _rigidbody2D.velocity.y);
             _rigidbody2D.velocity = velocity;
         }
 
