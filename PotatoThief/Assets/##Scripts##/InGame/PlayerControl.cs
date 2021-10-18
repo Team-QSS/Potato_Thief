@@ -19,10 +19,6 @@ namespace InGame
         [SerializeField] private Button buttonSpace;
         [SerializeField] private Button buttonE;
 
-        // [Header("조작 Key")] 
-        // [SerializeField] private KeyCode jumpKey = KeyCode.Space;
-        // [SerializeField] private KeyCode interactKey = KeyCode.E;
-
         [Header("속도")] 
         [SerializeField] private float moveSpeed = 10;
         [SerializeField] private float jumpPower = 10;
@@ -59,8 +55,6 @@ namespace InGame
                 buttonEStream
                     .Where(collision => collision.gameObject.CompareTag("Lever"))
                     .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); });
-
-                
             }
         }
 
