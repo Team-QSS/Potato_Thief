@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3687063769084256282}
   - component: {fileID: 481209089795129090}
   - component: {fileID: 8073357834989539334}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CutWire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
