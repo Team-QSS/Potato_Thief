@@ -15,8 +15,8 @@ namespace InGame
 
         private const int maxHP = 5;
         private int HP;
-        
-        private bool[] canPlayerMove;
+
+        public bool[] canPlayerMove;
 
         private void Start()
         {
@@ -35,6 +35,8 @@ namespace InGame
             });
         }
 
+        #region GameEvent (GetItem, HitByObstacle, TouchAtClearPoint)
+        
         // 아이템 획득
         public void GetItem(ItemType item)
         {
@@ -72,6 +74,7 @@ namespace InGame
             }
         }
 
+        // 클리어 지점에 닿음
         public void TouchAtClearPoint()
         {
             UIManager.Instance.UpdateStatusText("클리어 지점에 도달\n");
@@ -80,12 +83,16 @@ namespace InGame
             
             GameClear();
         }
+        
+        #endregion
 
+        #region HP (Heal, Damaged, Retire, Recover)
+        
         // 회복
         private void Heal(int value = 1)
         {
             HP = Mathf.Min(HP + value, maxHP);
-            UIManager.Instance.UpdateStatusText($"회복 : {HP}\n");
+            UIManager.Instance.UpdateStatusText($"회복. HP : {HP}\n");
         }
         
         // 피격
@@ -93,44 +100,58 @@ namespace InGame
         {
             HP -= value;
             UIManager.Instance.UpdateLeftHeart(HP);
-            UIManager.Instance.UpdateStatusText($"피격 : {HP}\n");
+            UIManager.Instance.UpdateStatusText($"피격. HP : {HP}\n");
             if (HP <= 0) { Retire(); }
         }
         
         // 이동불능
         private void Retire(int who = 0)
         {
-            UIManager.Instance.UpdateStatusText($"이동 불능 : {who}\n");
+            UIManager.Instance.UpdateStatusText($"이동 불능. HP : {who}\n");
             canPlayerMove[who] = false;
-            if (canPlayerMove.Any(who => who == false)) { GameDeadOver(); }
+            if (canPlayerMove.All(who => who == false)) { GameDeadOver(); }
         }
 
-        // 재기
+        // 부활
         private void Recover()
         {
-            UIManager.Instance.UpdateStatusText($"재기\n");
+            UIManager.Instance.UpdateStatusText("부활\n");
+            Heal(maxHP);
             for (int i = 0; i < canPlayerMove.Length; i++) { canPlayerMove[i] = true; }
+        }
+        
+        #endregion
+
+        #region GameEnd (TimeOver, DeadOver, Clear)
+        
+        private void GameEnd()
+        {
+            isGameEnd = true;
+            for (int i = 0; i < canPlayerMove.Length; i++) { canPlayerMove[i] = false; }
         }
 
         // 시간 초과
         private void GameTimeOver()
         {
             UIManager.Instance.UpdateStatusText("시간 초과\n");
-            isGameEnd = true;
+            GameEnd();
         }
         
         // 전멸
         private void GameDeadOver()
         {
             UIManager.Instance.UpdateStatusText("전멸\n");
-            isGameEnd = true;
+            GameEnd();
         }
 
         // 클리어
         private void GameClear()
         {
             UIManager.Instance.UpdateStatusText("클리어\n");
-            isGameEnd = true;
+            GameEnd();
         }
+        
+        #endregion
+
     }
 }

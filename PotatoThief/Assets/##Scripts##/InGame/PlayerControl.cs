@@ -25,7 +25,7 @@ namespace InGame
 
 
         private bool _canPlayerJump;
-        
+
         private void Start()
         {
             _photonView = GetComponent<PhotonView>();
@@ -34,7 +34,9 @@ namespace InGame
             if (_photonView.IsMine)
             {
                 // JoyStick -> 이동
-                this.UpdateAsObservable().Subscribe(_ => { Move(joyStickControl.InputDirection.x); });
+                this.UpdateAsObservable()
+                    .Where(_ => GameManager.Instance.canPlayerMove[0])
+                    .Subscribe(_ => { Move(joyStickControl.InputDirection.x); });
 
                 // 점프 막기
                 this.OnCollisionEnter2DAsObservable()
@@ -43,12 +45,13 @@ namespace InGame
                 
                 // Button Space 입력 -> 점프
                 buttonSpace.OnClickAsObservable()
-                    .Where(_ => _canPlayerJump)
+                    .Where(_ => _canPlayerJump && GameManager.Instance.canPlayerMove[0])
                     .Subscribe(_ => Jump());
 
                 // Button E 입력 -> 상호작용
                 var buttonEStream = buttonE.OnClickAsObservable()
                     .Zip(this.OnCollisionStay2DAsObservable(), (unit, collision) => collision)
+                    .Where(_ => GameManager.Instance.canPlayerMove[0])
                     .First().Repeat();
 
                 // 상호작용 -> 레버 작동
