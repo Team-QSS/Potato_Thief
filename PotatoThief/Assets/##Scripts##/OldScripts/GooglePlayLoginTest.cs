@@ -10,7 +10,6 @@ using System.IO;
 
 namespace Ws_Peroth
 {
-    [RequireComponent(typeof(GooglePlayLoginTest))]
     public class GooglePlayLoginTest : Singleton<GooglePlayLoginTest>
     {
         public Firebase.Auth.FirebaseAuth auth;
@@ -19,14 +18,17 @@ namespace Ws_Peroth
 
         private void Start()
         {
-            auth = null;
-            user = null;
-            authCode = "";
+            PrintLog.instance.LogString = "Start()\n";
+            GooglePlayLogin();
+        }
 
-            PlayGamesClientConfiguration config =
-                new PlayGamesClientConfiguration.Builder()
-                .RequestServerAuthCode(false /* Don't force refresh */)
-                .Build();
+        private void GooglePlayLogin()
+        {
+            PrintLog.instance.LogString += "GooglePlayLogin()\n";
+            var config =
+               new PlayGamesClientConfiguration.Builder()
+               .RequestServerAuthCode(false /* Don't force refresh */)
+               .Build();
 
             PlayGamesPlatform.InitializeInstance(config);
             var x = PlayGamesPlatform.Activate();
@@ -38,46 +40,60 @@ namespace Ws_Peroth
                 {
                     authCode =
                     PlayGamesPlatform.Instance.GetServerAuthCode();
+                    PrintLog.instance.LogString += "Google Login Sucess\n";
 
-                    PrintLog.str = "Google Login Sucess";
+                    // O.Auth 로그인에 성공하면 Firebase 로그인 시작
+                    FirebaseLogin();
                 }
-                else{
-                    PrintLog.str = "Google Login Failed";
+                else
+                {
+                    PrintLog.instance.LogString = "Google Login Failed";
                 }
 
             });
-
+        }
+        private void FirebaseLogin()
+        {
+            PrintLog.instance.LogString += "FirebaseLogin()\n";
             auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
-            Firebase.Auth.Credential credential =       // 2. 왜냐하면 authCode가 ""이기 때문에.
-                Firebase.Auth.PlayGamesAuthProvider.GetCredential(authCode);
+            // 2. 왜냐하면 authCode가 ""이기 때문에.
+            var credential = Firebase.Auth.PlayGamesAuthProvider.GetCredential(authCode);
 
             auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
             {
-                if (!credential.IsValid())  // 1. Credential이 유효하지 않음.
+                if (task.IsCompleted)
                 {
-                    PrintLog.str = $"Credential Invalid\n---{authCode}---";
+                    Firebase.Auth.FirebaseUser newUser = task.Result;
+
+                    Debug.Log($"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})");
+                    PrintLog.instance.LogString += $"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})\n";
+                    DisplayUserData();
+                }
+                else if (!credential.IsValid())  // 1. Credential이 유효하지 않음.
+                {
+                    PrintLog.instance.LogString = $"Credential Invalid\n---{authCode}---";
                     return;
                 }
-                if (task.IsCanceled)
+                else if (task.IsCanceled)
                 {
                     Debug.LogError("SignInWithCredentialAsync was canceled.");
-                    PrintLog.str = "SignInWithCredentialAsync was canceled.";
+                    PrintLog.instance.LogString = "SignInWithCredentialAsync was canceled.";
                     return;
                 }
-                if (task.IsFaulted)
+                else if (task.IsFaulted)
                 {
                     Debug.LogError($"SignInWithCredentialAsync encountered an error : {task.Exception}");
-                    PrintLog.str = $"SignInWithCredentialAsync encountered an error: {task.Exception}";
+                    PrintLog.instance.LogString = $"SignInWithCredentialAsync encountered an error: {task.Exception}";
                     return;
                 }
-
-                Firebase.Auth.FirebaseUser newUser = task.Result;
-
-                Debug.Log($"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})");
-                PrintLog.str = $"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})";
             });
+        }
 
+
+        private void DisplayUserData()
+        {
+            PrintLog.instance.LogString += "DisplayUserData()\n";
             user = auth.CurrentUser;
 
             if (user != null)
@@ -88,7 +104,8 @@ namespace Ws_Peroth
                 // Do NOT use this value to authenticate with your backend server, if you
                 // have one; use User.TokenAsync() instead.
                 string uid = user.UserId;
-                PrintLog.str = uid;
+                PrintLog.instance.LogString += $"UID = {uid}\n";
+                PrintLog.instance.LogString += $"PlayerName = {playerName}\n";
             }
         }
     }
