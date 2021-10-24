@@ -11,7 +11,7 @@ namespace InGame
 
         private const float ScreenRatio = 9f / 16f;
         private const float DefaultSize = 5f;
-        private const float DefaultPosX = -10;
+        private const float DefaultPosZ = -10;
         private const float Half = 0.5f;
 
         [SerializeField] private Transform myCharacterTransform;
@@ -33,23 +33,25 @@ namespace InGame
         {
             _camera = GetComponent<Camera>();
 
-            this.UpdateAsObservable().Subscribe(_ =>
-            {
-                var my = myCharacterTransform.position;
-                var another = anotherCharacterTransform.position;
-                
-                transform.position = CameraPosition(my, another);
-                _camera.orthographicSize = CameraSize(my, another);
-            });
+            this.UpdateAsObservable()
+                .Where(_ => myCharacterTransform != null && anotherCharacterTransform != null)
+                .Subscribe(_ =>
+                {
+                    var my = myCharacterTransform.position;
+                    var another = anotherCharacterTransform.position;
+
+                    transform.position = CameraPosition(my, another);
+                    _camera.orthographicSize = CameraSize(my, another);
+                }).AddTo(gameObject);
         }
 
         // 카메라 위치 : 두 캐릭터 위치의 중점
         private static Vector3 CameraPosition(Vector3 my, Vector3 another)
         {
-            var xMid = Mathf.Lerp(my.x, another.x, Half);
-            var yMid = Mathf.Lerp(my.y, another.y, Half);
+            var mid = Vector3.Lerp(my, another, Half);
+            mid.x = DefaultPosZ;
 
-            return new Vector3(xMid, yMid, DefaultPosX);
+            return mid;
         }
 
         // 카메라 크기 : 최소(기본) 크기, 두 캐릭터 위치의 x,y 사이 거리를 나타낼 카메라 크기 중 최대값

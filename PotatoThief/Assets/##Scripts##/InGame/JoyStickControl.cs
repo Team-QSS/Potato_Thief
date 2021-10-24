@@ -1,4 +1,5 @@
 ﻿using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,7 +17,10 @@ namespace InGame
 
         private Vector2 _inputPosition;  // 입력 위치(point기준 로컬 좌표)
 
-        public Vector2 InputDirection => _inputPosition * _posToDir;  // 입력 방향
+        public ReactiveProperty<Vector3> InputDirection = new ReactiveProperty<Vector3>();  // 입력
+                                                                                            // 방향
+        public IObservable<Vector3> InputDirectionStream => InputDirection.ObserveOnMainThread();
+
 
         public void OnBeginDrag(PointerEventData eventData) { }
 
@@ -30,6 +34,7 @@ namespace InGame
                 ? _inputPosition.normalized * _pointRange : _inputPosition;
 
             _pointTransform.anchoredPosition = _inputPosition;
+            InputDirection.Value = _inputPosition * _posToDir;
         }
 
         public void OnEndDrag(PointerEventData eventData)

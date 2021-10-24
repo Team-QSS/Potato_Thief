@@ -34,14 +34,14 @@ namespace InGame
             if (_photonView.IsMine)
             {
                 // JoyStick -> 이동
-                this.UpdateAsObservable()
+                joyStickControl.InputDirection
                     .Where(_ => GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(_ => { Move(joyStickControl.InputDirection.x); });
+                    .Subscribe(dir => Move(dir.x));
 
                 // 점프 막기
                 this.OnCollisionEnter2DAsObservable()
                     .Where(other => other.gameObject.layer == GroundLayer)
-                    .Subscribe(_ => { _canPlayerJump = true; });
+                    .Subscribe(_ => { _canPlayerJump = true; }).AddTo(gameObject);
                 
                 // Button Space 입력 -> 점프
                 buttonSpace.OnClickAsObservable()

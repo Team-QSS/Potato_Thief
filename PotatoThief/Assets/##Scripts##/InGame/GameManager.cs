@@ -32,7 +32,7 @@ namespace InGame
                     UIManager.Instance.UpdateLimitTimeText(limitTime);
                     if (limitTime <= 0) { GameTimeOver(); }
                 }
-            });
+            }).AddTo(gameObject);
         }
 
         #region GameEvent (GetItem, HitByObstacle, TouchAtClearPoint)
