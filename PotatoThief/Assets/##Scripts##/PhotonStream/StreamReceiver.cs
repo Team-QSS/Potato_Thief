@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 
-public class StreamReceiver : Photon.Realtime.IOnEventCallback
+public class StreamReceiver : MonoBehaviour, IOnEventCallback
 {
     public byte EventCode { get; set; }
     public int Data { get; set; }

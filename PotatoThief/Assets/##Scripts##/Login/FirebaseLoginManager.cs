@@ -53,9 +53,9 @@ public class FirebaseLoginManager
                 return;
             }
 
-            FirebaseUser newUser = task.Result;
-            Debug.Log($"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})");
-            PrintLog.instance.LogString += $"User signed in successfully: {newUser.DisplayName} ({newUser.UserId})";
+            User = task.Result;
+            Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
+            PrintLog.instance.LogString += $"User signed in successfully: {User.DisplayName} ({User.UserId})";
 
         });
 
