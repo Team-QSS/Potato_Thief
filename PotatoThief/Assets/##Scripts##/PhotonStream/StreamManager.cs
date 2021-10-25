@@ -26,53 +26,53 @@ public class StreamManager : MonoBehaviourPunCallbacks
         
         // Custom Event 0: Used as "MoveUnitsToTargetPosition" event
         byte eventCode = 1;
-        print("[Set] eventCode");
+        Debug.Log($"[Set] eventCode : {eventCode}");
 
         // Array contains the target position and the IDs of the selected units
         object content = 123;
-        print("[Set] content");
+        Debug.Log($"[Set] content {content}");
 
         // You would have to set the Receivers to All in order to receive this event on the local client as well
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        print("[Set] raiseEventOptions");
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
+        Debug.Log($"[Set] raiseEventOptions {raiseEventOptions}");
         
         SendOptions sendOptions = new SendOptions { Reliability = true };
-        print("[Set] sendOptions");
+        print($"[Set] sendOptions {sendOptions}");
 
         PhotonNetwork.RaiseEvent(eventCode, content, raiseEventOptions, sendOptions);
-        print("[Send] RaiseEvent");
+        Debug.Log($"[Send] RaiseEvent");
 
-        print($"[Sender] eventCode = {eventCode}");
-        print($"[Sender] content = {content}");
+        Debug.Log($"[Sender] eventCode = {eventCode}");
+        Debug.Log($"[Sender] content = {content}");
     }
 
     public void EnterRoom()
     {
-        print("[Enter Room]");
+        Debug.Log("[Enter Room]");
         PhotonNetwork.ConnectUsingSettings();
     }
 
     public void DisconnectRoom()
     {
-        print("[Disconnect Room]");
+        Debug.Log("[Disconnect Room]");
         PhotonNetwork.Disconnect();
     }
 
     public override void OnConnectedToMaster()
     {
-        print("[On Connected To Master]");
+        Debug.Log("[On Connected To Master]");
 
         // NullReferenceException: Object reference not set to an instance of an object
         string name = LoginManager.firebaseLoginManager.User.DisplayName;
-        print("[Get Name]");
+        Debug.Log("[Get Name]");
 
         PhotonNetwork.LocalPlayer.NickName = name;
-        print("[Set Name]");
+        Debug.Log("[Set Name]");
 
-        print($"Name = {name}");
+        Debug.Log($"Name = {name}");
 
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 20 }, null);
-        print("JoinOrCreateRoom");
+        Debug.Log("JoinOrCreateRoom");
     }
 
     public override void OnJoinedRoom()

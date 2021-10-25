@@ -7,17 +7,29 @@ using Photon.Pun;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 
-public class StreamReceiver : MonoBehaviour, IOnEventCallback
+public class StreamReceiver : MonoBehaviour
 {
     public byte EventCode { get; set; }
     public int Data { get; set; }
 
-    void Photon.Realtime.IOnEventCallback.OnEvent(EventData photonEvent)
+    public void OnEnable()
     {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        Debug.Log("[Receiver] Receive Event");
+
         EventCode = photonEvent.Code;
         Data = (int)photonEvent.CustomData;
 
-        Debug.Log($"EventCode : {EventCode}, Data : {Data}");
-        PrintLog.instance.LogString = $"EventCode : {EventCode}, Data : {Data}";
+        Debug.Log($"[Receiver] EventCode : {EventCode}, Data : {Data}");
     }
 }
+
