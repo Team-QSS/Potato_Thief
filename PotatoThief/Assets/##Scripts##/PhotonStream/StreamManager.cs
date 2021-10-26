@@ -1,5 +1,4 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ExitGames.Client.Photon;
@@ -26,24 +25,24 @@ public class StreamManager : MonoBehaviourPunCallbacks
         
         // Custom Event 0: Used as "MoveUnitsToTargetPosition" event
         byte eventCode = 1;
-        Debug.Log($"[Set] eventCode : {eventCode}");
+        Debug.Log($"[Set] eventCode");
 
         // Array contains the target position and the IDs of the selected units
-        object content = 123;
-        Debug.Log($"[Set] content {content}");
+        object[] content = {"a", "b", "c"};
+        Debug.Log($"[Set] content");
 
         // You would have to set the Receivers to All in order to receive this event on the local client as well
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
         Debug.Log($"[Set] raiseEventOptions {raiseEventOptions}");
         
         SendOptions sendOptions = new SendOptions { Reliability = true };
-        print($"[Set] sendOptions {sendOptions}");
+        print("[Set] sendOptions");
 
         PhotonNetwork.RaiseEvent(eventCode, content, raiseEventOptions, sendOptions);
-        Debug.Log($"[Send] RaiseEvent");
+        Debug.Log("[Send] RaiseEvent");
 
-        Debug.Log($"[Sender] eventCode = {eventCode}");
-        Debug.Log($"[Sender] content = {content}");
+        Debug.Log("[Sender] eventCode");
+        Debug.Log("[Sender] content");
     }
 
     public void EnterRoom()
@@ -63,13 +62,13 @@ public class StreamManager : MonoBehaviourPunCallbacks
         Debug.Log("[On Connected To Master]");
 
         // NullReferenceException: Object reference not set to an instance of an object
-        string name = LoginManager.firebaseLoginManager.User.DisplayName;
+        var userName = LoginManager.firebaseLoginManager.User.DisplayName;
         Debug.Log("[Get Name]");
 
-        PhotonNetwork.LocalPlayer.NickName = name;
+        PhotonNetwork.LocalPlayer.NickName = userName;
         Debug.Log("[Set Name]");
 
-        Debug.Log($"Name = {name}");
+        Debug.Log($"Name = {userName}");
 
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 20 }, null);
         Debug.Log("JoinOrCreateRoom");
