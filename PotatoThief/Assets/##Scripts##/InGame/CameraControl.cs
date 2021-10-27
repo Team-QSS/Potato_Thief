@@ -1,5 +1,4 @@
-﻿using System;
-using UniRx;
+﻿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
@@ -49,8 +48,9 @@ namespace InGame
         private static Vector3 CameraPosition(Vector3 my, Vector3 another)
         {
             var mid = Vector3.Lerp(my, another, Half);
-            mid.x = DefaultPosZ;
+            mid.z = DefaultPosZ;
 
+            Debug.Log(mid);
             return mid;
         }
 

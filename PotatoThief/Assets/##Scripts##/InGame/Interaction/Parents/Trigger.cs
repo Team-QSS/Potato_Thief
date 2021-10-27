@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace InGame
 {
     // 장애물 해제 스위치들 ex)발판, 레버

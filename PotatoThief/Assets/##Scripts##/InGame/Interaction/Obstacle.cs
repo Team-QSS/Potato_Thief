@@ -2,7 +2,7 @@
 
 namespace InGame
 {
-    public class ObstacleObject : Touch
+    public class Obstacle : Touch
     {
         [SerializeField] private ObstacleType obstacle;
         protected override void ActivateTouch()

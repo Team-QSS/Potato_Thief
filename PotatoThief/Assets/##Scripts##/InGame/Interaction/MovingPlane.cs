@@ -1,10 +1,9 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace InGame
 {
-    public class MovingPlane : Obstacle
+    public class MovingPlane : Triggeree
     {
         [SerializeField] private Vector3 moveDirection;
         private Vector3 defaultPosition;
@@ -14,15 +13,15 @@ namespace InGame
             defaultPosition = transform.position;
         }
 
-        public override void ActivateObstacle()
+        public override void ActivateTriggeree()
         {
-            base.ActivateObstacle();
+            base.ActivateTriggeree();
             transform.DOMove(transform.position + moveDirection, 3);
         }
 
-        public override void DeactivateObstacle()
+        public override void DeactivateTriggeree()
         {
-            base.DeactivateObstacle();
+            base.DeactivateTriggeree();
             transform.DOMove(defaultPosition, 3);
         }
     }

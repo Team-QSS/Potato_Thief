@@ -1,6 +1,4 @@
-﻿using System;
-using DG;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace InGame

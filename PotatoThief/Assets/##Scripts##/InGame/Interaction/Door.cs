@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace InGame
 {
-    public class Door : Obstacle
+    public class Door : Triggeree
     {
         private SpriteRenderer spriteRenderer;
 
@@ -16,12 +14,12 @@ namespace InGame
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public override void ActivateObstacle()
+        public override void ActivateTriggeree()
         {
             spriteRenderer.color = activeColor;
         }
 
-        public override void DeactivateObstacle()
+        public override void DeactivateTriggeree()
         {
             spriteRenderer.color = inactiveColor;
         }

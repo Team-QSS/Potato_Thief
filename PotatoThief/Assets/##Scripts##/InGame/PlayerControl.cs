@@ -1,4 +1,3 @@
-using System;
 using Photon.Pun;
 using UniRx;
 using UniRx.Triggers;
@@ -59,6 +58,7 @@ namespace InGame
                     .Where(collision => collision.gameObject.CompareTag("Lever"))
                     .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); });
             }
+            
         }
 
         public void Move(float x)

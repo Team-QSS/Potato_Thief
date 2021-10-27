@@ -1847,6 +1847,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5234263465300473935, guid: bea64a594b6d46c448ca8142434b9339, type: 3}
+      propertyPath: triggerees.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234263465300473935, guid: bea64a594b6d46c448ca8142434b9339, type: 3}
       propertyPath: triggers.Array.data[0]
       value: 
       objectReference: {fileID: 1773006557}
@@ -1860,6 +1864,14 @@ PrefabInstance:
       objectReference: {fileID: 158819826}
     - target: {fileID: 5234263465300473935, guid: bea64a594b6d46c448ca8142434b9339, type: 3}
       propertyPath: obstacles.Array.data[1]
+      value: 
+      objectReference: {fileID: 754481854}
+    - target: {fileID: 5234263465300473935, guid: bea64a594b6d46c448ca8142434b9339, type: 3}
+      propertyPath: triggerees.Array.data[0]
+      value: 
+      objectReference: {fileID: 158819826}
+    - target: {fileID: 5234263465300473935, guid: bea64a594b6d46c448ca8142434b9339, type: 3}
+      propertyPath: triggerees.Array.data[1]
       value: 
       objectReference: {fileID: 754481854}
     m_RemovedComponents: []

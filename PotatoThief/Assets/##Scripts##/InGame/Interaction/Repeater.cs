@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace InGame
     public class Repeater : MonoBehaviour
     {
         [SerializeField] private List<Trigger> triggers;
-        [SerializeField] private List<Obstacle> obstacles;
+        [SerializeField] private List<Triggeree> triggerees;
 
         private void Start()
         {
@@ -24,29 +23,29 @@ namespace InGame
         {
             if (triggers.Any(trigger => !trigger.Status))
             {
-                DeactivateObstacles();
+                DeactivateTriggerees();
                 return;
             }
 
-            ActivateObstacles();
+            ActivateTriggerees();
         }
 
         // 전체 장애물 활성화
-        private void ActivateObstacles()
+        private void ActivateTriggerees()
         {
-            foreach (var obstacle in obstacles)
+            foreach (var obstacle in triggerees)
             {
-                obstacle.ActivateObstacle();
+                obstacle.ActivateTriggeree();
                 obstacle.Status = true;
             }
         }
 
         // 전체 장애물 비활성화
-        private void DeactivateObstacles()
+        private void DeactivateTriggerees()
         {
-            foreach (var obstacle in obstacles)
+            foreach (var obstacle in triggerees)
             {
-                obstacle.DeactivateObstacle();
+                obstacle.DeactivateTriggeree();
                 obstacle.Status = false;
             }
         }
