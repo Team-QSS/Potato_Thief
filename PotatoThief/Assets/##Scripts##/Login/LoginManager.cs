@@ -14,7 +14,7 @@ public class LoginManager : Singleton<LoginManager>
     public void Start()
     {
 
-        PrintLog.instance.LogString += "Start LoginOAuth";
+        Debug.Log("Start LoginOAuth");
         StartLogin();
     }
 
@@ -45,30 +45,23 @@ public class LoginManager : Singleton<LoginManager>
 
     private void CheckLoginResult(bool result)
     {
-        PrintLog.instance.LogString += "Start CheckLoginResult";
+        Debug.Log("Start CheckLoginResult");
         if (result)
         {
-            PrintLog.instance.LogString += "[OAuth Login Success]";
+            Debug.Log("[OAuth Login Success]");
             SetFirebaseCredential();
             OnFirebaseSignIn(CheckLoginSuccess);
         }
         else
         {
-            PrintLog.instance.LogString += "[Login Failed] : LoginOAuth result is false";
+            Debug.Log("[Login Failed] : LoginOAuth result is false");
         }
     }
 
     private void CheckLoginSuccess(bool success)
     {
-        PrintLog.instance.LogString += "Start CheckLoginSuccess";
+        Debug.Log("Start CheckLoginSuccess");
 
-        if (success)
-        {
-            PrintLog.instance.LogString += $"[Login Success]";
-        }
-        else
-        {
-            PrintLog.instance.LogString += $"[Login Failed]";
-        }
+        Debug.Log(success ? "[Login Success]" : "[Login Failed]");
     }
 }

@@ -8,7 +8,6 @@ public class FirebaseLoginManager
 
     public Credential GetCredential(string authCode)
     {
-        PrintLog.instance.LogString += "Start GetCredential()";
         Debug.Log("Start GetCredential()");
 
         Auth = FirebaseAuth.DefaultInstance;
@@ -16,11 +15,8 @@ public class FirebaseLoginManager
 
         if (Credential == null)
         {
-            PrintLog.instance.LogString += "[Credential Failed] : credential is null";
             Debug.Log("[Credential Failed] : credential is null");
         }
-
-        PrintLog.instance.LogString += $"Provider = {Credential.Provider}";
         Debug.Log($"Provider = {Credential.Provider}");
         return Credential;
     }
@@ -31,7 +27,6 @@ public class FirebaseLoginManager
     /// <param name="callback"></param>
     public void OnFirebaseSignIn(Credential credential, System.Action<bool> callback)
     {
-        PrintLog.instance.LogString += "Start LoginFirebase()";
         Debug.Log("TRY SIGNIN");
 
         // bool isCompleted = false;
@@ -42,20 +37,16 @@ public class FirebaseLoginManager
             if (task.IsCanceled)
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
-                PrintLog.instance.LogString += "SignInWithCredentialAsync was canceled.";
                 return;
             }
             if (task.IsFaulted)
             {
                 Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                PrintLog.instance.LogString += "SignInWithCredentialAsync encountered an error: " + task.Exception;
-
                 return;
             }
 
             User = task.Result;
             Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
-            PrintLog.instance.LogString += $"User signed in successfully: {User.DisplayName} ({User.UserId})";
 
         });
 
@@ -69,12 +60,10 @@ public class FirebaseLoginManager
     public void DisplayUserData(bool success)
     {
         Debug.Log("Start DisplayUserData()");
-        PrintLog.instance.LogString += "Start DisplayUserData()";
 
         if (!success)
         {
             Debug.Log("[SignIn Failed] : success is false");
-            PrintLog.instance.LogString += "[SignIn Failed] : success is false";
             return;
         }
 
@@ -90,13 +79,10 @@ public class FirebaseLoginManager
             string uid = User.UserId;
             Debug.Log($"UID = {uid}");
             Debug.Log($"PlayerName = {playerName}");
-            PrintLog.instance.LogString += $"UID = {uid}";
-            PrintLog.instance.LogString += $"PlayerName = {playerName}";
         }
         else
         {
             Debug.Log("[SignIn Failed] : User is null");
-            PrintLog.instance.LogString += "[SignIn Failed] : User is null";
         }
     }
 }
