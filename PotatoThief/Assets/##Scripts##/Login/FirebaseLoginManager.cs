@@ -1,88 +1,94 @@
 ﻿using Firebase.Auth;
 using UnityEngine;
-public class FirebaseLoginManager
+
+namespace Login
 {
-    public FirebaseAuth Auth { get; set; }
-    public FirebaseUser User { get; set; }
-    public Credential Credential { get; set; }
-
-    public Credential GetCredential(string authCode)
+    public class FirebaseLoginManager
     {
-        Debug.Log("Start GetCredential()");
+        public FirebaseAuth Auth { get; set; }
+        public FirebaseUser User { get; set; }
+        public Credential Credential { get; set; }
 
-        Auth = FirebaseAuth.DefaultInstance;
-        Credential = PlayGamesAuthProvider.GetCredential(authCode);
-
-        if (Credential == null)
+        public Credential GetCredential(string authCode)
         {
-            Debug.Log("[Credential Failed] : credential is null");
-        }
-        Debug.Log($"Provider = {Credential.Provider}");
-        return Credential;
-    }
+            Debug.Log("Start GetCredential()");
 
-    /// <summary>
-    /// nextAction : Login 완료 시 실행할 함수. bool 매개변수는 SignInWithCredentialAsync 작업의 성공 여부를 뜻함.
-    /// </summary>
-    /// <param name="callback"></param>
-    public void OnFirebaseSignIn(Credential credential, System.Action<bool> callback)
-    {
-        Debug.Log("TRY SIGNIN");
+            Auth = FirebaseAuth.DefaultInstance;
+            Credential = PlayGamesAuthProvider.GetCredential(authCode);
 
-        // bool isCompleted = false;
-
-
-        Auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
-        {
-            if (task.IsCanceled)
+            if (Credential == null)
             {
-                Debug.LogError("SignInWithCredentialAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                return;
+                Debug.Log("[Credential Failed] : credential is null");
             }
 
-            User = task.Result;
-            Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
-
-        });
-
-
-        // callback(isCompleted);
-    }
-
-    /// <summary>
-    /// 로그인이 성공적으로 완료 되었는지 확인하기 위한 예제 함수
-    /// </summary>
-    public void DisplayUserData(bool success)
-    {
-        Debug.Log("Start DisplayUserData()");
-
-        if (!success)
-        {
-            Debug.Log("[SignIn Failed] : success is false");
-            return;
+            Debug.Log($"Provider = {Credential.Provider}");
+            return Credential;
         }
 
-        User = Auth.CurrentUser;
-
-        if (User != null)
+        /// <summary>
+        /// nextAction : Login 완료 시 실행할 함수. bool 매개변수는 SignInWithCredentialAsync 작업의 성공 여부를 뜻함.
+        /// </summary>
+        /// <param name="callback"></param>
+        public void OnFirebaseSignIn(Credential credential, System.Action<bool> callback)
         {
-            string playerName = User.DisplayName;
+            Debug.Log("TRY SIGNIN");
 
-            // The user's Id, unique to the Firebase project.
-            // Do NOT use this value to authenticate with your backend server, if you
-            // have one; use User.TokenAsync() instead.
-            string uid = User.UserId;
-            Debug.Log($"UID = {uid}");
-            Debug.Log($"PlayerName = {playerName}");
+            // bool isCompleted = false;
+
+
+            Auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    Debug.LogError("SignInWithCredentialAsync was canceled.");
+                    return;
+                }
+
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
+                    return;
+                }
+
+                User = task.Result;
+                Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
+
+            });
+
+
+            // callback(isCompleted);
         }
-        else
+
+        /// <summary>
+        /// 로그인이 성공적으로 완료 되었는지 확인하기 위한 예제 함수
+        /// </summary>
+        public void DisplayUserData(bool success)
         {
-            Debug.Log("[SignIn Failed] : User is null");
+            Debug.Log("Start DisplayUserData()");
+
+            if (!success)
+            {
+                Debug.Log("[SignIn Failed] : success is false");
+                return;
+            }
+
+            User = Auth.CurrentUser;
+
+            if (User != null)
+            {
+                string playerName = User.DisplayName;
+
+                // The user's Id, unique to the Firebase project.
+                // Do NOT use this value to authenticate with your backend server, if you
+                // have one; use User.TokenAsync() instead.
+                string uid = User.UserId;
+                Debug.Log($"UID = {uid}");
+                Debug.Log($"PlayerName = {playerName}");
+            }
+            else
+            {
+                Debug.Log("[SignIn Failed] : User is null");
+            }
         }
     }
 }
