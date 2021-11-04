@@ -19,7 +19,7 @@ namespace Login
         public void Start()
         {
             _isSigned.Value = false;
-            _isSigned.Where(x => true).Subscribe(x => SceneManager.LoadScene(0));
+            _isSigned.Where(x => true).Subscribe(x => SceneManager.LoadScene(1));
             Debug.Log("Start LoginOAuth");
             StartLogin();
         }
