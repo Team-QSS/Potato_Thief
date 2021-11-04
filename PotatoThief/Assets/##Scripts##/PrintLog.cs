@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class PrintLog : Singleton<PrintLog>
 {
-    [SerializeField]
-    private Text _logText;
+    [SerializeField] private Text _logText;
 
     public string LogString
     {

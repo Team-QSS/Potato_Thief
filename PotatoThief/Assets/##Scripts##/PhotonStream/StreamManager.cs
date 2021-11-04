@@ -19,30 +19,17 @@ public class StreamManager : MonoBehaviourPunCallbacks
     {
         if (!isRoomEntered)
         {
-            Debug.Log("Room Entered First");
-            return;
+            return; // Room Entered First
         }
         
-        // Custom Event 0: Used as "MoveUnitsToTargetPosition" event
-        byte eventCode = 1;
-        Debug.Log($"[Set] eventCode");
-
-        // Array contains the target position and the IDs of the selected units
-        object[] content = {"a", "b", "c"};
-        Debug.Log($"[Set] content");
-
-        // You would have to set the Receivers to All in order to receive this event on the local client as well
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-        Debug.Log($"[Set] raiseEventOptions {raiseEventOptions}");
+        byte eventCode = 1; // 커스텀 이벤트 번호 설정
+        object[] content = {"a", "b", "c"}; // 선택할 오브젝트의 ID와 위치 등의 상태를 object 배열로 전송
         
-        SendOptions sendOptions = new SendOptions { Reliability = true };
-        print("[Set] sendOptions");
-
+        RaiseEventOptions raiseEventOptions // 누구에게 보낼지 보낼 대상을 지정
+            = new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient};
+        SendOptions sendOptions = new SendOptions {Reliability = true}; // 전송 방식을 지정 (UDP, TCP 등)
+        
         PhotonNetwork.RaiseEvent(eventCode, content, raiseEventOptions, sendOptions);
-        Debug.Log("[Send] RaiseEvent");
-
-        Debug.Log("[Sender] eventCode");
-        Debug.Log("[Sender] content");
     }
 
     public void EnterRoom()
@@ -59,19 +46,9 @@ public class StreamManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("[On Connected To Master]");
-
-        // NullReferenceException: Object reference not set to an instance of an object
         var userName = LoginManager.firebaseLoginManager.User.DisplayName;
-        Debug.Log("[Get Name]");
-
         PhotonNetwork.LocalPlayer.NickName = userName;
-        Debug.Log("[Set Name]");
-
-        Debug.Log($"Name = {userName}");
-
-        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 20 }, null);
-        Debug.Log("JoinOrCreateRoom");
+        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions {MaxPlayers = 20}, null);
     }
 
     public override void OnJoinedRoom()

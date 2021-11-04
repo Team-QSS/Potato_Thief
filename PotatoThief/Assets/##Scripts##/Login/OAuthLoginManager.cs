@@ -1,5 +1,6 @@
 ﻿using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using UnityEngine;
 
 public class OAuthLoginManager
 {
@@ -11,7 +12,7 @@ public class OAuthLoginManager
     /// <param name="callback"></param>
     public void OnOAuthAuthenticate(System.Action<bool> callback)
     {
-        PrintLog.instance.LogString += "Start GooglePlayLogin";
+        Debug.Log("Start GooglePlayLogin");
         var config =
            new PlayGamesClientConfiguration.Builder()
            .RequestServerAuthCode(false /* Don't force refresh */)
@@ -26,12 +27,12 @@ public class OAuthLoginManager
             {
                 AuthCode =
                 PlayGamesPlatform.Instance.GetServerAuthCode();
-                PrintLog.instance.LogString += "[Google Login Success]";
+                Debug.Log("[Google Login Success]");
             }
             else
             {
                 AuthCode = "";
-                PrintLog.instance.LogString += "[Google Login Failed] : success is false";
+                Debug.Log("[Google Login Failed] : success is false");
             }
 
             callback(success);
