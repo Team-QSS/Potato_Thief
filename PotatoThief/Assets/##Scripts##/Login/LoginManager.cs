@@ -14,7 +14,7 @@ public class LoginManager : Singleton<LoginManager>
     public void Start()
     {
 
-        PrintLog.instance.LogString += "Start LoginOAuth";
+        PrintLog.Instance.LogString += "Start LoginOAuth";
         StartLogin();
     }
 
