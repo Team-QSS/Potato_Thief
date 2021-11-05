@@ -1,4 +1,5 @@
 ﻿using UniRx;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,24 +7,53 @@ namespace Login
 {
     public class LoginManager : Singleton<LoginManager>
     {
-        private BoolReactiveProperty _isSigned;
+        private static bool _isStart;
+        private static BoolReactiveProperty _isSigned;
+        
         public static OAuthLoginManager googlePlayLoginManager = new OAuthLoginManager();
         public static FirebaseLoginManager firebaseLoginManager = new FirebaseLoginManager();
 
         protected override void Awake()
         {
+            _isStart = false;
             dontDestroyOnLoad = true;
             base.Awake();
         }
 
+        public void StartButtonDown()
+        {
+            _isStart = true;
+            if (_isSigned.Value)
+            {
+                MoveScene();
+            }
+        }
+        
         public void Start()
         {
-            _isSigned.Value = false;
-            _isSigned.Where(x => true).Subscribe(x => SceneManager.LoadScene(1));
+            _isSigned = new BoolReactiveProperty(false);
+
+            _isSigned
+                .Where(x => _isStart && x)
+                .Subscribe(_ =>
+                {
+                    Debug.Log("[ReactiveProperty] Call Property");
+                    _isStart = false;
+                    MoveScene();
+                });
+            
             Debug.Log("Start LoginOAuth");
             StartLogin();
         }
 
+        private void MoveScene()
+        {
+            _isSigned.Dispose();
+            _isStart = false;
+            Debug.Log("Login Success");
+            SceneManager.LoadScene(1);
+        }
+        
         public void StartLogin()
         {
             googlePlayLoginManager.OnOAuthAuthenticate(CheckLoginResult);
@@ -66,9 +96,10 @@ namespace Login
 
         private void CheckLoginSuccess(bool success)
         {
-            Debug.Log("Start CheckLoginSuccess");
-
+            Debug.Log("[LoginManager] Start CheckLoginSuccess");
             Debug.Log(success ? "[Login Success]" : "[Login Failed]");
+            
+            _isSigned.Value = success;
         }
     }
 }

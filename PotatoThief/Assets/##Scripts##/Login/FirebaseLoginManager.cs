@@ -1,4 +1,5 @@
 ﻿using Firebase.Auth;
+using Firebase.Extensions;
 using UnityEngine;
 
 namespace Login
@@ -36,23 +37,22 @@ namespace Login
             // bool isCompleted = false;
 
 
-            Auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+            Auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
             {
-                if (task.IsCanceled)
+                if (task.IsCompleted)
+                {
+                    User = task.Result;
+                    Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
+                    callback(task.IsCompleted);
+                }
+                else if (task.IsCanceled)
                 {
                     Debug.LogError("SignInWithCredentialAsync was canceled.");
-                    return;
                 }
-
-                if (task.IsFaulted)
+                else if (task.IsFaulted)
                 {
                     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                    return;
                 }
-
-                User = task.Result;
-                Debug.Log($"User signed in successfully: {User.DisplayName} ({User.UserId})");
-
             });
 
 
