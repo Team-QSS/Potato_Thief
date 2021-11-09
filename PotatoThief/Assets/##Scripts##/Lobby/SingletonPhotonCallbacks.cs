@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class SingletonPhotonCallbacks<T> : MonoBehaviourPunCallbacks where T : SingletonPhotonCallbacks<T>
 {
     public bool dontDestroyOnLoad;
