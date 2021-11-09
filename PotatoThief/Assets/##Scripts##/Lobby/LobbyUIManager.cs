@@ -18,17 +18,37 @@ public class LobbyUIManager : MonoBehaviour
     
     public void RandomMatchingButtonDown()
     {
-        RoomManager.instance.EnterRandomRoom();
+        Debug.Log("Call EnterRandomRoom");
+        RoomManager.instance.EnterPublicRoom();
     }
     
     public void RoomIdMatchingButtonDown()
     {
+        Debug.Log("Call RoomIdMatchingButtonDown");
         var roomId = _roomIdInputField.text;
         RoomManager.instance.EnterRoomId(roomId);
+    }
+
+    public void MatchingPopupButtonDown()
+    {
+        Debug.Log("Call MatchingPopupButtonDown");
+        _enterRoomPopupScreen.SetActive(true);
+    }
+    
+    public void CreatPopupButtonDown()
+    {
+        Debug.Log("Call CreatPopupButtonDown");
+        _creatRoomPopupScreen.SetActive(true);
     }
     
     public void RoomCreateButtonDown()
     {
+        Debug.Log("Call RoomCreateButtonDown");
         RoomManager.instance.CreatRoom(_isPublicRoomToggle.isOn);
+    }
+
+    public void RoomDisconnectButtonDown()
+    {
+        RoomManager.instance.DisconnectRoom();
     }
 }

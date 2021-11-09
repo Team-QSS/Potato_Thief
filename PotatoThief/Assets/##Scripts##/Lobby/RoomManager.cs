@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Login;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = UnityEngine.Random;
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
+    [SerializeField] private Text currentRoom;
+    private bool DEBUG = true;
+    
     private const int _maxRoomId = 1000000;
     private const int _minRoomId = 100000;
     private bool _isConnecting;
@@ -16,8 +22,34 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public bool IsPublicRoom { get; set; }
     public string RoomName { get; set; }
 
+    private void Update()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            if (PhotonNetwork.CurrentRoom != null)
+            {
+                currentRoom.text = "ID : " + PhotonNetwork.CurrentRoom.Name;
+            }
+            else
+            {
+                currentRoom.text = "Connecting";
+            }
+        }
+        else
+        {
+            currentRoom.text = "Disconnect";
+        }
+    }
+
+    protected override void Awake()
+    {
+        dontDestroyOnLoad = true;
+        base.Awake();
+    }
+
     private string GetRandomRoomCode()
     {
+        Debug.Log("GetRandomRoomCode");
         var totalSecond = (long) (System.DateTime.Now.TimeOfDay.TotalSeconds * System.Math.Pow(10, 7)); // 유효 소숫점 (7자리) 부분을 없애주고 long형태로 타입변환
         long roomCode = 0;
         while (totalSecond != 0)
@@ -43,14 +75,14 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         PhotonNetwork.ConnectUsingSettings();
     }       
 
-    public void EnterRandomRoom()
+    public void EnterPublicRoom()
     {
         if(_isConnecting) return;
         
         _isConnecting = true;
         IsPublicRoom = true;
         IsCreateRoom = false;
-        Debug.Log("[Enter Room] Enter Random Room");
+        Debug.Log("[Enter Room] Enter Public Room");
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -74,15 +106,25 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public override void OnConnectedToMaster()
     {
-        var userName = LoginManager.firebaseLoginManager.User.DisplayName;
-        PhotonNetwork.LocalPlayer.NickName = userName;
+        string userName;
         
+        if (DEBUG)
+        {
+            userName = "_DEBUGER";
+            PhotonNetwork.LocalPlayer.NickName = userName;
+        }
+        else
+        {
+            userName = LoginManager.firebaseLoginManager.User.DisplayName;
+            PhotonNetwork.LocalPlayer.NickName = userName;
+        }
+
         if (IsCreateRoom)
         {
             RoomName = GetRandomRoomCode();
 
             var roomOptions = new RoomOptions();
-            roomOptions.IsVisible = !IsPublicRoom;
+            roomOptions.IsVisible = IsPublicRoom;
             roomOptions.MaxPlayers = 2;
 
             PhotonNetwork.CreateRoom(RoomName, roomOptions, null);
@@ -104,6 +146,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     {
         // 방 생성 실패시 callback
         _isConnecting = false;
+        DisconnectRoom();
         Debug.Log($"{returnCode} : {message}");
     }
 
@@ -111,6 +154,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     {
         // 랜덤 방 입장 실패시 callback
         _isConnecting = false;
+        DisconnectRoom();
         Debug.Log($"{returnCode} : {message}");
     }
 
@@ -118,6 +162,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     {
         // 방 입장 실패시 callback
         _isConnecting = false;
+        DisconnectRoom();
         Debug.Log($"{returnCode} : {message}");
     }
     
@@ -134,6 +179,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         _isConnecting = false;
         IsPublicRoom = false;
         IsCreateRoom = false;
+        DisconnectRoom();
         Debug.Log("[OnDisconnected] : Disconnect Success");
     }
 }
