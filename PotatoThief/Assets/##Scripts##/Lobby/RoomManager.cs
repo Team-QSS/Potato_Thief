@@ -11,16 +11,30 @@ using Random = UnityEngine.Random;
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
+    [SerializeField] private Transform roomIconTransform;
+    [SerializeField] private GameObject RoomIconPrefab;
     [SerializeField] private Text currentRoom;
-    private bool DEBUG = true;
+    [SerializeField] private bool DEBUG = true;
+    [SerializeField] private GameObject streamObject;
     
     private const int _maxRoomId = 1000000;
     private const int _minRoomId = 100000;
+    private List<GameObject> _roomIcons;
+    private List<RoomInfo> _roomlist;
     private bool _isConnecting;
-    
+    [SerializeField] private bool _isShowRoomList;
+
     public bool IsCreateRoom { get; set; }
     public bool IsPublicRoom { get; set; }
     public string RoomName { get; set; }
+    
+    protected override void Awake()
+    {
+        _roomIcons = new List<GameObject>();
+        _roomlist = new List<RoomInfo>();
+        dontDestroyOnLoad = true;
+        base.Awake();
+    }
 
     private void Update()
     {
@@ -41,29 +55,35 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         }
     }
 
-    protected override void Awake()
+    public void ShowPublicRoomList()
     {
-        dontDestroyOnLoad = true;
-        base.Awake();
+        Debug.Log("Show Public Room List");
+        _isShowRoomList = true;
+        int roomCount = _roomIcons.Count;
+        for (int i = 0; i < roomCount; i++)
+        {
+            Destroy(_roomIcons[i]); 
+        }
+
+        _roomIcons = new List<GameObject>();
+
+        roomCount = _roomlist.Count;
+        for (int i = 0; i < roomCount; i++)
+        {
+            var roomIcon = Instantiate(RoomIconPrefab, roomIconTransform);
+            _roomIcons.Add(roomIcon);
+            RoomIcon iconScript = roomIcon.GetComponent<RoomIcon>();
+            iconScript.RoomID = _roomlist[i].Name;
+        }
+        
+        _isShowRoomList = false;
     }
 
     private string GetRandomRoomCode()
     {
-        Debug.Log("GetRandomRoomCode");
-        var totalSecond = (long) (System.DateTime.Now.TimeOfDay.TotalSeconds * System.Math.Pow(10, 7)); // 유효 소숫점 (7자리) 부분을 없애주고 long형태로 타입변환
-        long roomCode = 0;
-        while (totalSecond != 0)
-        {
-            // 현재 시간을 _maxRoomId보다 작은 자릿수로 만들기 위한 연산
-            roomCode += totalSecond % _maxRoomId;
-            totalSecond /= _maxRoomId;
-        }
-
-        roomCode += Random.Range(_minRoomId, _maxRoomId);
-        roomCode %= _maxRoomId;
-        return roomCode.ToString();
+        return Random.Range(_minRoomId, _maxRoomId).ToString();
     }
-    
+
     public void CreatRoom(bool isPublicRoom)
     {
         if(_isConnecting) return;
@@ -108,6 +128,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     {
         string userName;
         
+        // 디버그 돌릴경우에는 Firebase없이 로컬에서 테스트 하기 위함
         if (DEBUG)
         {
             userName = "_DEBUGER";
@@ -121,6 +142,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
         if (IsCreateRoom)
         {
+            // 방 생성시 수행할 코드
             RoomName = GetRandomRoomCode();
 
             var roomOptions = new RoomOptions();
@@ -131,12 +153,15 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         }
         else
         {
+            // 방 입장시 수행할 코드
             if (IsPublicRoom)
             {
+                // 공개방 입장
                 PhotonNetwork.JoinRandomRoom(null, 2);
             }
             else
             {
+                // 비공개방 입장
                 PhotonNetwork.JoinRoom(RoomName);
             }
         }
@@ -171,6 +196,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         // 방 입장 성공시 callback
         _isConnecting = false;
         Debug.Log("[OnJoinedRoom] : Join Success");
+        PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -181,5 +207,19 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         IsCreateRoom = false;
         DisconnectRoom();
         Debug.Log("[OnDisconnected] : Disconnect Success");
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        Debug.Log("[Receive Callback] On Room List Update");
+        // 방 리스트 변경 시 callback
+        if (_isShowRoomList) return;
+        
+        UpdateRoomList(roomList);
+    }
+
+    private void UpdateRoomList(List<RoomInfo> roomList)
+    {
+        Debug.Log("Update Room List");
     }
 }
