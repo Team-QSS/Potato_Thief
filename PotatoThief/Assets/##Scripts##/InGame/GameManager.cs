@@ -22,14 +22,11 @@ namespace InGame
             HP = maxHP;
             limitTime = maxLimitTime;
 
-            this.UpdateAsObservable().Subscribe(_ =>
+            this.UpdateAsObservable().Where(_ => !isGameEnd).Subscribe(_ =>
             {
-                if (!isGameEnd)
-                {
-                    limitTime -= Time.deltaTime;
-                    UIManager.Instance.UpdateLimitTimeText(limitTime);
-                    if (limitTime <= 0) { GameTimeOver(); }
-                }
+                limitTime -= Time.deltaTime;
+                UIManager.Instance.UpdateLimitTimeText(limitTime);
+                if (limitTime <= 0) { GameTimeOver(); }
             }).AddTo(gameObject);
         }
 

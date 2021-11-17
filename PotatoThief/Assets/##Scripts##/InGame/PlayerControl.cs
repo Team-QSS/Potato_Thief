@@ -35,17 +35,17 @@ namespace InGame
                 // JoyStick -> 이동
                 joyStickControl.InputDirection
                     .Where(_ => GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(dir => Move(dir.x));
+                    .Subscribe(dir => Move(dir.x)).AddTo(joyStickControl);
 
                 // 점프 막기
                 this.OnCollisionEnter2DAsObservable()
                     .Where(other => other.gameObject.layer == GroundLayer)
                     .Subscribe(_ => { _canPlayerJump = true; }).AddTo(gameObject);
-                
+
                 // Button Space 입력 -> 점프
                 buttonSpace.OnClickAsObservable()
                     .Where(_ => _canPlayerJump && GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(_ => Jump());
+                    .Subscribe(_ => Jump()).AddTo(buttonSpace);
 
                 // Button E 입력 -> 상호작용
                 var buttonEStream = buttonE.OnClickAsObservable()
@@ -56,9 +56,9 @@ namespace InGame
                 // 상호작용 -> 레버 작동
                 buttonEStream
                     .Where(collision => collision.gameObject.CompareTag("Lever"))
-                    .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); });
+                    .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); })
+                    .AddTo(buttonE);
             }
-            
         }
 
         public void Move(float x)
