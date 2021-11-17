@@ -17,8 +17,7 @@ namespace InGame
 
         private Vector2 _inputPosition;  // 입력 위치(point기준 로컬 좌표)
 
-        public ReactiveProperty<Vector3> InputDirection = new ReactiveProperty<Vector3>();  // 입력
-                                                                                            // 방향
+        public ReactiveProperty<Vector3> InputDirection = new ReactiveProperty<Vector3>();  // 입력방향
         public IObservable<Vector3> InputDirectionStream => InputDirection.ObserveOnMainThread();
 
 
