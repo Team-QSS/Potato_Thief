@@ -24,7 +24,7 @@ namespace InGame
 
             collisionStream
                 .Where(other => other.gameObject.CompareTag("Player"))
-                .Subscribe(_ => { OnTriggerSwitch(); });
+                .Subscribe(_ => { OnTriggerSwitch(); }).AddTo(this);
         }
 
         protected override void ActivateTrigger()
