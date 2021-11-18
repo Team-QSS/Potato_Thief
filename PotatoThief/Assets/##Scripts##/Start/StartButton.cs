@@ -7,6 +7,6 @@ public class StartButton : MonoBehaviour
 {
     public void ButtonDown()
     {
-        LoginManager.instance.StartButtonDown();
+        LoginManager.Instance.StartButtonDown();
     }
 }
