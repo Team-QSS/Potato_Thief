@@ -6,7 +6,6 @@ using Photon.Realtime;
 using Photon.Pun;
 using Photon.Chat;
 using ExitGames.Client.Photon;
-using UnityEditorInternal;
 
 public class StreamReceiver : MonoBehaviour, IOnEventCallback
 {

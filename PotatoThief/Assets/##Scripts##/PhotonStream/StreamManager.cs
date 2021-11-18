@@ -4,6 +4,7 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
 using Photon.Pun;
+using Login;
 
 public class StreamManager : MonoBehaviourPunCallbacks
 {
