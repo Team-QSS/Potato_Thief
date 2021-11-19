@@ -23,8 +23,6 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     
     protected override void Awake()
     {
-        _roomIcons = new List<GameObject>();
-        _roomlist = new List<RoomInfo>();
         dontDestroyOnLoad = true;
         base.Awake();
     }
