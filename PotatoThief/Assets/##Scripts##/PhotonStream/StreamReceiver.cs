@@ -7,6 +7,10 @@ using Photon.Pun;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 
+public enum CustomEventTypes
+{
+    Default
+}
 public class StreamReceiver : MonoBehaviour, IOnEventCallback
 {
     public byte EventCode { get; set; }
@@ -25,11 +29,9 @@ public class StreamReceiver : MonoBehaviour, IOnEventCallback
     public void OnEvent(EventData photonEvent)
     {
         Debug.Log("[Receiver] Receive Event");
-
         EventCode = photonEvent.Code;
-        Data = (int)photonEvent.CustomData;
 
-        Debug.Log($"[Receiver] EventCode : {EventCode}, Data : {Data}");
+        Debug.Log($"[Receiver] EventCode : {EventCode.ToString()}, Data : {Data.ToString()}");
     }
 }
 
