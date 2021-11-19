@@ -8,16 +8,12 @@ using Random = UnityEngine.Random;
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
-    [SerializeField] private Transform roomIconTransform;
-    [SerializeField] private GameObject RoomIconPrefab;
     [SerializeField] private Text currentRoom;
     [SerializeField] private bool _isDebugMode = true;
-    [SerializeField] private GameObject streamObject;
     
     private const int _maxRoomId = 1000000;
     private const int _minRoomId = 100000;
-    private List<GameObject> _roomIcons;
-    private List<RoomInfo> _roomlist;
+    
     private bool _isConnecting;
     [SerializeField] private bool _isShowRoomList;
 
