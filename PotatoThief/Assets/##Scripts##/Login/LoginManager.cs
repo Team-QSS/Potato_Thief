@@ -12,7 +12,7 @@ namespace Login
         
         public static OAuthLoginManager googlePlayLoginManager = new OAuthLoginManager();
         public static FirebaseLoginManager firebaseLoginManager = new FirebaseLoginManager();
-
+        
         protected override void Awake()
         {
             _isStart = false;
@@ -20,19 +20,11 @@ namespace Login
             base.Awake();
         }
 
-        public void StartButtonDown()
-        {
-            _isStart = true;
-            if (_isSigned.Value)
-            {
-                MoveScene();
-            }
-        }
-        
         public void Start()
         {
+            // 로그인 확인 용 ReactiveProperty 정의
             _isSigned = new BoolReactiveProperty(false);
-
+            
             _isSigned
                 .Where(x => _isStart && x)
                 .Subscribe(_ =>
@@ -42,8 +34,18 @@ namespace Login
                     MoveScene();
                 });
             
+            // 로그인 시작부분
             Debug.Log("Start LoginOAuth");
             StartLogin();
+        }
+        
+        public void StartButtonDown()
+        {
+            _isStart = true;
+            if (_isSigned.Value)
+            {
+                MoveScene();
+            }
         }
 
         private void MoveScene()
@@ -51,7 +53,7 @@ namespace Login
             _isSigned.Dispose();
             _isStart = false;
             Debug.Log("Login Success");
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene((int) SceneType.Lobby);
         }
         
         public void StartLogin()
@@ -60,18 +62,19 @@ namespace Login
         }
 
         /// <summary>
-        /// Credential을 가져오기 위해서 먼저 OAuth에 로그인 할 필요가 있음. LoginOAuth() 호출
+        /// Google Play OAuth완료 후 Firebase Credential을 가져오기 위한 함수. OnOAuthAuthenticate() 호출 필요
         /// </summary>
         /// <returns></returns>
         public static void SetFirebaseCredential()
         {
+            
             var authCode = googlePlayLoginManager.AuthCode;
             firebaseLoginManager.GetCredential(authCode);
         }
 
         /// <summary>
         /// nextAction : SignInFirebase 완료 시 실행할 함수. bool 매개변수는 Authenticate 작업의 성공 여부를 뜻함.
-        /// SetFirebaseCredential을 통해 먼저 Credential을 설정할 필요가 있음. SetFirebaseCredential() 호출
+        /// SetFirebaseCredential을 통해 먼저 Credential을 설정할 필요가 있음. SetFirebaseCredential를 먼저 호출해야함
         /// </summary>
         /// <param name="callback"></param>
         public static void OnFirebaseSignIn(System.Action<bool> callback)

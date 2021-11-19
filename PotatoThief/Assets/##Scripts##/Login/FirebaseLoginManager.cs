@@ -17,7 +17,7 @@ namespace Login
             Auth = FirebaseAuth.DefaultInstance;
             Credential = PlayGamesAuthProvider.GetCredential(authCode);
 
-            if (Credential == null)
+            if (Credential is null)
             {
                 Debug.Log("[Credential Failed] : credential is null");
             }
