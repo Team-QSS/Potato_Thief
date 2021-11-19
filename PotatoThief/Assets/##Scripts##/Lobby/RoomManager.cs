@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Login;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = UnityEngine.Random;
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
@@ -14,7 +11,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     [SerializeField] private Transform roomIconTransform;
     [SerializeField] private GameObject RoomIconPrefab;
     [SerializeField] private Text currentRoom;
-    [SerializeField] private bool DEBUG = true;
+    [SerializeField] private bool _isDebugMode = true;
     [SerializeField] private GameObject streamObject;
     
     private const int _maxRoomId = 1000000;
@@ -38,44 +35,27 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     private void Update()
     {
-        if (PhotonNetwork.IsConnected)
+        currentRoom.text = PhotonNetwork.IsConnected switch
         {
-            if (PhotonNetwork.CurrentRoom != null)
-            {
-                currentRoom.text = "ID : " + PhotonNetwork.CurrentRoom.Name;
-            }
-            else
-            {
-                currentRoom.text = "Connecting";
-            }
-        }
-        else
-        {
-            currentRoom.text = "Disconnect";
-        }
+            true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
+            true => "Connecting",
+            _ => "Disconnect"
+        };
     }
 
+    private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
+    {
+        IsPublicRoom = isPublicRoom;
+        _isConnecting = isConnecting;
+        IsCreateRoom = isCreateRoom;
+    }
+    
+    
     public void ShowPublicRoomList()
     {
-        Debug.Log("Show Public Room List");
+        UnityEngine.Debug.Log("Show Public Room List");
         _isShowRoomList = true;
-        int roomCount = _roomIcons.Count;
-        for (int i = 0; i < roomCount; i++)
-        {
-            Destroy(_roomIcons[i]); 
-        }
-
-        _roomIcons = new List<GameObject>();
-
-        roomCount = _roomlist.Count;
-        for (int i = 0; i < roomCount; i++)
-        {
-            var roomIcon = Instantiate(RoomIconPrefab, roomIconTransform);
-            _roomIcons.Add(roomIcon);
-            RoomIcon iconScript = roomIcon.GetComponent<RoomIcon>();
-            iconScript.RoomID = _roomlist[i].Name;
-        }
-        
+        // 기능 구현 필요
         _isShowRoomList = false;
     }
 
@@ -87,10 +67,8 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public void CreatRoom(bool isPublicRoom)
     {
         if(_isConnecting) return;
+        InitializedMatchingData(isPublicRoom, true, true);
         
-        IsPublicRoom = isPublicRoom;
-        _isConnecting = true;
-        IsCreateRoom = true;
         Debug.Log("[Creat Room] Enter Random Room");
         PhotonNetwork.ConnectUsingSettings();
     }       
@@ -98,10 +76,8 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public void EnterPublicRoom()
     {
         if(_isConnecting) return;
-        
-        _isConnecting = true;
-        IsPublicRoom = true;
-        IsCreateRoom = false;
+        InitializedMatchingData(true, true, false);
+
         Debug.Log("[Enter Room] Enter Public Room");
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -109,11 +85,9 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public void EnterRoomId(string roomId)
     {
         if(_isConnecting) return;
-
         RoomName = roomId;
-        _isConnecting = true;
-        IsPublicRoom = false;
-        IsCreateRoom = false;
+        InitializedMatchingData(false, true, false);
+
         Debug.Log("::Private Mode:: Enter Private Room");
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -129,16 +103,10 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         string userName;
         
         // 디버그 돌릴경우에는 Firebase없이 로컬에서 테스트 하기 위함
-        if (DEBUG)
-        {
-            userName = "_DEBUGER";
-            PhotonNetwork.LocalPlayer.NickName = userName;
-        }
-        else
-        {
-            userName = LoginManager.firebaseLoginManager.User.DisplayName;
-            PhotonNetwork.LocalPlayer.NickName = userName;
-        }
+        userName = _isDebugMode ? "_DEBUGER" : LoginManager.firebaseLoginManager.User.DisplayName;
+        
+        PhotonNetwork.LocalPlayer.NickName = userName;
+
 
         if (IsCreateRoom)
         {
@@ -149,7 +117,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
             roomOptions.IsVisible = IsPublicRoom;
             roomOptions.MaxPlayers = 2;
 
-            PhotonNetwork.CreateRoom(RoomName, roomOptions, null);
+            PhotonNetwork.CreateRoom(RoomName, roomOptions);
         }
         else
         {
@@ -180,7 +148,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         // 랜덤 방 입장 실패시 callback
         _isConnecting = false;
         DisconnectRoom();
-        Debug.Log($"{returnCode} : {message}");
+        Debug.Log($"{returnCode.ToString()} : {message}");
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -188,7 +156,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         // 방 입장 실패시 callback
         _isConnecting = false;
         DisconnectRoom();
-        Debug.Log($"{returnCode} : {message}");
+        Debug.Log($"{returnCode.ToString()} : {message}");
     }
     
     public override void OnJoinedRoom()
@@ -202,24 +170,33 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnDisconnected(DisconnectCause cause)
     {
         // 연결 종료시 callback
-        _isConnecting = false;
-        IsPublicRoom = false;
-        IsCreateRoom = false;
+        InitializedMatchingData(false, false, false);
         DisconnectRoom();
         Debug.Log("[OnDisconnected] : Disconnect Success");
-    }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        Debug.Log("[Receive Callback] On Room List Update");
-        // 방 리스트 변경 시 callback
-        if (_isShowRoomList) return;
-        
-        UpdateRoomList(roomList);
     }
 
     private void UpdateRoomList(List<RoomInfo> roomList)
     {
         Debug.Log("Update Room List");
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log($"{otherPlayer.NickName} left the room");
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log($"{newPlayer.NickName} joined the room");
+    }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        Debug.Log("[Receive Callback] On Room List Update");
+        // 미구현
+        // 방 리스트 변경 시 callback
+        if (_isShowRoomList) return;
+        
+        UpdateRoomList(roomList);
     }
 }
