@@ -67,7 +67,6 @@ namespace Login
         /// <returns></returns>
         public static void SetFirebaseCredential()
         {
-            
             var authCode = googlePlayLoginManager.AuthCode;
             firebaseLoginManager.GetCredential(authCode);
         }

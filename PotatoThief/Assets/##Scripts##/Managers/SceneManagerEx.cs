@@ -7,6 +7,7 @@ public enum SceneType
     Lobby,
     Ready,
     InGame,
+    Account
 }
 
 public class SceneManagerEx : Singleton<SceneManagerEx>

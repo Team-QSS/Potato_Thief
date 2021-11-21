@@ -144,6 +144,7 @@ namespace InGame
         {
             UIManager.Instance.UpdateStatusText("클리어\n");
             GameEnd();
+            SceneManagerEx.Instance.LoadScene(SceneType.Account);
         }
         
         #endregion

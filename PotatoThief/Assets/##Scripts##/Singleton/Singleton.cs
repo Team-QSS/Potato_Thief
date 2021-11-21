@@ -51,6 +51,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         if (_instance != null)
         {
             Debug.LogError(GetType().Name + " Singleton class is already created.");
+            Destroy(this.gameObject);
         }
 
         if (dontDestroyOnLoad)
@@ -71,4 +72,3 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     protected virtual void OnAwake() { }
 }
-

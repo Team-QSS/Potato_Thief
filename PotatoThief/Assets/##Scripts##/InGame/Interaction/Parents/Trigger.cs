@@ -23,6 +23,7 @@ namespace InGame
             }
 
             repeater.TriggerStatusCheck();
+            // 다른 플레어에서 이 함수가 호출되게 함 
         }
 
         // -> 활성화
