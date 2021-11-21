@@ -12,6 +12,15 @@ EditorBuildSettings:
     path: Assets/##Scenes##/Title.unity
     guid: 47cd3f5c23763ef4796477891881d313
   - enabled: 1
-    path: Assets/##Scenes##/Lee_Test_Scene/Demo_Lee.unity
-    guid: 87562f23b3d364149b9bd8954ad0d475
+    path: Assets/##Scenes##/Lobby.unity
+    guid: d97e4138037d996449fba8524aa2ff2a
+  - enabled: 1
+    path: Assets/##Scenes##/Ready.unity
+    guid: 4dc04f089fae533428a39d9fd592f72e
+  - enabled: 1
+    path: Assets/##Scenes##/InGame_0.unity
+    guid: 977a52fdf6bfed64fb340c3a531b336c
+  - enabled: 1
+    path: Assets/##Scenes##/EndingAccount.unity
+    guid: 4f0e2347346c96a48a3ff8ed8da13bc6
   m_configObjects: {}
