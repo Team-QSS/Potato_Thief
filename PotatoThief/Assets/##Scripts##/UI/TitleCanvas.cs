@@ -1,3 +1,5 @@
+using System;
+using Login;
 using UnityEngine;
 
 namespace UI
@@ -6,7 +8,7 @@ namespace UI
     {
         public void OnClickStartButton()
         {
-            SceneManagerEx.Instance.LoadScene(SceneType.Lobby);
+            LoginManager.Instance.StartButtonDown();
         }
     }
 }
