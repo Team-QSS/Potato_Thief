@@ -2,18 +2,9 @@ using System.Collections.Generic;
 using Login;
 using Photon.Pun;
 using Photon.Realtime;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-
-public enum PlayersStatus
-{
-    Joined,
-    Disconnected,
-    OtherJoined,
-    OtherDisconnected
-}
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
@@ -30,24 +21,21 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public bool IsPublicRoom { get; set; }
     public string RoomName { get; set; }
     
-    
-    public Subject<PlayersStatus> playersStatus = new Subject<PlayersStatus>();
-
     protected override void Awake()
     {
         dontDestroyOnLoad = true;
         base.Awake();
     }
 
-/*    private void Update()
+    private void Update()
     {
-       currentRoom.text = PhotonNetwork.IsConnected switch
+        currentRoom.text = PhotonNetwork.IsConnected switch
         {
             true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
             true => "Connecting",
             _ => "Disconnect"
         };
-    }*/
+    }
 
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {
@@ -170,8 +158,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         // 방 입장 성공시 callback
         _isConnecting = false;
         Debug.Log("[OnJoinedRoom] : Join Success");
-        PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
-        SceneManagerEx.Instance.LoadScene(SceneType.Ready);
+        // PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -190,13 +177,11 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.Log($"{otherPlayer.NickName} left the room");
-        playersStatus.OnNext(PlayersStatus.OtherDisconnected);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log($"{newPlayer.NickName} joined the room");
-        playersStatus.OnNext(PlayersStatus.OtherJoined);
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

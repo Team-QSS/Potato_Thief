@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using Photon.Pun;
+using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace InGame
 {
     public class PressurePlate : Trigger
     {
+        public PhotonView pv;
         private SpriteRenderer spriteRenderer;
 
         private readonly Color activeColor = Color.green;
@@ -24,7 +26,7 @@ namespace InGame
 
             collisionStream
                 .Where(other => other.gameObject.CompareTag("Player"))
-                .Subscribe(_ => { OnTriggerSwitch(); }).AddTo(this);
+                .Subscribe(_ => { pv.RPC("OnTriggerSwitch", RpcTarget.All); }).AddTo(this);
         }
 
         protected override void ActivateTrigger()

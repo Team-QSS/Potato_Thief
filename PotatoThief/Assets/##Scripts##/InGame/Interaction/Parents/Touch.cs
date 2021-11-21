@@ -1,27 +1,29 @@
-﻿using UniRx;
+﻿using Photon.Pun;
+using UniRx;
 using UniRx.Triggers;
 
 namespace InGame
 {
     public class Touch : Interaction
     {
+        public PhotonView pv;
         protected virtual void Awake()
         {
             TouchSubscribe();
         }
 
-        protected virtual void TouchSubscribe()
+        protected virtual void TouchSubscribe() // 공유자원
         {
             this.OnCollisionEnter2DAsObservable()
                 .Where(other => other.gameObject.CompareTag("Player"))
                 .Subscribe(_ =>
                 {
-                    ActivateTouch(); 
-                    // 다른 플레어에서 이 함수가 호출되게 함 
+                    // ActivateTouch();
+                    pv.RPC("ActivateTouch", RpcTarget.All);
                 });
         }
 
-        protected virtual void ActivateTouch() { }
+        [PunRPC] protected virtual void ActivateTouch() { }
 
         protected virtual void DeactivateTouch() { }
     }

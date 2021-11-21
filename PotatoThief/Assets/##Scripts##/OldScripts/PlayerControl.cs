@@ -11,6 +11,7 @@ namespace KJG
     public class PlayerControl : MonoBehaviourPunCallbacks
     {
         //public
+        public PhotonView _photonView;
         public float moveSpeed = 10;
         public float jumpSpeed = 10;
         public float skyMoveSpeed = 5;
@@ -23,7 +24,6 @@ namespace KJG
         private bool _isPlayerJump = false;
         private float _playerMoveSpeed;
         private JoystickControl _joystickControl;
-        private PhotonView _photonView;
 
         // Start is called before the first frame update
         void Start()
@@ -78,6 +78,22 @@ namespace KJG
                 {
                     other.gameObject.GetComponent<Trigger>().OnTriggerActivate();
                 }
+            }
+        }
+        
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            // IPunObservable 인터페이스의 구현 메소드
+        
+            if (stream.IsWriting)
+            {
+                // 포톤으로 관측하여 전송 할 내용
+                stream.SendNext(transform.position);
+            }
+            else
+            {
+                // 관측한 정보를 받을 내용
+                gameObject.transform.position = (Vector3) stream.ReceiveNext();
             }
         }
     }
