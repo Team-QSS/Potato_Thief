@@ -17,7 +17,7 @@ namespace InGame
 
         private Vector2 _inputPosition;  // 입력 위치(point기준 로컬 좌표)
 
-        public ReactiveProperty<Vector3> InputDirection = new ReactiveProperty<Vector3>();  // 입력방향
+        public Subject<Vector3> InputDirection = new Subject<Vector3>();  // 입력방향
         public IObservable<Vector3> InputDirectionStream => InputDirection.ObserveOnMainThread();
 
 
@@ -33,7 +33,8 @@ namespace InGame
                 ? _inputPosition.normalized * _pointRange : _inputPosition;
 
             _pointTransform.anchoredPosition = _inputPosition;
-            InputDirection.Value = _inputPosition * _posToDir;
+            InputDirection.OnNext(_inputPosition * _posToDir);
+            
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -41,6 +42,7 @@ namespace InGame
             // 손 떼면 원래 자리로 돌려놓기
             _inputPosition = Vector2.zero;
             _pointTransform.anchoredPosition = _inputPosition;
+            InputDirection.OnNext(Vector3.zero);
         }
 
         private void Start()

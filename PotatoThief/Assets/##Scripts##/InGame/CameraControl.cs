@@ -47,10 +47,9 @@ namespace InGame
         // 카메라 위치 : 두 캐릭터 위치의 중점
         private static Vector3 CameraPosition(Vector3 my, Vector3 another)
         {
-            var mid = Vector3.Lerp(my, another, Half);
+            var mid = Vector3.Lerp(my, another, Half); 
             mid.z = DefaultPosZ;
 
-            Debug.Log(mid);
             return mid;
         }
 
