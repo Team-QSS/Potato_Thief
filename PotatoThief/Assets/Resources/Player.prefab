@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5076045400632918115}
   - component: {fileID: 5076045400632918114}
   - component: {fileID: 8964794186678612127}
-  - component: {fileID: 231066723}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -51,6 +50,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc19623335d05304eba41668f18e4879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _photonView: {fileID: 8964794186678612127}
   moveSpeed: 10
   jumpSpeed: 10
   skyMoveSpeed: 5
@@ -159,24 +160,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 231066723}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &231066723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5076045400632918119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 0
-  m_SynchronizeScale: 0
-  m_UseLocal: 1

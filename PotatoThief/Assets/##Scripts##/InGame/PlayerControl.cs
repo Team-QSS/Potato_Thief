@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 namespace InGame
 {
-    public class PlayerControl : MonoBehaviourPunCallbacks
+    public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     {
-        private PhotonView _photonView;
+        [SerializeField] private PhotonView _photonView;
         private Rigidbody2D _rigidbody2D;
 
         private const int GroundLayer = 6;
@@ -45,7 +45,11 @@ namespace InGame
                 // Button Space 입력 -> 점프
                 buttonSpace.OnClickAsObservable()
                     .Where(_ => _canPlayerJump && GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(_ => Jump()).AddTo(buttonSpace);
+                    .Subscribe(_ =>
+                    {
+                        _photonView.RPC(nameof(Jump), RpcTarget.All);
+                        // Jump();
+                    }).AddTo(buttonSpace);
 
                 // Button E 입력 -> 상호작용
                 var buttonEStream = buttonE.OnClickAsObservable()
@@ -56,9 +60,14 @@ namespace InGame
                 // 상호작용 -> 레버 작동
                 buttonEStream
                     .Where(collision => collision.gameObject.CompareTag("Lever"))
-                    .Subscribe(collision => { collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch(); })
+                    .Subscribe(collision => { _photonView.RPC("CallOnTriggerSwitch", RpcTarget.All, collision); })
                     .AddTo(buttonE);
             }
+        }
+
+        private void CallOnTriggerSwitch(Collider2D collision)
+        {
+            collision.gameObject.GetComponent<Trigger>().OnTriggerSwitch();
         }
 
         public void Move(float x)
@@ -67,11 +76,26 @@ namespace InGame
             _rigidbody2D.velocity = velocity;
         }
 
+        [PunRPC]
         public void Jump()
         {
             var velocity = _rigidbody2D.velocity;
             _rigidbody2D.velocity = new Vector2(velocity.x, jumpPower);
             _canPlayerJump = false;
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // 포톤으로 관측하여 전송 할 내용
+                stream.SendNext(transform.position);
+            }
+            else
+            {
+                // 관측한 정보를 받을 내용
+                gameObject.transform.position = (Vector3) stream.ReceiveNext();
+            }
         }
     }
 }

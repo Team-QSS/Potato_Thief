@@ -1,3 +1,5 @@
+using Photon.Pun;
+
 namespace InGame
 {
     // 장애물 해제 스위치들 ex)발판, 레버
@@ -10,7 +12,7 @@ namespace InGame
             set => repeater = value;
         }
 
-        public void OnTriggerSwitch()
+        [PunRPC] public void OnTriggerSwitch()   // 공유자원
         {
             Status = !Status;
             if (Status)

@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf9782182774300979201890766d8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 9165494301343395153}
   obstacle: 1
 --- !u!61 &8073357834989539334
 BoxCollider2D:

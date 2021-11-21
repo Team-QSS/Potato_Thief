@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 namespace InGame
 {
     public class Obstacle : Touch
     {
         [SerializeField] private ObstacleType obstacle;
-        protected override void ActivateTouch()
+        [PunRPC]protected override void ActivateTouch()
         {
             if (Status) return;
             

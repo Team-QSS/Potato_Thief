@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df4821656107c4549b92b5b68dd4d94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _photonView: {fileID: 767864259796596179}
   joyStickControl: {fileID: 0}
   buttonSpace: {fileID: 0}
   buttonE: {fileID: 0}

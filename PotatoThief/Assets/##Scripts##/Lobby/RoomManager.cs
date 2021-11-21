@@ -158,7 +158,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         // 방 입장 성공시 callback
         _isConnecting = false;
         Debug.Log("[OnJoinedRoom] : Join Success");
-        PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
+        // PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
     }
 
     public override void OnDisconnected(DisconnectCause cause)

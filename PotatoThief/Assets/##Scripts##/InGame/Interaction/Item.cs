@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Photon.Pun;
 using UnityEngine;
 
 namespace InGame
@@ -14,7 +15,7 @@ namespace InGame
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        protected override void ActivateTouch()
+        [PunRPC]protected override void ActivateTouch()
         {
             if(Status) return;
             
