@@ -31,6 +31,8 @@ namespace InGame
         private void Start()
         {
             _camera = GetComponent<Camera>();
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            SetTarget(players[0], players[1]);
 
             this.UpdateAsObservable()
                 .Where(_ => myCharacterTransform != null && anotherCharacterTransform != null)

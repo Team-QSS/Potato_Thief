@@ -1,10 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
 namespace InGame
 {
+    public struct Player
+    {
+        public int hp;
+        public bool canMove;
+        public bool isRetired;
+        public bool isFinished;
+    }
+    
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private float maxLimitTime;
@@ -12,28 +21,31 @@ namespace InGame
         private bool isGameEnd;
 
         private const int maxHP = 5;
-        private int HP;
-
-        public bool[] canPlayerMove;
+        public Player[] Players;
+        public int myIndex;
 
         private void Start()
         {
-            canPlayerMove = new[] {true, true};
-            HP = maxHP;
+            Players = new Player[2];
+            Players[0].hp = Players[1].hp = maxHP;
+            Players[0].canMove = Players[1].canMove = true;
+            Players[0].isRetired = Players[1].isRetired = false; 
+            Players[0].isFinished = Players[1].isFinished = false; 
+            
             limitTime = maxLimitTime;
-
+            
             this.UpdateAsObservable().Where(_ => !isGameEnd).Subscribe(_ =>
             {
                 limitTime -= Time.deltaTime;
                 UIManager.Instance.UpdateLimitTimeText(limitTime);
-                if (limitTime <= 0) { GameTimeOver(); }
+                if (limitTime <= 0) { GameEnd(GameEndType.TimeOver); }
             }).AddTo(gameObject);
         }
 
-        #region GameEvent (GetItem, HitByObstacle, TouchAtClearPoint)
+        #region GameEvent (GetItem, HitByObstacle, TouchAtClearPoint) -> 공유해야 함
         
         // 아이템 획득
-        public void GetItem(ItemType item)
+        public void GetItem(ItemType item, int who)
         {
             UIManager.Instance.UpdateStatusText($"아이템 획득 : {item}\n");
             switch (item)
@@ -41,7 +53,7 @@ namespace InGame
                 case ItemType.None:
                     break;
                 case ItemType.Potato:
-                    Heal();
+                    Heal(who);
                     break;
                 case ItemType.GoldenPotato:
                     Recover();
@@ -50,7 +62,7 @@ namespace InGame
         }
 
         // 장애물과 부딪힘
-        public void HitByObstacle(ObstacleType obstacle)
+        public void HitByObstacle(ObstacleType obstacle, int who)
         {
             UIManager.Instance.UpdateStatusText($"장애물과 충돌 : {obstacle}\n");
             switch (obstacle)
@@ -58,25 +70,27 @@ namespace InGame
                 case ObstacleType.None:
                     break;
                 case ObstacleType.CutWire:
-                    Damaged(3);
+                    Damaged(who,3);
                     break;
                 case ObstacleType.Manhole:
-                    Damaged(2);
+                    Damaged(who,2);
                     break;
                 case ObstacleType.Banana:
-                    Damaged(1);
+                    Damaged(who, 1);
                     break;
             }
         }
 
         // 클리어 지점에 닿음
-        public void TouchAtClearPoint()
+        public void TouchAtClearPoint(int who)
         {
             UIManager.Instance.UpdateStatusText("클리어 지점에 도달\n");
-            if (canPlayerMove.Any(who => who == false) || limitTime <= 0)
+            Players[who].isFinished = true;
+
+            if (Players.Any(player => player.isFinished == false) || limitTime <= 0)
                 return;
             
-            GameClear();
+            GameEnd(GameEndType.Clear);
         }
         
         #endregion
@@ -84,27 +98,28 @@ namespace InGame
         #region HP (Heal, Damaged, Retire, Recover)
         
         // 회복
-        private void Heal(int value = 1)
+        private void Heal(int who, int value = 1)
         {
-            HP = Mathf.Min(HP + value, maxHP);
-            UIManager.Instance.UpdateStatusText($"회복. HP : {HP}\n");
+            Players[who].hp = Mathf.Min(Players[who].hp + value, maxHP);
+            UIManager.Instance.UpdateStatusText($"회복. HP : {Players[who].hp}\n");
         }
         
         // 피격
-        private void Damaged(int value = 1)
+        private void Damaged(int who, int value = 1)
         {
-            HP -= value;
-            UIManager.Instance.UpdateLeftHeart(HP);
-            UIManager.Instance.UpdateStatusText($"피격. HP : {HP}\n");
-            if (HP <= 0) { Retire(); }
+            Players[who].hp -= value;
+            UIManager.Instance.UpdateLeftHeart(Players[who].hp);
+            UIManager.Instance.UpdateStatusText($"피격. HP : {Players[who].hp}\n");
+            if (Players[who].hp <= 0) { Retire(who); }
         }
         
         // 이동불능
-        private void Retire(int who = 0)
+        private void Retire(int who)
         {
             UIManager.Instance.UpdateStatusText($"이동 불능. HP : {who}\n");
-            canPlayerMove[who] = false;
-            if (canPlayerMove.All(who => who == false)) { GameDeadOver(); }
+            Players[who].canMove = false;
+            Players[who].isRetired = true;
+            if (Players.All(player => player.isRetired)) { GameEnd(GameEndType.DeadOver); }
         }
 
         // 부활
@@ -112,41 +127,46 @@ namespace InGame
         {
             UIManager.Instance.UpdateStatusText("부활\n");
             Heal(maxHP);
-            for (int i = 0; i < canPlayerMove.Length; i++) { canPlayerMove[i] = true; }
+            for (int i = 0; i < Players.Length; i++)
+            {
+                Players[i].canMove = true;
+                Players[i].isRetired = false;
+            }
         }
         
         #endregion
 
         #region GameEnd (TimeOver, DeadOver, Clear)
-        
-        private void GameEnd()
+
+        private enum GameEndType
         {
+            TimeOver,
+            DeadOver,
+            Clear
+        }
+        
+        private void GameEnd(GameEndType gameEndType)
+        {
+            switch (gameEndType)
+            {
+                case GameEndType.TimeOver:
+                    UIManager.Instance.UpdateStatusText("시간 초과\n");
+                    break;
+                case GameEndType.DeadOver:
+                    UIManager.Instance.UpdateStatusText("전멸\n");
+                    break;
+                case GameEndType.Clear:
+                    UIManager.Instance.UpdateStatusText("클리어\n");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gameEndType), gameEndType, null);
+            }
+
             isGameEnd = true;
-            for (int i = 0; i < canPlayerMove.Length; i++) { canPlayerMove[i] = false; }
-        }
-
-        // 시간 초과
-        private void GameTimeOver()
-        {
-            UIManager.Instance.UpdateStatusText("시간 초과\n");
-            GameEnd();
-        }
-        
-        // 전멸
-        private void GameDeadOver()
-        {
-            UIManager.Instance.UpdateStatusText("전멸\n");
-            GameEnd();
-        }
-
-        // 클리어
-        private void GameClear()
-        {
-            UIManager.Instance.UpdateStatusText("클리어\n");
-            GameEnd();
+            for (int i = 0; i < Players.Length; i++) { Players[i].canMove = false; }
             SceneManagerEx.Instance.LoadScene(SceneType.Account);
+
         }
-        
         #endregion
 
     }

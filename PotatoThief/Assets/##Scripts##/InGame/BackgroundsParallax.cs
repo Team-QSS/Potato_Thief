@@ -17,9 +17,9 @@ namespace InGame
             cameraTransform = Camera.main.transform;
             lastCameraPosition = cameraTransform.position;
 
-            if (imageTransform.Length == imageParallaxSpeed.Length)
+            if (imageTransform.Length != imageParallaxSpeed.Length)
             {
-                Debug.LogError("이미지와 그에 맞는 속도의 수가 맞지 않음");
+                Debug.LogError("배경과 그에 맞는 속도의 수가 맞지 않음");
             }
 
             this.LateUpdateAsObservable().Subscribe(_ =>

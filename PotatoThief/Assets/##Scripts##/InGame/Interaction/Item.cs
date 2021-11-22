@@ -22,7 +22,7 @@ namespace InGame
             base.ActivateTouch();
             _spriteRenderer.DOFade(0f, 1f);
             Invoke(nameof(Disable), 1f);
-            GameManager.Instance.GetItem(item);
+            GameManager.Instance.GetItem(item, GameManager.Instance.myIndex);
             
             Status = true;
         }

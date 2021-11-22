@@ -11,7 +11,7 @@ namespace InGame
             if (Status) return;
             
             base.ActivateTouch();
-            GameManager.Instance.HitByObstacle(obstacle);
+            GameManager.Instance.HitByObstacle(obstacle, GameManager.Instance.myIndex);
 
             Status = true;
             Invoke(nameof(SetStatusFalse), 3);

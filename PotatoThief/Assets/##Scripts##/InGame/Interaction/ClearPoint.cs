@@ -9,7 +9,7 @@ namespace InGame
             if (Status) return;
             
             base.ActivateTouch();
-            GameManager.Instance.TouchAtClearPoint();
+            GameManager.Instance.TouchAtClearPoint(GameManager.Instance.myIndex);
             
             Status = true;
         }

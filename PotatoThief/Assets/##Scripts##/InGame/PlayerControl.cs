@@ -10,7 +10,9 @@ namespace InGame
     {
         [SerializeField] private PhotonView _photonView;
         private Rigidbody2D _rigidbody2D;
-
+        private SpriteRenderer _spriteRenderer;
+        private Animator _animator;
+        
         private const int GroundLayer = 6;
         
         [Header("조작 UI")] 
@@ -21,48 +23,64 @@ namespace InGame
         [Header("속도")] 
         [SerializeField] private float moveSpeed = 10;
         [SerializeField] private float jumpPower = 10;
-
-
+        
         private bool _canPlayerJump;
+        private static readonly int IsWalk = Animator.StringToHash("IsWalk");
+        private static readonly int Jump1 = Animator.StringToHash("Jump");
+        private bool _isWalk;
 
         private void Start()
         {
             _photonView = GetComponent<PhotonView>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
 
-            if (_photonView.IsMine)
-            {
-                // JoyStick -> 이동
-                joyStickControl.InputDirection
-                    .Where(_ => GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(dir => Move(dir.x)).AddTo(joyStickControl);
-
-                // 점프 막기
-                this.OnCollisionEnter2DAsObservable()
-                    .Where(other => other.gameObject.layer == GroundLayer)
-                    .Subscribe(_ => { _canPlayerJump = true; }).AddTo(gameObject);
-
-                // Button Space 입력 -> 점프
-                buttonSpace.OnClickAsObservable()
-                    .Where(_ => _canPlayerJump && GameManager.Instance.canPlayerMove[0])
-                    .Subscribe(_ =>
+            if (!_photonView.IsMine) return;
+            
+            // JoyStick -> 이동
+            joyStickControl.InputDirection
+                .Where(_ => GameManager.Instance.Players[GameManager.Instance.myIndex].canMove)
+                .Subscribe(dir =>
+                {
+                    Move(dir.x);
+                    _spriteRenderer.flipX = dir.x < 0;
+                    if (_isWalk != (dir.x != 0))
                     {
-                        _photonView.RPC(nameof(Jump), RpcTarget.All);
-                        // Jump();
-                    }).AddTo(buttonSpace);
+                        _isWalk = (dir.x != 0);
+                        _animator.SetBool(IsWalk, _isWalk);
+                    }
+                }).AddTo(joyStickControl);
 
-                // Button E 입력 -> 상호작용
-                var buttonEStream = buttonE.OnClickAsObservable()
-                    .Zip(this.OnCollisionStay2DAsObservable(), (unit, collision) => collision)
-                    .Where(_ => GameManager.Instance.canPlayerMove[0])
-                    .First().Repeat();
+            // 점프 막기
+            this.OnCollisionEnter2DAsObservable()
+                .Where(other => other.gameObject.layer == GroundLayer)
+                .Subscribe(_ => { _canPlayerJump = true; }).AddTo(gameObject);
 
-                // 상호작용 -> 레버 작동
-                buttonEStream
-                    .Where(collision => collision.gameObject.CompareTag("Lever"))
-                    .Subscribe(collision => { _photonView.RPC("CallOnTriggerSwitch", RpcTarget.All, collision); })
-                    .AddTo(buttonE);
-            }
+            // Button Space 입력 -> 점프
+            buttonSpace.OnClickAsObservable()
+                .Where(_ => _canPlayerJump && GameManager.Instance.Players[GameManager.Instance.myIndex].canMove)
+                .Subscribe(_ =>
+                {
+                    _photonView.RPC(nameof(Jump), RpcTarget.All);
+                    _animator.SetTrigger(Jump1);
+                }).AddTo(buttonSpace);
+
+            // Button E 입력 -> 상호작용
+            var buttonEStream = buttonE.OnClickAsObservable()
+                .Zip(this.OnCollisionStay2DAsObservable(), (unit, collision) => collision)
+                .Where(_ => GameManager.Instance.Players[GameManager.Instance.myIndex].canMove)
+                .First().Repeat();
+
+            // 상호작용 -> 레버 작동
+            buttonEStream
+                .Where(collision => collision.gameObject.CompareTag("Lever"))
+                .Subscribe(collision =>
+                {
+                    _photonView.RPC("CallOnTriggerSwitch", RpcTarget.All, collision); 
+                    // animation
+                })
+                .AddTo(buttonE);
         }
 
         private void CallOnTriggerSwitch(Collider2D collision)
