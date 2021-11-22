@@ -39,7 +39,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         base.Awake();
     }
 
-    private void Update()
+    /*private void Update()
     {
        currentRoom.text = PhotonNetwork.IsConnected switch
         {
@@ -47,7 +47,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
             true => "Connecting",
             _ => "Disconnect"
         };
-    }
+    }*/
 
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {

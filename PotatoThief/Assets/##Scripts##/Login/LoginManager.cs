@@ -46,6 +46,10 @@ namespace Login
             {
                 MoveScene();
             }
+            else
+            {
+                StartLogin();
+            }
         }
 
         private void MoveScene()
