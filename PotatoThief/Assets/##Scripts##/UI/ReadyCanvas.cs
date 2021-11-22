@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Photon.Pun;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,11 +36,14 @@ namespace UI
                 {
                     case PlayersStatus.OtherJoined:
                         otherPlayerImage.DOFade(1f, 0.1f);
+                        canStart = true;
                         break;
                     case PlayersStatus.OtherDisconnected:
                         otherPlayerImage.DOFade(0.5f, 1f);
+                        canStart = false;
                         break;
                     case PlayersStatus.Joined:
+                        canStart = PhotonNetwork.CountOfPlayersInRooms == 2; // photon rooom player num
                         break;
                     case PlayersStatus.Disconnected:
                         break;
