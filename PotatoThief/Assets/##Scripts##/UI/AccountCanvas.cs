@@ -23,7 +23,7 @@ namespace UI
 
         private void Start()
         {
-            var playtime = (long) SceneManagerEx.Instance.SceneLoadInfo;
+            var playtime = SceneManagerEx.Instance.playTime;
             var time = 5;
             switch (SceneManagerEx.Instance.gameEndType)
             {
@@ -45,7 +45,7 @@ namespace UI
 
         private void AddScoreAtLeaderBoard()
         {
-            LeaderBoardExample.AddLeaderBoardData((long) SceneManagerEx.Instance.SceneLoadInfo);
+            LeaderBoardExample.AddLeaderBoardData((long) SceneManagerEx.Instance.playTime);
         }
     }
 }

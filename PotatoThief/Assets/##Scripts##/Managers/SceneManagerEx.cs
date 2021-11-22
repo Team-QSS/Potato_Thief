@@ -16,17 +16,16 @@ public class SceneManagerEx : Singleton<SceneManagerEx>
     public SceneType CurrentSceneType 
         => (SceneType)SceneManager.GetActiveScene().buildIndex;
 
-    public object SceneLoadInfo;
     public GameEndType gameEndType = GameEndType.None;
-
+    public long playTime;
+    
     public void LoadScene(SceneType type)
     {
         SceneManager.LoadScene((int) type);
     }
     
-    public void LoadScene(SceneType type, GameEndType gameEndType, object info)
+    public void LoadScene(SceneType type, GameEndType gameEndType)
     {
-        SceneLoadInfo = info;
         this.gameEndType = gameEndType;
         SceneManager.LoadScene((int) type);
     }

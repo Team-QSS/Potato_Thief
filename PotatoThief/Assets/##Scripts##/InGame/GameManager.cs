@@ -163,7 +163,8 @@ namespace InGame
 
             isGameEnd = true;
             for (int i = 0; i < Players.Length; i++) { Players[i].canMove = false; }
-            SceneManagerEx.Instance.LoadScene(SceneType.Account, gameEndType, maxLimitTime - limitTime);
+            SceneManagerEx.Instance.LoadScene(SceneType.Account, gameEndType);
+            SceneManagerEx.Instance.playTime = (long)(maxLimitTime - limitTime);
         }
         #endregion
 
