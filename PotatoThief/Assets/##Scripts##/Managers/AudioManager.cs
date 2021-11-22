@@ -4,7 +4,10 @@ using UnityEngine;
 public enum BGMType
 {
     None = -1,
-    Title
+    Title,
+    LobbyNReady,
+    InGame,
+    Account
 }
 
 public enum SFXType
