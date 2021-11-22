@@ -12,7 +12,11 @@ public enum CustomEventTypes
 {
     Default,
     CheckMaster,
-    CheckClient
+    CheckClient,
+    RequestReady,
+    AnswerReady,
+    ReadyOver,
+    GameStart
 }
 public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEventCallback
 {
@@ -33,16 +37,20 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
     {
         EventCode = photonEvent.Code;
 
-        switch (EventCode)
+        switch ((CustomEventTypes)EventCode)
         {
-            case (int)CustomEventTypes.CheckMaster:
+            case CustomEventTypes.CheckMaster:
                 GameManager.Instance.myIndex = 0;
                 SendEvent((byte)CustomEventTypes.CheckMaster, null, ReceiverGroup.Others);
                 break;
             
-            case (int)CustomEventTypes.CheckClient:
+            case CustomEventTypes.CheckClient:
                 GameManager.Instance.myIndex = 1;
                 break;
+            case CustomEventTypes.RequestReady: break;
+            case CustomEventTypes.AnswerReady: break;
+            case CustomEventTypes.ReadyOver: break;
+            case CustomEventTypes.GameStart: break;
         }
     }
     

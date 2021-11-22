@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Login;
 using Photon.Pun;
 using Photon.Realtime;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -32,6 +35,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     
     
     public Subject<PlayersStatus> playersStatus = new Subject<PlayersStatus>();
+    public Subject<string> RoomConnectionStatus = new Subject<string>();
 
     protected override void Awake()
     {
@@ -39,15 +43,19 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         base.Awake();
     }
 
-    /*private void Update()
+    private void Start()
     {
-       currentRoom.text = PhotonNetwork.IsConnected switch
+        this.UpdateAsObservable().Subscribe(_ =>
         {
-            true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
-            true => "Connecting",
-            _ => "Disconnect"
-        };
-    }*/
+            var status = PhotonNetwork.IsConnected switch
+            {
+                true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
+                true => "Connecting",
+                _ => "Disconnect"
+            };
+            RoomConnectionStatus.OnNext(status);
+        }).AddTo(gameObject);
+    }
 
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {

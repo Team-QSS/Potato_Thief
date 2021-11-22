@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4380781387031081265}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1700.3607, y: -972.966, z: 130.64844}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -48,7 +48,11 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   bgmSource: {fileID: 4380781387645149677}
   currentBGMClip: -1
-  bgmClips: []
+  bgmClips:
+  - {fileID: 8300000, guid: 45469100580357345a105d8dca204a76, type: 3}
+  - {fileID: 8300000, guid: c24a25645c839b942b6f988ea9ece602, type: 3}
+  - {fileID: 8300000, guid: ab69432f0bdf0fa4a9a8eb8ecd57e498, type: 3}
+  - {fileID: 8300000, guid: ed447a94c898d314b8953c59a7c61105, type: 3}
   sfxSource: {fileID: 4380781387996963116}
   sfxClips: []
 --- !u!1 &4380781387645149674
