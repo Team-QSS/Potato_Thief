@@ -23,7 +23,10 @@ namespace InGame
         [Header("속도")] 
         [SerializeField] private float moveSpeed = 10;
         [SerializeField] private float jumpPower = 10;
-        
+
+        [Header("애니메이션")] 
+        [SerializeField] private RuntimeAnimatorController[] controllers;
+
         private bool _canPlayerJump;
         private static readonly int IsWalk = Animator.StringToHash("IsWalk");
         private static readonly int Jump1 = Animator.StringToHash("Jump");
@@ -36,6 +39,7 @@ namespace InGame
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
 
+            SetPlayerColor(_photonView.IsMine);
             if (!_photonView.IsMine) return;
             
             // JoyStick -> 이동
@@ -114,6 +118,11 @@ namespace InGame
                 // 관측한 정보를 받을 내용
                 gameObject.transform.position = (Vector3) stream.ReceiveNext();
             }
+        }
+
+        private void SetPlayerColor(bool isMine)
+        {
+            _animator.runtimeAnimatorController = controllers[isMine ? 0 : 1];
         }
     }
 }

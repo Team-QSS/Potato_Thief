@@ -367,5 +367,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ready Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8440152102830613962, guid: 9dec31ad6ba946d44bb20cf297ecff73, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440152102830613962, guid: 9dec31ad6ba946d44bb20cf297ecff73, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dec31ad6ba946d44bb20cf297ecff73, type: 3}

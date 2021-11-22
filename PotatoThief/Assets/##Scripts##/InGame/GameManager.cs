@@ -13,7 +13,13 @@ namespace InGame
         public bool isRetired;
         public bool isFinished;
     }
-    
+    public enum GameEndType
+    {
+        None,
+        TimeOver,
+        DeadOver,
+        Clear
+    }
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private float maxLimitTime;
@@ -138,13 +144,6 @@ namespace InGame
 
         #region GameEnd (TimeOver, DeadOver, Clear)
 
-        private enum GameEndType
-        {
-            TimeOver,
-            DeadOver,
-            Clear
-        }
-        
         private void GameEnd(GameEndType gameEndType)
         {
             switch (gameEndType)
@@ -164,8 +163,7 @@ namespace InGame
 
             isGameEnd = true;
             for (int i = 0; i < Players.Length; i++) { Players[i].canMove = false; }
-            SceneManagerEx.Instance.LoadScene(SceneType.Account);
-
+            SceneManagerEx.Instance.LoadScene(SceneType.Account, gameEndType, maxLimitTime - limitTime);
         }
         #endregion
 

@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  maxLimitTime: 30
-  canPlayerMove: 
+  maxLimitTime: 180
+  myIndex: 0
