@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 767864259796596178}
   - component: {fileID: 767864259796596179}
   - component: {fileID: 767864259796596177}
+  - component: {fileID: 3013828171355838565}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -143,7 +144,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 767864259796596178}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -173,3 +175,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &3013828171355838565
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767864259796596181}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a69ea0172fd9644f8130644dd759241, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
