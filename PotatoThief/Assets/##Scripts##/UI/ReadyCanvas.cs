@@ -1,14 +1,24 @@
 using System;
 using DG.Tweening;
 using Photon.Pun;
+using Photon.Realtime;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+
+public class PlayerStatusCheck : Singleton<PlayerStatusCheck>
+{
+    public bool isPlayerReady;
+    public bool isOtherPlayerReady;
+
+}
 
 namespace UI
 {
     public class ReadyCanvas : MonoBehaviour
     {
+
+        
         [SerializeField] private bool canStart;
         [SerializeField] private Image otherPlayerImage;
     
@@ -21,9 +31,13 @@ namespace UI
 
         public void OnClickStartButton()
         {
+            PlayerStatusCheck.Instance.isPlayerReady = true;   // 자신은 상태가 준비됨을 저장
+            EventSender.SendRaiseEvent(CustomEventTypes.RequestReady, true, ReceiverGroup.Others);
+            /*
             if (!canStart) return;
             StreamReceiver.instance.SentMasterCheckEvent();
             SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+            */
         }
 
         private void Start()

@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 using InGame;
+using UI;
 
 public enum CustomEventTypes
 {
@@ -36,7 +37,7 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
     public void OnEvent(EventData photonEvent)
     {
         EventCode = photonEvent.Code;
-
+        var data = photonEvent.CustomData;
         switch ((CustomEventTypes)EventCode)
         {
             case CustomEventTypes.CheckMaster:
@@ -47,12 +48,69 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
             case CustomEventTypes.CheckClient:
                 GameManager.Instance.myIndex = 1;
                 break;
-            case CustomEventTypes.RequestReady: break;
-            case CustomEventTypes.AnswerReady: break;
-            case CustomEventTypes.ReadyOver: break;
-            case CustomEventTypes.GameStart: break;
+            
+            case CustomEventTypes.RequestReady:
+                Debug.Log("[Receiver] RequestReady");
+                RequestReadyEvent(data);
+                break;
+
+            case CustomEventTypes.AnswerReady:
+                Debug.Log("[Receiver] AnswerReady");
+                AnswerReadyEvent(data);
+                break;
+
+            case CustomEventTypes.ReadyOver:
+                Debug.Log("[Receiver] ReadyOver");
+                ReadyOverEvent();
+                break;
+
+            case CustomEventTypes.GameStart:
+                Debug.Log("[Receiver] GameStart");
+                GameStartEvent();
+                break;
         }
     }
+    
+    private static void RequestReadyEvent(object data)
+    {
+        var answer = PlayerStatusCheck.Instance.isPlayerReady;
+        PlayerStatusCheck.Instance.isOtherPlayerReady = (bool) data;
+        EventSender.SendRaiseEvent(CustomEventTypes.AnswerReady, answer, ReceiverGroup.Others);
+        Debug.Log("[Sender] Answer Ready");
+    }
+    
+    private static void AnswerReadyEvent(object data)
+    {
+        var otherReady = (bool) data;
+        PlayerStatusCheck.Instance.isOtherPlayerReady = otherReady;
+        var playerReady = PlayerStatusCheck.Instance.isPlayerReady;
+                
+        if (otherReady && playerReady)
+        {
+            EventSender.SendRaiseEvent(CustomEventTypes.ReadyOver, null, ReceiverGroup.MasterClient);
+            Debug.Log("[Sender] Ready Over");
+            return;
+        }
+
+        Debug.Log($"playerReady = {playerReady.ToString()}, otherPlayerReady = {otherReady.ToString()}");
+    }
+    
+    private static void ReadyOverEvent()
+    {
+        EventSender.SendRaiseEvent(CustomEventTypes.GameStart, null, ReceiverGroup.All);
+        // 게임 시작 전 준비과정
+        Debug.Log("[Sender] GameStart");
+    }
+    
+    private static void GameStartEvent()
+    {
+        // 게임 시작
+        StreamReceiver.instance.SentMasterCheckEvent();
+        SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+    }
+
+    
+    
     
     public void SendEvent(byte code, object data, ReceiverGroup target)
     {
