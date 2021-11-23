@@ -6,9 +6,15 @@ using Photon.Realtime;
 using Photon.Pun;
 using Login;
 
-public class StreamManager : MonoBehaviourPunCallbacks
+public class StreamManager : SingletonPhotonCallbacks<StreamManager>
 {
     public bool isRoomEntered = false;
+
+    protected override void Awake()
+    {
+        dontDestroyOnLoad = true;
+        base.Awake();
+    }
 
     private void Start()
     {

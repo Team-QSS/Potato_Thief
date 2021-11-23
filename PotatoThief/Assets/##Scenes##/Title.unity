@@ -220,6 +220,7 @@ Transform:
   - {fileID: 1148084314}
   - {fileID: 1152081396}
   - {fileID: 943738916}
+  - {fileID: 1387913480}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -426,6 +427,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 168396055}
     m_Modifications:
+    - target: {fileID: 3365705141546577442, guid: 1fc9a216ef9088248af5b3f90e3ccec5, type: 3}
+      propertyPath: currentRoom
+      value: 
+      objectReference: {fileID: 1757904634}
     - target: {fileID: 3365705141546577443, guid: 1fc9a216ef9088248af5b3f90e3ccec5, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -604,6 +609,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ec826b89724b3f857977fd266c33e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1387913479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1387913480}
+  - component: {fileID: 1387913481}
+  m_Layer: 0
+  m_Name: EventReceiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1387913480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387913479}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 168396055}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1387913481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387913479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a9f1a1d0d796e40bbc952549c9eb92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
 --- !u!1 &1757904631
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +689,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -200, y: 0}
-  m_SizeDelta: {x: 500, y: 100}
+  m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1757904633
 MonoBehaviour:
@@ -681,7 +730,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 70
-    m_Alignment: 5
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0

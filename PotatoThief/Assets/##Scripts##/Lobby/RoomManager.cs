@@ -21,7 +21,7 @@ public enum PlayersStatus
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
     [SerializeField] private Text currentRoom;
-    [SerializeField] private bool _isDebugMode = true;
+    [SerializeField] private bool _isDebugMode = false;
     
     private const int _maxRoomId = 1000000;
     private const int _minRoomId = 100000;
@@ -35,26 +35,24 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     
     
     public Subject<PlayersStatus> playersStatus = new Subject<PlayersStatus>();
-    public Subject<string> RoomConnectionStatus = new Subject<string>();
+    // public Subject<string> RoomConnectionStatus = new Subject<string>();
 
     protected override void Awake()
     {
         dontDestroyOnLoad = true;
         base.Awake();
     }
-
-    private void Start()
+    
+    private void Update()
     {
-        this.UpdateAsObservable().Subscribe(_ =>
+        currentRoom.text = PhotonNetwork.IsConnected switch
         {
-            var status = PhotonNetwork.IsConnected switch
-            {
-                true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
-                true => "Connecting",
-                _ => "Disconnect"
-            };
-            RoomConnectionStatus.OnNext(status);
-        }).AddTo(gameObject);
+            true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
+            true => "Connecting",
+            _ => "Disconnect"
+        };
+        currentRoom.text = $"{currentRoom.text} \nPlayer ready = {PlayerStatusCheck.Instance.isPlayerReady.ToString()}";
+        currentRoom.text = $"{currentRoom.text} \nOther Player ready = {PlayerStatusCheck.Instance.isOtherPlayerReady.ToString()}";
     }
 
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
@@ -185,6 +183,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnDisconnected(DisconnectCause cause)
     {
         // 연결 종료시 callback
+        PlayerStatusCheck.Instance.isPlayerReady = false;
         InitializedMatchingData(false, false, false);
         DisconnectRoom();
         Debug.Log("[OnDisconnected] : Disconnect Success");
@@ -198,6 +197,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.Log($"{otherPlayer.NickName} left the room");
+        PlayerStatusCheck.Instance.isOtherPlayerReady = false;
         playersStatus.OnNext(PlayersStatus.OtherDisconnected);
     }
 

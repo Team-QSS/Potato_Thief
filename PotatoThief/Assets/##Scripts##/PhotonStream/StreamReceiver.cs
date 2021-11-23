@@ -24,6 +24,12 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
     public byte EventCode { get; set; }
     public int Data { get; set; }
 
+    protected override void Awake()
+    {
+        dontDestroyOnLoad = true;
+        base.Awake();
+    }
+
     public override void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -42,7 +48,7 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
         {
             case CustomEventTypes.CheckMaster:
                 GameManager.Instance.myIndex = 0;
-                SendEvent((byte)CustomEventTypes.CheckMaster, null, ReceiverGroup.Others);
+                SendEvent((byte)CustomEventTypes.CheckClient, null, ReceiverGroup.Others);
                 break;
             
             case CustomEventTypes.CheckClient:
@@ -105,12 +111,10 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
     private static void GameStartEvent()
     {
         // 게임 시작
-        StreamReceiver.instance.SentMasterCheckEvent();
+        instance.SentMasterCheckEvent();
         SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+        
     }
-
-    
-    
     
     public void SendEvent(byte code, object data, ReceiverGroup target)
     {
