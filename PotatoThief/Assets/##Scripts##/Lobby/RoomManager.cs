@@ -20,7 +20,7 @@ public enum PlayersStatus
 
 public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
-    [SerializeField] private Text currentRoom;
+    // [SerializeField] private Text currentRoom;
     [SerializeField] private bool _isDebugMode = false;
     
     private const int _maxRoomId = 1000000;
@@ -43,6 +43,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         base.Awake();
     }
     
+    /*
     private void Update()
     {
         currentRoom.text = PhotonNetwork.IsConnected switch
@@ -54,6 +55,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         currentRoom.text = $"{currentRoom.text} \nPlayer ready = {PlayerStatusCheck.Instance.isPlayerReady.ToString()}";
         currentRoom.text = $"{currentRoom.text} \nOther Player ready = {PlayerStatusCheck.Instance.isOtherPlayerReady.ToString()}";
     }
+    */
 
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {
@@ -196,6 +198,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        PlayerStatusCheck.Instance.isPlayerLeave = true;
         Debug.Log($"{otherPlayer.NickName} left the room");
         PlayerStatusCheck.Instance.isOtherPlayerReady = false;
         playersStatus.OnNext(PlayersStatus.OtherDisconnected);

@@ -8,9 +8,10 @@ using UnityEngine.UI;
 
 public class PlayerStatusCheck : Singleton<PlayerStatusCheck>
 {
+    public bool isCanStart = false;
     public bool isPlayerReady;
     public bool isOtherPlayerReady;
-
+    public bool isPlayerLeave = true;
 }
 
 namespace UI
@@ -31,12 +32,16 @@ namespace UI
 
         public void OnClickStartButton()
         {
+            // print($"{PhotonNetwork.CountOfPlayersInRooms.ToString()}");
+            // if (PhotonNetwork.CountOfPlayersInRooms != 2) return;
+            // StreamReceiver.instance.SentMasterCheckEvent();
+            // SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+            
             PlayerStatusCheck.Instance.isPlayerReady = true;   // 자신은 상태가 준비됨을 저장
             EventSender.SendRaiseEvent(CustomEventTypes.RequestReady, true, ReceiverGroup.Others);
             /*
             if (!canStart) return;
-            StreamReceiver.instance.SentMasterCheckEvent();
-            SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+            
             */
         }
 

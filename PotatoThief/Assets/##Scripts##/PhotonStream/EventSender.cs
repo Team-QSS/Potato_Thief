@@ -11,9 +11,12 @@ public static class EventSender
     {
         SendRaiseEvent((byte) eventCode, contents, sendTarget);
     }
-    
+
     public static void SendRaiseEvent(byte eventCode, object contents, ReceiverGroup sendTarget)
     {
+        Debug.Log("[Event Sender] SendRaiseEvent");
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.CurrentRoom is null) return;
+        
         var raiseEventOptions = new RaiseEventOptions()
         {
             Receivers = sendTarget
@@ -22,7 +25,7 @@ public static class EventSender
         {
             Reliability = true
         };
-        
+        Debug.Log($"[Send Event] code : {eventCode.ToString()}");
         PhotonNetwork.RaiseEvent(eventCode, contents, raiseEventOptions, sendOptions);
     }
 }

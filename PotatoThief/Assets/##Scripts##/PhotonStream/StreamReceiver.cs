@@ -42,17 +42,21 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
 
     public void OnEvent(EventData photonEvent)
     {
-        EventCode = photonEvent.Code;
+        if(!PhotonNetwork.IsConnected || PhotonNetwork.CurrentRoom is null) return;
+        
+        Debug.Log("[Receiver] Receiver Data");
         var data = photonEvent.CustomData;
-        switch ((CustomEventTypes)EventCode)
+        switch ((CustomEventTypes)photonEvent.Code)
         {
             case CustomEventTypes.CheckMaster:
                 GameManager.Instance.myIndex = 0;
                 SendEvent((byte)CustomEventTypes.CheckClient, null, ReceiverGroup.Others);
+                Debug.Log("[Receiver] CheckMaster");
                 break;
             
             case CustomEventTypes.CheckClient:
                 GameManager.Instance.myIndex = 1;
+                Debug.Log("[Receiver] CheckClient");
                 break;
             
             case CustomEventTypes.RequestReady:
@@ -82,7 +86,7 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
         var answer = PlayerStatusCheck.Instance.isPlayerReady;
         PlayerStatusCheck.Instance.isOtherPlayerReady = (bool) data;
         EventSender.SendRaiseEvent(CustomEventTypes.AnswerReady, answer, ReceiverGroup.Others);
-        Debug.Log("[Sender] Answer Ready");
+        Debug.Log($"[Sender] Answer Ready : ans = {answer.ToString()}, other = {((bool) data).ToString()}");
     }
     
     private static void AnswerReadyEvent(object data)
@@ -113,6 +117,7 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
         // 게임 시작
         instance.SentMasterCheckEvent();
         SceneManagerEx.Instance.LoadScene(SceneType.InGame);
+        Debug.Log("[Receiver] GameStart");
         
     }
     
