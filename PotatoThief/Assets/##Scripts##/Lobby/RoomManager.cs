@@ -42,21 +42,6 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         dontDestroyOnLoad = true;
         base.Awake();
     }
-    
-    /*
-    private void Update()
-    {
-        currentRoom.text = PhotonNetwork.IsConnected switch
-        {
-            true when PhotonNetwork.CurrentRoom != null => $"ID : {PhotonNetwork.CurrentRoom.Name}",
-            true => "Connecting",
-            _ => "Disconnect"
-        };
-        currentRoom.text = $"{currentRoom.text} \nPlayer ready = {PlayerStatusCheck.Instance.isPlayerReady.ToString()}";
-        currentRoom.text = $"{currentRoom.text} \nOther Player ready = {PlayerStatusCheck.Instance.isOtherPlayerReady.ToString()}";
-    }
-    */
-
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {
         IsPublicRoom = isPublicRoom;
@@ -64,10 +49,9 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         IsCreateRoom = isCreateRoom;
     }
     
-    
     public void ShowPublicRoomList()
     {
-        UnityEngine.Debug.Log("Show Public Room List");
+        Debug.Log("Show Public Room List");
         _isShowRoomList = true;
         // 기능 구현 필요
         _isShowRoomList = false;
@@ -114,10 +98,12 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public override void OnConnectedToMaster()
     {
-        string userName;
-        
         // 디버그 돌릴경우에는 Firebase없이 로컬에서 테스트 하기 위함
-        userName = _isDebugMode ? "_DEBUGER" : LoginManager.firebaseLoginManager.User.DisplayName;
+        var isAndroidPlatform = Application.platform == RuntimePlatform.Android;
+        var userName = isAndroidPlatform
+            ? LoginManager.firebaseLoginManager.User.DisplayName
+            : $"USER{Random.Range(10000, 100000).ToString()}";
+            
         
         PhotonNetwork.LocalPlayer.NickName = userName;
 

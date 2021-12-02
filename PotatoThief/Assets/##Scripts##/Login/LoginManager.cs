@@ -36,7 +36,13 @@ namespace Login
             
             // 로그인 시작부분
             Debug.Log("Start LoginOAuth");
-            StartLogin();
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                StartLogin();
+            }else
+            {
+                _isSigned.Value = true;
+            }
         }
         
         public void StartButtonDown()
