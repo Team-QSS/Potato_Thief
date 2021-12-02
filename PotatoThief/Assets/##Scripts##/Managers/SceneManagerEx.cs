@@ -1,4 +1,5 @@
 using InGame;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,12 +22,12 @@ public class SceneManagerEx : Singleton<SceneManagerEx>
     
     public void LoadScene(SceneType type)
     {
-        SceneManager.LoadScene((int) type);
+        PhotonNetwork.LoadLevel((int) type);
     }
     
     public void LoadScene(SceneType type, GameEndType gameEndType)
     {
         this.gameEndType = gameEndType;
-        SceneManager.LoadScene((int) type);
+        PhotonNetwork.LoadLevel((int) type);
     }
 }
