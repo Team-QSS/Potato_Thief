@@ -9,7 +9,8 @@ public enum SceneType
     Lobby,
     Ready,
     InGame,
-    Account
+    Account,
+    NewLobby
 }
 
 public class SceneManagerEx : Singleton<SceneManagerEx>
@@ -19,6 +20,9 @@ public class SceneManagerEx : Singleton<SceneManagerEx>
 
     public GameEndType gameEndType = GameEndType.None;
     public long playTime;
+
+    [Header("Editor Tool")] [SerializeField] [ContextMenuItem("LoadScene", "LoadSceneContextMenu")]
+    private SceneType sceneTypeToLoad;
     
     public void LoadScene(SceneType type)
     {
@@ -30,4 +34,11 @@ public class SceneManagerEx : Singleton<SceneManagerEx>
         this.gameEndType = gameEndType;
         PhotonNetwork.LoadLevel((int) type);
     }
+
+    public void LoadSceneContextMenu()
+    {
+        LoadScene(sceneTypeToLoad);
+    }
 }
+
+
