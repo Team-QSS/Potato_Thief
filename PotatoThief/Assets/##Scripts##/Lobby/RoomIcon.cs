@@ -17,6 +17,6 @@ public class RoomIcon : MonoBehaviour
     }
     public void EnterSelectRoom()
     {
-        RoomManager.instance.EnterRoomId(RoomID);
+        RoomManager.instance.EnterCustomRoom(RoomID);
     }
 }
