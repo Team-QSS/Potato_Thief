@@ -15,6 +15,12 @@ namespace UI
 
         public void OnClickCustomRoomButton()
         {
+            Debug.Log(roomIDInputField.text.Length);
+            if (roomIDInputField.text.Length != 6)
+            {
+                // ToDo : 에러 메세지 UI로 표시
+                return;
+            }
             RoomManager.instance.EnterCustomRoom(roomIDInputField.text);
         }
 
