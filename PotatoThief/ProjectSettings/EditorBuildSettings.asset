@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/##Scenes##/Title.unity
     guid: 47cd3f5c23763ef4796477891881d313
   - enabled: 1
+    path: Assets/##Scenes##/Lobby.unity
+    guid: cc9a227669265c74eb781a5595c00bf9
+  - enabled: 0
     path: Assets/##Scenes##/_Lobby.unity
     guid: d97e4138037d996449fba8524aa2ff2a
   - enabled: 1
@@ -23,7 +26,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/##Scenes##/EndingAccount.unity
     guid: 4f0e2347346c96a48a3ff8ed8da13bc6
-  - enabled: 1
-    path: Assets/##Scenes##/Lobby.unity
-    guid: cc9a227669265c74eb781a5595c00bf9
   m_configObjects: {}

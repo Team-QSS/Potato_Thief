@@ -19,14 +19,14 @@ public class LobbyUIManager : MonoBehaviour
     public void RandomMatchingButtonDown()
     {
         Debug.Log("Call EnterRandomRoom");
-        RoomManager.instance.EnterPublicRoom();
+        RoomManager.instance.EnterRandomRoom();
     }
     
     public void RoomIdMatchingButtonDown()
     {
         Debug.Log("Call RoomIdMatchingButtonDown");
         var roomId = _roomIdInputField.text;
-        RoomManager.instance.EnterRoomId(roomId);
+        RoomManager.instance.EnterCustomRoom(roomId);
     }
 
     public void MatchingPopupButtonDown()
@@ -44,7 +44,7 @@ public class LobbyUIManager : MonoBehaviour
     public void RoomCreateButtonDown()
     {
         Debug.Log("Call RoomCreateButtonDown");
-        RoomManager.instance.CreatRoom(_isPublicRoomToggle.isOn);
+        RoomManager.instance.CreateRoom(_isPublicRoomToggle.isOn);
     }
 
     public void RoomDisconnectButtonDown()
