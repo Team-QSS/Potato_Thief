@@ -7,36 +7,57 @@ namespace InGame
 {
     public class PressurePlate : Trigger
     {
-        public PhotonView pv;
-        private SpriteRenderer spriteRenderer;
+        [SerializeField] private SpriteRenderer spriteRenderer;
 
         private readonly Color activeColor = Color.green;
         private readonly Color inactiveColor = Color.white;
 
-        public void Start()
+        [PunRPC] public void Start()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            TriggerSubscribe();
+            if (spriteRenderer == null)
+            {
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            }
+
+            pv.RPC(nameof(TriggerSubscribe), RpcTarget.All);
         }
 
-        private void TriggerSubscribe()
+        [PunRPC] private void TriggerSubscribe()
         {
             var collisionStream = this.OnCollisionEnter2DAsObservable()
                 .Merge(this.OnCollisionExit2DAsObservable());
 
             collisionStream
-                .Where(other => other.gameObject.CompareTag("Player"))
-                .Subscribe(_ => { pv.RPC("OnTriggerSwitch", RpcTarget.All); }).AddTo(this);
+                .Where(other => CollisionCheck() && IsPlayerCollision(other))
+                .Subscribe(_ => { OnTriggerSwitch(); }).AddTo(this);
         }
 
-        protected override void ActivateTrigger()
+        private bool CollisionCheck()
+        {
+            Debug.Log("[Pressure Plate] Collision Occurred");
+            return true;
+        }
+        private bool IsPlayerCollision(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                Debug.Log("[Pressure Plate] Player Collision");
+                return true;
+            }
+            Debug.Log("[Pressure Plate] Other Collision");
+            return false;
+        }
+        
+        [PunRPC] protected override void ActivateTrigger()
         {
             spriteRenderer.color = activeColor;
+            Debug.Log("[Pressure Plate] Active");
         }
 
-        protected override void DeactivateTrigger()
+        [PunRPC] protected override void DeactivateTrigger()
         {
             spriteRenderer.color = inactiveColor;
+            Debug.Log("[Pressure Plate] Inactive");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 namespace InGame
 {
@@ -9,18 +10,20 @@ namespace InGame
         private readonly Color activeColor = Color.green;
         private readonly Color inactiveColor = Color.white;
 
-        private void Start()
+        [PunRPC] private void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        protected override void ActivateTrigger()
+        [PunRPC] protected override void ActivateTrigger()
         {
+            Debug.Log("[Lever] Active");
             spriteRenderer.color = activeColor;
         }
 
-        protected override void DeactivateTrigger()
+        [PunRPC] protected override void DeactivateTrigger()
         {
+            Debug.Log("[Lever] Inactive");
             spriteRenderer.color = inactiveColor;
         }
     }

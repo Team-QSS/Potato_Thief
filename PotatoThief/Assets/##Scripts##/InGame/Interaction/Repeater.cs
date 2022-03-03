@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 namespace InGame
@@ -19,8 +20,9 @@ namespace InGame
         }
 
         // 전체 트리거 확인
-        public void TriggerStatusCheck()
+        [PunRPC] public void TriggerStatusCheck()
         {
+            Debug.Log("[Repeater] Check Obstacle Status");
             if (triggers.Any(trigger => !trigger.Status))
             {
                 DeactivateTriggerees();
@@ -35,7 +37,9 @@ namespace InGame
         {
             foreach (var obstacle in triggerees)
             {
-                obstacle.ActivateTriggeree();
+                Debug.Log("[Repeater] Active Obstacle Status");
+                var pv = obstacle.GetComponent<PhotonView>();
+                pv.RPC(nameof(obstacle.ActivateTriggeree), RpcTarget.All);
                 obstacle.Status = true;
             }
         }
@@ -45,7 +49,9 @@ namespace InGame
         {
             foreach (var obstacle in triggerees)
             {
-                obstacle.DeactivateTriggeree();
+                Debug.Log("[Repeater] Inactive Obstacle Status");
+                var pv = obstacle.GetComponent<PhotonView>();
+                pv.RPC(nameof(obstacle.DeactivateTriggeree), RpcTarget.All);
                 obstacle.Status = false;
             }
         }

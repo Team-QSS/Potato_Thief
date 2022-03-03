@@ -10,13 +10,14 @@ namespace InGame
 
         [SerializeField] private ItemType item;
 
-        private void Start()
+        [PunRPC] private void Start()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        [PunRPC]protected override void ActivateTouch()
+        [PunRPC] protected override void ActivateTouch()
         {
+            Debug.Log($"[Obstacle] Call Method ActivateTouch(Status : {Status})");
             if(Status) return;
             
             base.ActivateTouch();
@@ -27,7 +28,7 @@ namespace InGame
             Status = true;
         }
 
-        private void Disable()
+        [PunRPC] private void Disable()
         {
             gameObject.SetActive(false);
         }
