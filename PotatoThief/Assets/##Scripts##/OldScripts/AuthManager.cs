@@ -52,6 +52,7 @@ public class AuthManager : MonoBehaviour
 
     void PlayGamesPlatformInit()
     {
+#if UNITY_ANDROID
         //* 게임에서 RequestServerAuthCode 설정을 사용 설정하여 Play 게임 클라이언트를 구성합니다.
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             .RequestServerAuthCode(false /* Don't force refresh */)
@@ -60,10 +61,12 @@ public class AuthManager : MonoBehaviour
         // Play Games 플랫폼을 활성화 -> Social.localUser.Authenticate같이 Social.Active에서 메서드 호출 가능
         PlayGamesPlatform.Activate();
         //*
+#endif
     }
     
     public void LogIn()
     {
+#if UNITY_ANDROID
         // 플레이어가 Play 게임으로 로그인한 후 로그인 지속 핸들러에서 플레이어 계정의 인증 코드를 가져옵니다
         Social.localUser.Authenticate(success => {
             Debug.Log(success ? "// Logged in successfully" : "// Failed to login");
@@ -94,6 +97,7 @@ public class AuthManager : MonoBehaviour
             Debug.Log($"// User signed in successfully: {newUser.DisplayName} ({newUser.UserId})");
             LogText.text += $"\nUser signed in successfully: {newUser.DisplayName} ({newUser.UserId})";
         });
+#endif
     }
 
     public void LogOut()

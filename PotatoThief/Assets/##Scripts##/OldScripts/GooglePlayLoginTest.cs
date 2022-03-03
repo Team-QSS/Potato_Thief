@@ -24,6 +24,7 @@ namespace Ws_Peroth
 
         private void GooglePlayLogin()
         {
+#if UNITY_ANDROID
             Debug.Log("GooglePlayLogin()\n");
             var config =
                new PlayGamesClientConfiguration.Builder()
@@ -51,6 +52,7 @@ namespace Ws_Peroth
                 }
 
             });
+#endif
         }
         private void FirebaseLogin()
         {

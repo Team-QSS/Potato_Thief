@@ -4,6 +4,7 @@ using KJG;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+/*
 public class PhotonViewScriptToDemo : MonoBehaviourPunCallbacks
 {
     public GameObject playerTemplate;
@@ -39,3 +40,4 @@ public class PhotonViewScriptToDemo : MonoBehaviourPunCallbacks
         }
     }
 }
+*/
