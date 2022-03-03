@@ -22,17 +22,15 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 {
     // [SerializeField] private Text currentRoom;
     [SerializeField] private bool _isDebugMode = false;
+    [SerializeField] private bool _isShowRoomList;
     
     private const int _maxRoomId = 1000000;
     private const int _minRoomId = 100000;
-    
-    private bool _isConnecting;
-    [SerializeField] private bool _isShowRoomList;
-
+    public bool IsConnecting { get; set; }
     public bool IsCreateRoom { get; set; }
     public bool IsPublicRoom { get; set; }
     public string RoomName { get; set; }
-    
+    public ReactiveProperty<string> ConnectStatus = new ReactiveProperty<string>();
     
     public Subject<PlayersStatus> playersStatus = new Subject<PlayersStatus>();
     // public Subject<string> RoomConnectionStatus = new Subject<string>();
@@ -45,7 +43,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     private void InitializedMatchingData(bool isPublicRoom, bool isConnecting, bool isCreateRoom)
     {
         IsPublicRoom = isPublicRoom;
-        _isConnecting = isConnecting;
+        this.IsConnecting = isConnecting;
         IsCreateRoom = isCreateRoom;
     }
     
@@ -64,7 +62,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public void CreatRoom(bool isPublicRoom)
     {
-        if(_isConnecting) return;
+        if(IsConnecting) return;
         InitializedMatchingData(isPublicRoom, true, true);
         
         Debug.Log("[Creat Room] Enter Random Room");
@@ -73,7 +71,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public void EnterPublicRoom()
     {
-        if(_isConnecting) return;
+        if(IsConnecting) return;
         InitializedMatchingData(true, true, false);
 
         Debug.Log("[Enter Room] Enter Public Room");
@@ -82,7 +80,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public void EnterRoomId(string roomId)
     {
-        if(_isConnecting) return;
+        if(IsConnecting) return;
         RoomName = roomId;
         InitializedMatchingData(false, true, false);
 
@@ -98,55 +96,46 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
 
     public override void OnConnectedToMaster()
     {
-        // 디버그 돌릴경우에는 Firebase없이 로컬에서 테스트 하기 위함
         var isAndroidPlatform = Application.platform == RuntimePlatform.Android;
-        var userName = isAndroidPlatform
+        // 로그인이 안되어있는 경우에는 임의의 닉네임으로 지정
+        PhotonNetwork.LocalPlayer.NickName = isAndroidPlatform
             ? LoginManager.firebaseLoginManager.User.DisplayName
             : $"USER{Random.Range(10000, 100000).ToString()}";
-            
-        
-        PhotonNetwork.LocalPlayer.NickName = userName;
-
-
+        // 방 생성시 수행할 코드
+        ConnectStatus.Value = "Connecting to room";
         if (IsCreateRoom)
         {
-            // 방 생성시 수행할 코드
             RoomName = GetRandomRoomCode();
-
             var roomOptions = new RoomOptions();
             roomOptions.IsVisible = IsPublicRoom;
             roomOptions.MaxPlayers = 2;
-
             PhotonNetwork.CreateRoom(RoomName, roomOptions);
+            return;
         }
-        else
+        // 방 입장시 수행할 코드
+        if (IsPublicRoom)
         {
-            // 방 입장시 수행할 코드
-            if (IsPublicRoom)
-            {
-                // 공개방 입장
-                PhotonNetwork.JoinRandomRoom(null, 2);
-            }
-            else
-            {
-                // 비공개방 입장
-                PhotonNetwork.JoinRoom(RoomName);
-            }
+            PhotonNetwork.JoinRandomRoom(null, 2); // 공개방 입장
+            return;
         }
+        // 비공개방 입장
+        PhotonNetwork.JoinRoom(RoomName);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         // 방 생성 실패시 callback
-        _isConnecting = false;
+        ConnectStatus.Value = "Failed to create room";
+        IsConnecting = false;
         DisconnectRoom();
-        Debug.Log($"{returnCode} : {message}");
+        Debug.Log($"{returnCode.ToString()} : {message}");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         // 랜덤 방 입장 실패시 callback
-        _isConnecting = false;
+        ConnectStatus.Value = "Failed to join room";
+        IsConnecting = false;
         DisconnectRoom();
         Debug.Log($"{returnCode.ToString()} : {message}");
     }
@@ -154,7 +143,8 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         // 방 입장 실패시 callback
-        _isConnecting = false;
+        ConnectStatus.Value = "Failed to join room";
+        IsConnecting = false;
         DisconnectRoom();
         Debug.Log($"{returnCode.ToString()} : {message}");
     }
@@ -162,9 +152,8 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     public override void OnJoinedRoom()
     {
         // 방 입장 성공시 callback
-        _isConnecting = false;
+        IsConnecting = false;
         Debug.Log("[OnJoinedRoom] : Join Success");
-        PhotonNetwork.Instantiate("StreamObject", Vector3.zero, Quaternion.identity);
         SceneManagerEx.Instance.LoadScene(SceneType.Ready);
     }
 

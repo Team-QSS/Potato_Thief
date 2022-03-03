@@ -14,6 +14,7 @@ namespace Login
         /// <param name="callback"></param>
         public void OnOAuthAuthenticate(System.Action<bool> callback)
         {
+#if UNITY_ANDROID
             Debug.Log("Start GooglePlayLogin");
             var config =
                 new PlayGamesClientConfiguration.Builder()
@@ -38,6 +39,7 @@ namespace Login
 
                 callback(success);
             });
+#endif
         }
     }
 }
