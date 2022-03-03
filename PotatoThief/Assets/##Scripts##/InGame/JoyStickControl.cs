@@ -19,8 +19,7 @@ namespace InGame
 
         public Subject<Vector3> InputDirection = new Subject<Vector3>();  // 입력방향
         public IObservable<Vector3> InputDirectionStream => InputDirection.ObserveOnMainThread();
-
-
+        
         public void OnBeginDrag(PointerEventData eventData) { }
 
         public void OnDrag(PointerEventData eventData)
@@ -34,7 +33,6 @@ namespace InGame
 
             _pointTransform.anchoredPosition = _inputPosition;
             InputDirection.OnNext(_inputPosition * _posToDir);
-            
         }
 
         public void OnEndDrag(PointerEventData eventData)

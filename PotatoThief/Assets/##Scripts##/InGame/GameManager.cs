@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Photon.Pun;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 namespace InGame
 {
@@ -22,15 +25,41 @@ namespace InGame
     }
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField] private GameObject playerPrefab;
         [SerializeField] private float maxLimitTime;
+        
+        public readonly Vector3 OtherPlayerSpawnPosition = new Vector3(-8f, -3.11f, 0);
+        private readonly Vector3 _playerSpawnPosition = new Vector3(-6f, -3.11f, 0);
         private float limitTime;
         private bool isGameEnd;
 
-        private const int maxHP = 5;
         public Player[] Players;
         public int myIndex;
+        private const int maxHP = 5;
 
-        private void Start()
+        public GameObject player;
+        public GameObject otherPlayer;
+        
+        [Header("조작 UI")] 
+        public JoyStickControl joyStickControl;
+        public Button buttonSpace;
+        public Button buttonE;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            SpawnPlayer();
+            InitializePlayerInformation();
+        }
+
+        [PunRPC]
+        private void SpawnPlayer()
+        {
+            Debug.Log("[GameManager] SpawnPlayer");
+            PhotonNetwork.Instantiate("PlayerObject", _playerSpawnPosition, Quaternion.identity);
+        }
+
+        private void InitializePlayerInformation()
         {
             Players = new Player[2];
             Players[0].hp = Players[1].hp = maxHP;

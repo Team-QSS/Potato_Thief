@@ -25,15 +25,16 @@ namespace InGame
         public void SetTarget(GameObject my, GameObject another)
         {
             myCharacterTransform = my.transform;
-            anotherCharacterTransform = another.transform;
+            anotherCharacterTransform = another == null ? my.transform : another.transform;
         }
 
         private void Start()
         {
             _camera = GetComponent<Camera>();
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            SetTarget(players[0], players[1]);
-
+            // var players = GameObject.FindGameObjectsWithTag("Player"); // Cant find PlayerObject
+            // SetTarget(players[0], players[1]);
+            SetTarget(GameManager.Instance.player, GameManager.Instance.otherPlayer);
+            
             this.UpdateAsObservable()
                 .Where(_ => myCharacterTransform != null && anotherCharacterTransform != null)
                 .Subscribe(_ =>
@@ -43,9 +44,20 @@ namespace InGame
 
                     transform.position = CameraPosition(my, another);
                     _camera.orthographicSize = CameraSize(my, another);
+                    /*
+                     Debug.Log($"[CameraControl]\n" +
+                              $"Position = {transform.position.ToString()}\n" +
+                              $"Size = {_camera.orthographicSize.ToString()}");
+                    */
                 }).AddTo(gameObject);
         }
 
+        private bool CameraTargetNullCheck()
+        {
+            Debug.Log("[CameraControl] Target is Not Null");
+            return true;
+        }
+        
         // 카메라 위치 : 두 캐릭터 위치의 중점
         private static Vector3 CameraPosition(Vector3 my, Vector3 another)
         {
