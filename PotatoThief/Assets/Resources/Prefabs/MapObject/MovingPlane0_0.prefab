@@ -97,7 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64dbd08bbcc344c38bde08f863fc29b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: -3082915234609687973}
   moveDirection: {x: 0, y: 2, z: 0}
+  tweenDuration: 1
 --- !u!61 &1223029361
 BoxCollider2D:
   m_ObjectHideFlags: 0

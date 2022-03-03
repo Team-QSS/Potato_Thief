@@ -126,6 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 1932140241129500011}
+  pv: {fileID: 1932140241129500011}
+  spriteRenderer: {fileID: 1965352741572167041}
 --- !u!114 &1932140241129500011
 MonoBehaviour:
   m_ObjectHideFlags: 0
