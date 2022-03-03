@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -870,7 +870,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1018,6 +1018,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ec826b89724b3f857977fd266c33e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmSlider: {fileID: 855144151909440318}
+  sfxSlider: {fileID: 855144150898696339}
 --- !u!1 &855144152032338486
 GameObject:
   m_ObjectHideFlags: 0
