@@ -7,9 +7,9 @@ namespace InGame
     public class MovingPlane : Triggeree
     {
         [SerializeField] private PhotonView pv;
-        [SerializeField] private Vector3 moveDirection;
-        [SerializeField] private float tweenDuration = 1;
-        private Vector3 defaultPosition;
+        [SerializeField] private float movingDuration = 1;
+        public Vector3 destPosition;
+        public Vector3 defaultPosition;
 
         [PunRPC] private void Start()
         {
@@ -20,14 +20,19 @@ namespace InGame
         {
             Debug.Log("[Moving Plate] Active");
             base.ActivateTriggeree();
-            transform.DOMove(transform.position + moveDirection, tweenDuration);
+            transform.DOMove(transform.position + destPosition, movingDuration);
         }
 
         [PunRPC] public override void DeactivateTriggeree()
         {
             Debug.Log("[Moving Plate] Inactive");
             base.DeactivateTriggeree();
-            transform.DOMove(defaultPosition, tweenDuration);
+            transform.DOMove(defaultPosition, movingDuration);
+        }
+
+        private void Reset()
+        {
+            defaultPosition = transform.position;
         }
     }
 }
