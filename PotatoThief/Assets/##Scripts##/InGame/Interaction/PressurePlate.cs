@@ -2,13 +2,14 @@
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 namespace InGame
 {
     public class PressurePlate : Trigger
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
-
+        private int _objectCount;
         private readonly Color activeColor = Color.green;
         private readonly Color inactiveColor = Color.white;
 
@@ -22,17 +23,47 @@ namespace InGame
             pv.RPC(nameof(TriggerSubscribe), RpcTarget.All);
         }
 
-        [PunRPC] private void TriggerSubscribe()
+        [PunRPC]
+        private void TriggerSubscribe()
         {
-            var collisionStream = 
-                this.OnCollisionEnter2DAsObservable()
-                .Merge(this.OnCollisionExit2DAsObservable());
+            var collisionExitStream = this.OnCollisionExit2DAsObservable();
+            var collisionEnterStream = this.OnCollisionEnter2DAsObservable();
 
+            collisionExitStream
+                .Where(other => CollisionCheck() && IsPlayerCollision(other))
+                .Subscribe(_ =>
+                {
+                    Debug.Log("[Pressure Plate] Exit Stream");
+                    _objectCount--;
+                    IsStatusChange(); // 1 -> 0 : 상태 반전
+                }).AddTo(this);
+
+            collisionEnterStream
+                .Where(other => CollisionCheck() && IsPlayerCollision(other))
+                .Subscribe(_ =>
+                {
+                    Debug.Log("[Pressure Plate] Enter Stream");
+                    IsStatusChange(); // 0 -> 1 : 상태 반전
+                    _objectCount++;
+                });
+            /*
+            var collisionStream = 
+                this.OnCollisionEnter2DAsObservable().
+                    Merge(this.OnCollisionExit2DAsObservable());
+            
             collisionStream
                 .Where(other => CollisionCheck() && IsPlayerCollision(other))
                 .Subscribe(_ => {  OnTriggerSwitch(); }).AddTo(this);
+            */
         }
 
+        private void IsStatusChange()
+        {
+            if (_objectCount == 0)
+            {
+                OnTriggerSwitch();
+            }
+        }
         private bool CollisionCheck()
         {
             Debug.Log("[Pressure Plate] Collision Occurred");
