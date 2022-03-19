@@ -20,7 +20,7 @@ namespace InGame
         }
 
         // 전체 트리거 확인
-        [PunRPC] public void TriggerStatusCheck()
+        public void TriggerStatusCheck()
         {
             Debug.Log("[Repeater] Check Obstacle Status");
             if (triggers.Any(trigger => !trigger.Status))

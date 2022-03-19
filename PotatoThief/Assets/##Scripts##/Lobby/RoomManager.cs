@@ -64,8 +64,8 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
     {
         if(IsConnecting) return;
         InitializedMatchingData(isPublicRoom, true, true);
-        
-        Debug.Log("[Creat Room] Enter Random Room");
+
+        Debug.Log($"[Creat Room] Creat {(isPublicRoom ? "Public" : "Private")} Room");
         PhotonNetwork.ConnectUsingSettings();
     }       
 
@@ -103,12 +103,14 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
             : $"USER{Random.Range(10000, 100000).ToString()}";
         // 방 생성시 수행할 코드
         ConnectStatus.Value = "Connecting to room";
+        
         if (IsCreateRoom)
         {
             RoomName = GetRandomRoomCode();
             var roomOptions = new RoomOptions();
             roomOptions.IsVisible = IsPublicRoom;
             roomOptions.MaxPlayers = 2;
+            Debug.Log($"Room Code : {RoomName}");
             PhotonNetwork.CreateRoom(RoomName, roomOptions);
             return;
         }
@@ -165,12 +167,7 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         DisconnectRoom();
         Debug.Log("[OnDisconnected] : Disconnect Success");
     }
-
-    private void UpdateRoomList(List<RoomInfo> roomList)
-    {
-        Debug.Log("Update Room List");
-    }
-
+    
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         PlayerStatusCheck.Instance.isPlayerLeave = true;
@@ -194,4 +191,9 @@ public class RoomManager : SingletonPhotonCallbacks<RoomManager>
         
         UpdateRoomList(roomList);
     }
+    private void UpdateRoomList(List<RoomInfo> roomList)
+    {
+        Debug.Log("Update Room List");
+    }
+
 }

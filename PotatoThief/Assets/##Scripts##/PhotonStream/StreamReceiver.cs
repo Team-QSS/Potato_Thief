@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
@@ -44,7 +45,7 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
     {
         if(!PhotonNetwork.IsConnected || PhotonNetwork.CurrentRoom is null) return;
         
-        Debug.Log("[Receiver] Receiver Data");
+        // Debug.Log("[Receiver] Receiver Data");
         var data = photonEvent.CustomData;
         switch ((CustomEventTypes)photonEvent.Code)
         {
@@ -77,6 +78,11 @@ public class StreamReceiver : SingletonPhotonCallbacks<StreamReceiver>, IOnEvent
             case CustomEventTypes.GameStart:
                 Debug.Log("[Receiver] GameStart");
                 GameStartEvent();
+                break;
+            case CustomEventTypes.Default:
+                break;
+            default:
+                Debug.Log($"[Receiver] Receive Another Code : {photonEvent.Code.ToString()}");
                 break;
         }
     }

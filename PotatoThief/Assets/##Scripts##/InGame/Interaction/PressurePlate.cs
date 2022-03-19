@@ -24,12 +24,13 @@ namespace InGame
 
         [PunRPC] private void TriggerSubscribe()
         {
-            var collisionStream = this.OnCollisionEnter2DAsObservable()
+            var collisionStream = 
+                this.OnCollisionEnter2DAsObservable()
                 .Merge(this.OnCollisionExit2DAsObservable());
 
             collisionStream
                 .Where(other => CollisionCheck() && IsPlayerCollision(other))
-                .Subscribe(_ => { OnTriggerSwitch(); }).AddTo(this);
+                .Subscribe(_ => {  OnTriggerSwitch(); }).AddTo(this);
         }
 
         private bool CollisionCheck()
@@ -37,6 +38,7 @@ namespace InGame
             Debug.Log("[Pressure Plate] Collision Occurred");
             return true;
         }
+        
         private bool IsPlayerCollision(Collision2D other)
         {
             if (other.gameObject.CompareTag("Player"))

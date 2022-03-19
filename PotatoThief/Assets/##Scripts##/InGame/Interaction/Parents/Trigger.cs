@@ -14,26 +14,32 @@ namespace InGame
             set => repeater = value;
         }
 
-        public void OnTriggerSwitch()   // 공유자원
+        public void  OnTriggerSwitch()   // 공유자원
         {
-            Debug.Log($"[Trigger] Call Method OnTriggerSwitch()");
+            Debug.Log("[Trigger] Call Method OnTriggerSwitch()");
             Status = !Status;
+            Debug.Log($"[Trigger] Status : {Status}");
+            
             if (Status)
             {
-                pv.RPC(nameof(ActivateTrigger), RpcTarget.All);
+                // pv.RPC(nameof(ActivateTrigger), RpcTarget.All);
+                ActivateTrigger();
             }
             else
             {
-                pv.RPC(nameof(DeactivateTrigger), RpcTarget.All);
+                // pv.RPC(nameof(DeactivateTrigger), RpcTarget.All);
+                DeactivateTrigger();
             }
-            pv.RPC(nameof(repeater.TriggerStatusCheck), RpcTarget.All);
+            // pv.RPC(nameof(repeater.TriggerStatusCheck), RpcTarget.All);
+            
+            repeater.TriggerStatusCheck();
             // 다른 플레어에서 이 함수가 호출되게 함 
         }
 
         // -> 활성화
-        protected virtual void ActivateTrigger() { }
+        [PunRPC] protected virtual void ActivateTrigger() { }
 
         // -> 비활성화
-        protected virtual void DeactivateTrigger() { }
+        [PunRPC] protected virtual void DeactivateTrigger() { }
     }
 }

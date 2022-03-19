@@ -17,7 +17,13 @@ public class LobbyUIManager : MonoBehaviour
 
     private void Start()
     {
-        RoomManager.instance.ConnectStatus.Subscribe(x => connectStatusText.text = x);
+        RoomManager.instance.ConnectStatus.Subscribe(x =>
+        {
+            if (!connectStatusText.IsDestroyed() && connectStatusText.enabled)
+            {
+                connectStatusText.text = x;
+            }
+        });
         connectStatusPopupScreen.SetActive(false);
         creatRoomPopupScreen.SetActive(false);
         enterRoomPopupScreen.SetActive(false);

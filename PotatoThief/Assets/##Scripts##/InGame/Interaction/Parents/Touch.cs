@@ -8,7 +8,7 @@ namespace InGame
     public class Touch : Interaction
     {
         public PhotonView pv;
-        [PunRPC] protected virtual void Awake()
+        protected virtual void Awake()
         {
             TouchSubscribe();
         }

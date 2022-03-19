@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace InGame
 {
-    public class Obstacle : Touch, IPunObservable
+    public class Obstacle : Touch
     {
         [SerializeField] private ObstacleType obstacle;
         [PunRPC] protected override void ActivateTouch()
@@ -19,19 +19,5 @@ namespace InGame
         }
 
         private void SetStatusFalse() => Status = false;
-
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.IsWriting)
-            {
-                // 포톤으로 관측하여 전송 할 내용
-                stream.SendNext(Status);
-            }
-            else
-            {
-                // 관측한 정보를 받을 내용
-                Status = (bool) stream.ReceiveNext();
-            }
-        }
     }
 }
